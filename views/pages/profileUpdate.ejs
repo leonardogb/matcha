@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <% include ../partials/head %>
+        <link rel="stylesheet" type="text/css" href="/css/bootstrap-tagsinput.css" />
+    </head>
+    <header>
+            <% include ../partials/header %>
+    </header>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-10"><h1><%= tabuser.login %></h1></div>
+            </div>
+            <!-- Row -->
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="text-center">
+                        <img src="<%= tabuser.img0 %>" class="avatar img-circle img-thumbnail" alt="avatar">
+                    </div><br>
+                        <!-- formulario datos personales-->
+                    <div>
+                        <form method="POST" action="/profile/updatePerso">
+                            <ul class="list-group">
+                                <li class="list-group-item text-muted">Perso <i class="fa fa-dashboard fa-1x"></i></li>
+                                <li class="list-group-item text-right">
+                                    <span class="pull-left">
+                                        <strong>Login</strong>
+                                    </span>
+                                    <input type="text" name="login" value="<%= tabuser.login %>" required>
+                                </li>
+                                <li class="list-group-item text-right">
+                                    <span class="pull-left">
+                                        <strong>Prenom</strong>
+                                    </span>
+                                    <input type="text" name="prenom" value="<%= tabuser.prenom %>" required>
+                                </li>
+                                <li class="list-group-item text-right">
+                                    <span class="pull-left">
+                                        <strong>Nom</strong>
+                                    </span>
+                                    <input type="text" name="nom" value="<%= tabuser.nom %>" required>
+                                </li>
+                                <li class="list-group-item text-right">
+                                    <span class="pull-left">
+                                        <strong>Mot de passe</strong>
+                                    </span>
+                                    <input type="password" name="mdp" required>
+                                    </li>
+                                <li class="list-group-item text-right">
+                                    <span class="pull-left">
+                                        <strong>Email</strong>
+                                    </span><input type="email" name="mail" value="<%= tabuser.mail %>" required></li>
+                            </ul> 
+                            <input type="submit" name="submit" value="Envoyer" class="btn btn-success">
+                        </form>
+                    </div>
+                </div>
+                <div class="col-sm-8">  
+                    <form class="form-horizontal" method="POST" action="/profile/update">
+                        <fieldset>
+                <!-- Form Name -->
+                            <legend>Modifier votre beau profil</legend>
+                
+                <!-- Multiple  -->
+                            <div class="form-group">
+                                <label class="col-md-6 control-label" for="Gender">Genre</label>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-intersex"></i></span>
+                                        </div>
+                                        <select class="form-control" name="genre" required> <!-- id="inputState" -->
+                                            <option></option>
+                                            <option>Masculin</option>
+                                            <option>Féminin</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                                <!-- Number input-->
+                            <div class="form-group">
+                                <label class="col-md-6 control-label" for="Age">Âge</label>  
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                        </div>
+                                        <input class="form-control" type="number" id="number-input" min="18" max="99" name="age" required>
+                                    </div>
+                                </div>
+                            </div>
+            
+                <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-md-6 control-label">Orientation sexuelle</label>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-venus-mars"></i></span>
+                                        </div>
+                                        <select class="form-control" name="orientation" required> <!-- id="inputState" -->
+                                            <option></option>
+                                            <option>Bisexuel</option>
+                                            <option>Homosexuel</option>
+                                            <option>Hétérosexuel</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Text input-->
+                            <div class="form-group">
+                                    <label class="col-md-6 control-label">Ville</label>
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fa fa-globe"></i></span>
+                                            </div>
+                                            <input class="form-control" type="text" placeholder="Votre ville" name="ville" required>
+                                        </div>
+                                    </div>
+                                </div>
+                
+                <!-- Textarea -->
+                            <div class="form-group">
+                                <label class="col-md-6 control-label" for="Bio">Bio (max 200 caractères)</label>
+                                <div class="col-md-6">                     
+                                    <textarea class="form-control" rows="5" id="Overview (max 200 words)" placeholder="Écris quelque chose sur toi..." name="bio" required></textarea>
+                                </div>
+                            </div>
+                <!-- Submit -->
+                            <div class="form-group">
+                                <label class="col-md-6 control-label"></label>  
+                                <div class="col-md-6">
+                                    <a class="btn btn-danger" href="/user/profile" role="button">Retour au profil</a>
+                                    <input type="submit" class="btn btn-success" value="Envoyer">
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    Modifier mes photos
+                    </button>
+                </div>
+            </div>
+            <div>
+                <span class="badge badge-dark">Interêts :</span>
+                <% if (tabTags) { %><div><% tabTags.forEach(function(element){ %>
+                <span class="badge badge-info"><%= "#" + element %><a href="/profile/deleteTag/<%= element %>" class="tagRemove"> &times;</a></span>
+                <% });%></div><%} %>
+                <form class="form-horizontal" method="POST" action="/profile/updateTags">
+                    
+                    <input name="tags" type="text" value="" placeholder="Écrivez un hashtag" data-role="tagsinput">
+                    <input type="submit" class="btn btn-info" value="Envoyer">
+                </form>
+                
+            </div>
+            <% if (error != '') { %>
+            <div class="alert alert-danger">
+                <a class="close" data-dismiss="alert" href="#">×</a><%= error %>
+            </div>
+            <% } %>
+            <% if (message != '') { %>
+            <div class="alert alert-success">
+                <a class="close" data-dismiss="alert" href="#">×</a><%= message %>
+            </div>
+            <% } %>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modifier vos photos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <form method="POST" action="/profile/update/images" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="container">
+                            <!-- Images input -->
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <img class="img0 img-thumbnail" src="<%= tabuser.img0 %>" alt="Image"/>
+                                        <input type='file' id="imgInput0" style="display: none;" name="img0"/>
+                                        <h6>Image profil</h6>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <img class="img1 img-thumbnail" src="<%= tabuser.img1 %>" alt="Image"/>
+                                        <input type='file' id="imgInput1" style="display: none;" name="img1"/>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <img class="img2 img-thumbnail" src="<%= tabuser.img2 %>" alt="Image"/>
+                                        <input type='file' id="imgInput2" style="display: none;" name="img2"/>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <img class="img3 img-thumbnail" src="<%= tabuser.img3 %>" alt="Image"/>
+                                        <input type='file' id="imgInput3" style="display: none;" name="img3"/>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <img class="img4 img-thumbnail" src="<%= tabuser.img4 %>" alt="Image"/>
+                                        <input type='file' id="imgInput4" style="display: none;" name="img4"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary" value="Envoyer">
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+        <script src="/js/profile.js"></script>
+        <script src="/js/bootstrap-tagsinput.js"></script>
+        <!-- <script>
+            alert($("#tag").val());
+        </script> -->
+    </body>
+</html>

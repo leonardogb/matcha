@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body>
+    <main>
+        <div class="container">
+            <br>  <p class="text-center">Matcha ! Votre site de rencontre</p>
+            <hr>
+
+            <div class="card bg-light">
+                <article class="card-body mx-auto" style="max-width: 400px;">
+                    <h4 class="card-title mt-3 text-center">Create Account</h4>
+                    <p class="text-center">Get started with your free account</p>
+                
+                    <form method="POST" action="/user/addUser">
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                            </div>
+                            <input name="login" class="form-control" placeholder="User name" type="text" required>
+                        </div> <!-- form-group// -->
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+                            </div>
+                            <input name="email" class="form-control" placeholder="Email address" type="email" required>
+                        </div> <!-- form-group// -->
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                            </div>
+                            <input name="nombre" class="form-control" placeholder="First name" type="text" required>
+                        </div>
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                            </div>
+                            <input name="apellido" class="form-control" placeholder="Last name" type="text" required>
+                        </div>
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                            </div>
+                            <input name="passwd1" class="form-control" placeholder="Create password" type="password" required>
+                        </div> <!-- form-group// -->
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                            </div>
+                            <input name="passwd2" class="form-control" placeholder="Repeat password" type="password" required>
+                        </div> <!-- form-group// -->                                      
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block"> Create Account  </button>
+                        </div> <!-- form-group// -->      
+                        <p class="text-center">Have an account? <a href="/user/login">Log In</a> </p>                                                                 
+                    </form>
+                    
+                </article>
+                <% if (error != '') { %>
+                <div class="alert alert-danger">
+                    <a class="close" data-dismiss="alert" href="#">×</a><%= error %>
+                </div>
+                <% } %>
+                <% if (message != '') { %>
+                <div class="alert alert-success">
+                    <a class="close" data-dismiss="alert" href="#">×</a><%= message %>
+                </div>
+                <% } %>
+            </div> <!-- card.// -->
+        </div> 
+            <!--container end.//-->
+    </main>
+    <footer>
+
+    </footer>
+
+</body>
+</html>

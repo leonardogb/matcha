@@ -1,0 +1,84 @@
+<nav class="navbar fixed-top navbar-icon-top navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/"><img src="/img/hombre-mujer-blanco.svg" width="30" height="30" class="d-inline-block align-top" alt="MATCHA !">MATCHA !</a></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapsible" aria-controls="navbarCollapsible" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarCollapsible">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="/">
+                <i class="fa fa-home"></i>
+                Home
+                <span class="sr-only">(current)</span>
+                </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/user/profile">
+                <i class="fa fa-user-circle"></i>
+                Mon profil
+              </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <i class="fa fa-envelope-o">
+                    <span id="badgeNb" class="badge"></span>
+                  </i>
+                  Messages
+                </a>
+              </li>
+            <!-- <li class="nav-item">
+              <a class="nav-link disabled" href="#">
+                <i class="fa fa-envelope-o">
+                  <span class="badge badge-danger">10</span>
+                </i>
+                Disabled
+              </a>
+            </li> -->
+            <!-- <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Social</a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item fa fa-facebook" href="#"> facebook</a></li>
+                    <li><a class="dropdown-item fa fa-twitter" href="#"> Twitter</a></li>
+                    <li><a class="dropdown-item fa fa-google" href="#"> Google+</a></li>
+                    <li><a class="dropdown-item fa fa-instagram" href="#"> Instagram</a></li>
+                </ul>
+            </li> -->
+            
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="desplegable"><span class="fa fa-user"></span><%= login %></a>
+                    <ul class="dropdown-menu" aria-labelledby="desplegable">
+                        <li><a class="dropdown-item" href="/profile"><span class="fa fa-gear"></span> Profil utilisateur</a></li>
+                        <li><a class="dropdown-item" href="/user/logout"><span class="fa fa-sign-out"></span> Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io.connect('localhost:8080');
+  var login = $('#desplegable').text();
+  
+  socket.emit('conectado', login);
+  
+  socket.on('newNot', function(notification)
+  {
+    var badgeNb = $('#badgeNb').text();
+    var chatClass = $('#qnimate').attr('class');
+    alert(chatClass);
+    alert(badgeNb);
+    alert(notification);
+    if (badgeNb)
+      $('#badgeNb').addClass('badge-danger');
+    else
+      $('#badgeNb').removeClass('badge-danger');
+  });
+
+</script>

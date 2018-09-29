@@ -1,0 +1,31 @@
+Matcha
+Inscription et connexion:
+  ☐ Inscriptión usuario
+    ✔ Adresse email @done(18-09-12 20:21)
+    ✔ Nom d'utilisateur @done(18-09-12 20:21)
+    ✔ Nom @done(18-09-12 20:21)
+    ✔ Prénom @done(18-09-12 20:21)
+    Mot de passe sécurisé
+  ✔ E-mail de confirmation avec lien unique @done(18-09-12 20:22)
+  ✔ Connexion (avec Nom utilisateur et mot de passe) @done(18-09-12 20:22)
+  ☐ Mail de réinitialisation
+  ✔ Déconnexion depuis n'importe quelle page @done(18-09-12 20:22)
+
+Profil:
+  ☐ Completer profil
+    ✔ Genre @done(18-09-12 20:22)
+    ✔ Orientation sexuelle @done(18-09-12 20:23)
+    ✔ Bio courte @done(18-09-12 20:23)
+    ✔ Liste d'interêts (tags) @done(18-09-21 17:57)
+    ✔ Images (5) @done(18-09-12 20:23)
+  ✔ Modification des informations, nom, prénom, email, mot de passe @done(18-09-21 18:44)
+  ☐ Changer ou réinitialiser mot de passe s'il est connecté ou pas
+  ☐ Consulter les personnes ayant consulté son profil
+  ☐ Consulter les personnes qui l'ont liké
+  ☐ Score de popularité publique
+  ☐ Géolocalisation de l'utilisateur même s'il ne veut pas
+  ☐ Modification de la localisation depuis le profil
+  
+  Securité:
+    ☐ Vérifier tous les input
+    ☐ Vérifier toutes les requêtes SQL

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <% include ../partials/head %>
+    </head>
+    <header>
+            <% include ../partials/header %>
+    </header>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-10"><h1><%= tabuser.login %></h1></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="text-center">
+                        <img src="<%= tabuser.img0 %>" class="avatar img-circle img-thumbnail" alt="avatar">
+                    </div><br>
+                    <div>
+                        <ul class="list-group panel-default">
+                        <li class="list-group-item panel-heading text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
+                        <li class="list-group-item text-right"><span class="pull-left"><strong>Popularité</strong></span> 125</li>
+                        <a href="/profile/likes"><li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span> <%= datos[0] %></li></a>
+                        <a href="/profile/vues"><li class="list-group-item text-right"><span class="pull-left"><strong>Vues profil</strong></span> <%= datos[1] %> </li></a>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <div>
+                        <h2 class="card-title"><%= tabuser.prenom + " " + tabuser.nom %></h2>
+                        <table class="table table-user-information ">
+                            <tbody>
+                                <tr>
+                                    <td><h5>Âge :</h5></td>
+                                    <td><%= tabuser.age %></td>
+                                </tr>
+                                <tr>
+                                    <td><h5>Genre :</h5></td>
+                                    <td><%= tabuser.genre %></td>
+                                </tr>
+                                <tr>
+                                    <td><h5>Orientation sexuel :</h5></td>
+                                    <td><%= tabuser.orientation %></td>
+                                </tr>
+                                <tr>
+                                    <td><h5>Ville :</h5></td>
+                                    <td><%= tabuser.ville %></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="alert alert-secondary" role="alert">
+                            <h4 class="alert-heading">Sur moi :</h4>
+                            <p><%= tabuser.bio %></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+                    <img class="img1 img-thumbnail" src="<%= tabuser.img1 %>" alt="Image"/>
+                </div>
+                <div class="col-md-2">
+                    <img class="img2 img-thumbnail" src="<%= tabuser.img2 %>" alt="Image"/>
+                </div>
+
+                <div class="col-md-2">
+                    <img class="img3 img-thumbnail" src="<%= tabuser.img3 %>" alt="Image"/>
+                </div>
+
+                <div class="col-md-2">
+                    <img class="img4 img-thumbnail" src="<%= tabuser.img4 %>" alt="Image"/>
+                </div>
+            </div>
+
+            <div>
+                <span class="badge badge-dark">Interêts :</span>
+                <% if (tabTags) { %><div><% tabTags.forEach(function(element){ %>
+                <span class="badge badge-info"><%= "#" + element %></span>
+                <% }); %></div><% } %>
+            </div>
+
+            <div>
+                <a class="btn btn-primary" href="/profile" role="button">Modifier mon profil</a>
+            </div>
+
+            <% if (error != '') { %>
+            <div class="alert alert-danger">
+                <a class="close" data-dismiss="alert" href="#">×</a><%= error %>
+            </div>
+            <% } %>
+            <% if (message != '') { %>
+            <div class="alert alert-success">
+                <a class="close" data-dismiss="alert" href="#">×</a><%= message %>
+            </div>
+            <% } %>
+        </div>
+        
+    </body>
+</html>

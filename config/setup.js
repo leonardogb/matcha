@@ -1,0 +1,134 @@
+var database = require('./database');
+var bcrypt    = require('bcrypt');
+
+
+    database.query("CREATE DATABASE IF NOT EXISTS db_matcha", function (err, result)
+    {
+      if (err) throw err;
+      console.log("Database created");
+    });
+    var select = "USE db_matcha";
+    database.query(select, function(err, result)
+    {
+      if (err) throw err;
+      console.log("Database db_matcha selected");
+    });
+
+    var sql = "CREATE TABLE IF NOT EXISTS users (\
+      `id` INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, \
+      `login` VARCHAR(30) NOT NULL, \
+      `prenom` VARCHAR(50) NOT NULL, \
+      `nom` VARCHAR(30) NOT NULL, \
+      `passwd` CHAR(128) NOT NULL, \
+      `mail` CHAR(255) NOT NULL, \
+      `cle` CHAR(128) NOT NULL, \
+      `active` TINYINT(1) UNSIGNED DEFAULT 0, \
+      `genre` ENUM('Masculin', 'Féminin') NOT NULL,\
+      `age` INT(3) UNSIGNED NOT NULL DEFAULT 18,\
+      `orientation` ENUM('Hétérosexuel', 'Homosexuel', 'Bisexuel') NOT NULL DEFAULT 'Bisexuel',\
+      `bio` VARCHAR(255) NOT NULL,\
+      `img0` VARCHAR(100) DEFAULT '/img/no-img.png' NOT NULL,\
+      `img1` VARCHAR(100) DEFAULT '/img/no-img.png' NOT NULL,\
+      `img2` VARCHAR(100) DEFAULT '/img/no-img.png' NOT NULL,\
+      `img3` VARCHAR(100) DEFAULT '/img/no-img.png' NOT NULL,\
+      `img4` VARCHAR(100) DEFAULT '/img/no-img.png' NOT NULL,\
+      `ville` VARCHAR(255),\
+      `lat` FLOAT,\
+      `lon` FLOAT,\
+      `visite` DATE,\
+      `complet` BOOLEAN DEFAULT FALSE,\
+      `online` BOOLEAN DEFAULT FALSE)";
+    database.query(sql, function (err, result) {
+      if (err) throw err;
+      console.log("Table users created");
+    });
+
+    var askAdmin = function(callback) {
+      
+      database.query("SELECT `login` FROM users WHERE `login`='admin'", function(err, rows, fields) {
+        if(err) {
+            throw err;
+        }
+        callback(rows);
+      });
+     
+      //database.end();
+    }
+
+    askAdmin(function(rows) {
+      if (rows.length == 0)
+      {
+        var passAdmin = bcrypt.hashSync('lgarcia-', 10);
+
+        var insertAdmin = "INSERT INTO users (\
+          `login`, `passwd`, `mail`, `active`)\
+          VALUES ('admin', '" + passAdmin + "', 'lgarcia-@student.le-101.fr', 1)";
+        database.query(insertAdmin, function (err, result)
+        {
+          if (err) throw err;
+          console.log("admin added to users");
+        });
+      }
+    });
+
+
+    
+
+    // var sql1 = "CREATE TABLE IF NOT EXISTS profil (\
+    //   `id` INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,\
+    //   `id_user` INT(6) UNSIGNED NOT NULL,\
+    //   `genre` ENUM('Masculin', 'Féminin') NOT NULL,\
+    //   `age` INT(3) UNSIGNED NOT NULL DEFAULT 18,\
+    //   `orientation` ENUM('Hétérosexuel', 'Homosexuel', 'Bisexuel') NOT NULL DEFAULT 'Bisexuel',\
+    //   `bio` VARCHAR(255) NOT NULL,\
+    //   `img0` VARCHAR(30) DEFAULT '/img/no-img.png' NOT NULL,\
+    //   `img1` VARCHAR(30) DEFAULT '/img/no-img.png' NOT NULL,\
+    //   `img2` VARCHAR(30) DEFAULT '/img/no-img.png' NOT NULL,\
+    //   `img3` VARCHAR(30) DEFAULT '/img/no-img.png' NOT NULL,\
+    //   `img4` VARCHAR(30) DEFAULT '/img/no-img.png' NOT NULL,\
+    //   `ville` VARCHAR(255),\
+    //   `lat` FLOAT,\
+    //   `lon` FLOAT,\
+    //   `visite` DATE,\
+    //   `online` BOOLEAN DEFAULT FALSE)";
+    // database.query(sql1, function (err, result) {
+    //   if (err) throw err;
+    //   console.log("Table profil created");
+    // });
+
+      var sql2 = "CREATE TABLE IF NOT EXISTS tags (\
+        id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,\
+        tag VARCHAR(30))";
+      database.query(sql2, function (err, result) {
+        if (err) throw err;
+        console.log("Table tags created");
+      });
+
+      var sql3 = "CREATE TABLE IF NOT EXISTS usertags (\
+        `id` INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,\
+        `id_user` INT(6) NOT NULL,\
+        `id_tag` INT(6) NOT NULL)";
+      database.query(sql3, function (err, result) {
+        if (err) throw err;
+        console.log("Table usertags created");
+      });
+
+      var sql4 = "CREATE TABLE IF NOT EXISTS likes (\
+        id INT(3) UNSIGNED AUTO_INCREMENT PRIMARY KEY,\
+        id_user INT(6) NOT NULL,\
+        id_user_like INT(6) NOT NULL)";
+      database.query(sql4, function (err, result) {
+        if (err) throw err;
+        console.log("Table likes created");
+      });
+
+      var sql5 = "CREATE TABLE IF NOT EXISTS historique (\
+        id INT(3) UNSIGNED AUTO_INCREMENT PRIMARY KEY,\
+        username VARCHAR(30) NOT NULL,\
+        visited VARCHAR(30) NOT NULL)";
+      database.query(sql5, function (err, result) {
+          if (err) throw err;
+          console.log("Table likes created");
+        });
+    //database.end();
+
