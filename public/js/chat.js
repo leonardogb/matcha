@@ -35,23 +35,23 @@ $(function(){
         var destinatario = $('#login').text();
         if (message != "")
         {
-            var elemento = "\
-            <div>\
-                <div class=\"direct-chat-info clearfix\">\
-                    <span class=\"direct-chat-name pull-left\">" + login + "</span>\
-                </div>\
-                <!-- /.direct-chat-info -->\
-                <img alt=\"message user image\" src=\"" + img + "\"class=\"direct-chat-img\"><!-- /.direct-chat-img -->\
-                <div class=\"triangulo-izq\"></div>\
-                <div class=\"direct-chat-text\">"
+            var elemento = `
+            <div>
+                <div class="direct-chat-info clearfix">
+                    <span class="direct-chat-name pull-left">` + login + `</span>
+                </div>
+                <!-- /.direct-chat-info -->
+                <img alt="message user image" src="` + img + `"class="direct-chat-img"><!-- /.direct-chat-img -->
+                <div class="triangulo-izq"></div>
+                <div class="direct-chat-text">`
                 + message +                
-                "</div>\
-                <div class=\"direct-chat-info clearfix\">\
-                <span class=\"direct-chat-timestamp pull-right\">" + "hora" + "</span>\
-                </div>\
-                <div class=\"direct-chat-info clearfix\"></div>\
-                <!-- /.direct-chat-text -->\
-            </div>";
+                `</div>
+                <div class="direct-chat-info clearfix">
+                <span class="direct-chat-timestamp pull-right">` + "hora" + `</span>
+                </div>
+                <div class="direct-chat-info clearfix"></div>
+                <!-- /.direct-chat-text -->
+            </div>`;
             $('.direct-chat-messages').append(elemento);
             $(".popup-messages").animate({ scrollTop: $(".popup-messages").prop('scrollHeight')}, 'slow');
 
@@ -62,23 +62,23 @@ $(function(){
     {
         if (data.msg != "")
         {
-            var elemento = "\
-            <div>\
-                <div class=\"direct-chat-info clearfix\">\
-                    <span class=\"direct-chat-name-right pull-right\">" + data.user + "</span>\
-                </div>\
-                <!-- /.direct-chat-info -->\
-                <img alt=\"message user image\" src=\"" + data.foto + "\"class=\"direct-chat-img-right\"><!-- /.direct-chat-img -->\
-                <div class=\"triangulo-der\"></div>\
-                <div class=\"direct-chat-text-right\">"
+            var elemento = `
+            <div>
+                <div class="direct-chat-info clearfix">
+                    <span class="direct-chat-name-right pull-right">` + data.user + `</span>
+                </div>
+                <!-- /.direct-chat-info -->
+                <img alt="message user image" src="` + data.foto + `"class="direct-chat-img-right"><!-- /.direct-chat-img -->
+                <div class="triangulo-der"></div>
+                <div class="direct-chat-text-right">`
                 + data.msg +                
-                "</div>\
-                <div class=\"direct-chat-info clearfix\">\
-                <span class=\"direct-chat-timestamp pull-left\">" + "hora" + "</span>\
-                </div>\
-                <div class=\"direct-chat-info clearfix\"></div>\
-                <!-- /.direct-chat-text -->\
-            </div>";
+                `</div>
+                <div class="direct-chat-info clearfix">
+                <span class="direct-chat-timestamp pull-left">` + "hora" + `</span>
+                </div>
+                <div class="direct-chat-info clearfix"></div>
+                <!-- /.direct-chat-text -->
+            </div>`;
             $('.direct-chat-messages').append(elemento);
             $(".popup-messages").animate({ scrollTop: $(".popup-messages").prop('scrollHeight')}, 'slow');
         }
