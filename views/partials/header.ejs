@@ -23,7 +23,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="#">
                   <i class="fa fa-envelope-o">
-                    <span id="badgeNb" class="badge"></span>
+                    <span id="badgeNb" class="badge">20</span>
                   </i>
                   Messages
                 </a>
@@ -58,27 +58,5 @@
                 </li>
             </ul>
         </div>
-        
     </div>
 </nav>
-<script src="/socket.io/socket.io.js"></script>
-<script>
-  var socket = io.connect('localhost:8080');
-  var login = $('#desplegable').text();
-  
-  socket.emit('conectado', login);
-  
-  socket.on('newNot', function(notification)
-  {
-    var badgeNb = $('#badgeNb').text();
-    var chatClass = $('#qnimate').attr('class');
-    alert(chatClass);
-    alert(badgeNb);
-    alert(notification);
-    if (badgeNb)
-      $('#badgeNb').addClass('badge-danger');
-    else
-      $('#badgeNb').removeClass('badge-danger');
-  });
-
-</script>

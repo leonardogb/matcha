@@ -1,9 +1,9 @@
 $(function(){
     
-    //var login = $('#desplegable').text();
+    var login = $('#desplegable').text();
     var img = $('#userImg').attr('src');
     
-    //socket.emit('conectado', login);
+    socket.emit('conectado', login);
 
     // socket.emit('subscribe', '5', 'Leonardo');
 
@@ -15,8 +15,23 @@ $(function(){
         $('#qnimate').removeClass('popup-box-on');
     });
 
-    $("#enviar").click(function () {
-        var message = $('#status_message').val();
+    $("#status_message").on("keydown", function(e){
+        if (e.which == 13){
+            var text = $(this).val();
+            if (text !== ""){
+                insertChat();              
+                $(this).val('');
+            }
+        }
+    });
+    $("#enviar").click(function(){
+        insertChat();
+        $('#status_message').val('');
+    });
+
+    function insertChat()
+    {
+        var message = $.trim($('#status_message').val());
         var destinatario = $('#login').text();
         if (message != "")
         {
@@ -38,11 +53,11 @@ $(function(){
                 <!-- /.direct-chat-text -->\
             </div>";
             $('.direct-chat-messages').append(elemento);
+            $(".popup-messages").animate({ scrollTop: $(".popup-messages").prop('scrollHeight')}, 'slow');
 
             socket.emit('newMsg', {dst: destinatario, msg: message, user: login, foto: img});
         }
-    });
-
+    }
     socket.on('newMessage', function(data)
     {
         if (data.msg != "")
@@ -65,6 +80,7 @@ $(function(){
                 <!-- /.direct-chat-text -->\
             </div>";
             $('.direct-chat-messages').append(elemento);
+            $(".popup-messages").animate({ scrollTop: $(".popup-messages").prop('scrollHeight')}, 'slow');
         }
     });
 });

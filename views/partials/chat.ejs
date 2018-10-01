@@ -19,7 +19,7 @@
                 </div>
             <div class="popup-messages">
 
-            <div class="direct-chat-messages">
+            <div class="direct-chat-messages" id="mensajes">
                 <div class="chat-box-single-line">
                     <abbr class="timestamp">October 8th, 2015</abbr>
                 </div>
@@ -58,4 +58,20 @@
     <script src="/js/chat.js"></script>
     <script>
         var socket = io.connect('localhost:8080');
+        var login = $('#desplegable').text();
+
+        //socket.emit('conectado', login);
+        var badgeNb = $('#badgeNb').text();
+        
+        socket.on('newNot', function(notification)
+        {
+        //var chatClass = $('#qnimate').attr('class');
+        //alert(chatClass);
+        //alert(badgeNb);
+        //alert(notification);
+        if (badgeNb)
+            $('#badgeNb').addClass('badge-danger');
+        else
+            $('#badgeNb').removeClass('badge-danger');
+        });
     </script>
