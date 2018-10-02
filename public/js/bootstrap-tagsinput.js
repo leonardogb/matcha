@@ -9,7 +9,8 @@
       return item ? item.toString() : item; //añadido la almohadilla
     },
     itemText: function(item) {
-      return "#" + this.itemValue(item);
+      var chaine = item.replace('#', '');
+      return "#" + this.itemValue(chaine);
     },
     itemTitle: function(item) {
       return null;

@@ -1,9 +1,7 @@
 $(function(){
     
-    var login = $('#desplegable').text();
+    // var login = $('#desplegable').text(); ya esta en el header
     var img = $('#userImg').attr('src');
-    
-    socket.emit('conectado', login);
 
     // socket.emit('subscribe', '5', 'Leonardo');
 

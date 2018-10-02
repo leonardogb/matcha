@@ -17,6 +17,7 @@ router.use(sessionOk);
 
 router.post('/update', function(req, res)
 {
+    var user = req.session.user.login;
     var user_id = req.session.user.id;
     var user_login = req.session.user.login;
     var update = validator.isValidUpdate(req.body);
@@ -24,35 +25,62 @@ router.post('/update', function(req, res)
     if (update != true)
     {
         console.log(req.body);
-        userModel.getUserById(id_user).then(result => {
-            delete result.passwd;
-            delete result.cle;
-            console.log(result);
-            tagModel.getTags(id_user).then( tagsTab => {
-                console.log(tagsTab);
-                res.render('pages/profileUpdate', {
-                    title: "Profil de " + result.prenom,
-                    message: "",
-                    error: update,
-                    login: user_login,
-                    tabuser: result,
-                    tabTags: tagsTab
-                });
-            }).catch(function(err)
-            {
-                console.log(err);
-                //res.redirect('/');
+        // userModel.getUserById(id_user).then(result => {
+        //     delete result.passwd;
+        //     delete result.cle;
+        //     console.log(result);
+        //     tagModel.getTags(id_user).then( tagsTab => {
+        //         console.log(tagsTab);
+        //         res.render('pages/profileUpdate', {
+        //             title: "Profil de " + result.prenom,
+        //             message: "",
+        //             error: update,
+        //             login: user_login,
+        //             tabuser: result,
+        //             tabTags: tagsTab
+        //         });
+        //     }).catch(function(err)
+        //     {
+        //         console.log(err);
+        //         //res.redirect('/');
+        //     });
+        // }).catch(function(err)
+        // {
+        //     console.log(err);
+        //     //res.redirect('/pages/profileUpdate');
+        // });
+
+    userModel.getUserById(user_id).then(result => {
+        delete result.passwd;
+        delete result.cle;
+        //console.log(result);
+        tagModel.getTags(user_id).then( tagsTab => {
+            console.log(tagsTab);
+            res.render('pages/profileUpdate', {
+                title: "Profil de " + result.prenom,
+                message: "",
+                error: update,
+                login: user_login,
+                tabuser: result,
+                tabTags: tagsTab
             });
         }).catch(function(err)
         {
             console.log(err);
-            //res.redirect('/pages/profileUpdate');
+            //res.redirect('/');
         });
+        
+    }).catch(function(err)
+    {
+        console.log(err);
+        //res.redirect('/');
+    });
     }
     else
     {
         console.log(req.body);
         var tab = [user_id, req.body.genre, req.body.age, req.body.orientation, req.body.ville, req.body.bio];
+        
         profileModel.update(tab).then(respuesta => {
             console.log(req.body);
         userModel.getUserById(user_id).then(result => {
@@ -61,13 +89,19 @@ router.post('/update', function(req, res)
             //console.log(result);
             tagModel.getTags(user_id).then( tagsTab => {
                 console.log(tagsTab);
-                res.render('pages/profile', {
-                    title: "Profil de " + result.prenom,
-                    message: respuesta,
-                    error: "",
-                    login: user_login,
-                    tabuser: result,
-                    tabTags: tagsTab
+                var datos = [];
+                datos.push(likesModel.getNbLikes(user_id));
+                datos.push(visitsModel.getNbVisits(user));
+                Promise.all(datos).then(datos => {
+                    res.render('pages/profile', {
+                        title: "Profil de " + result.prenom,
+                        message: respuesta,
+                        error: "",
+                        login: result.login,
+                        tabuser: result,
+                        tabTags: tagsTab,
+                        datos: datos
+                    });
                 });
             }).catch(function(err)
             {

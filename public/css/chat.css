@@ -7,16 +7,28 @@ body
 .popup-box {
    background-color: #ffffff;
     border: 1px solid #b0b0b0;
-    bottom: 0;
+    /* position: absolute; */
+    /* bottom: 60px; */
     display: none;
     height: 415px;
-    position: fixed;
-    right: 70px;
     width: 300px;
     font-family: 'Open Sans', sans-serif;
 }
+/* bloque fijo */
+.blockFixe {
+    position: fixed;
+    bottom: 15px;
+    left: 25px;
+}
+.blockChat {
+    /**/
+}
+.botonChat {
+    /* position: relative;
+    bottom: 15px; */
+}
 .round.hollow {
-    margin: 40px 0 0;
+    margin: 10px 0 0;
 }
 .round.hollow a {
     border: 2px solid #ff6701;
@@ -88,12 +100,12 @@ body
     margin: 7px;
     padding: 5px !important;
     border: medium none;
-    width: 80% !important;
+    width: 250px !important;
 }
 .popup-messages-footer {
     background: #fff none repeat scroll 0 0;
-    bottom: 0;
-    position: absolute;
+    bottom: 0px;
+    position: relative;
     width: 100%;
 }
 .popup-messages-footer .btn-footer {
@@ -116,7 +128,7 @@ body
 
 .popup-box .popup-messages {
     background: #3f9684 none repeat scroll 0 0;
-    height: 275px;
+    height: 290px;
     overflow: auto;
 }
 .direct-chat-messages {
