@@ -1,20 +1,20 @@
 
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 //var io = require('socket.io')(server);
 //var ent = require('ent'); no utilizado
-var session = require('express-session');
+const session = require('express-session');
 
-var userC = require('./controllers/userC');
-var indexC = require('./controllers/indexC');
-var profileC = require('./controllers/profileC');
-var chatC = require('./controllers/chatC');
+const userC = require('./controllers/userC');
+const indexC = require('./controllers/indexC');
+const profileC = require('./controllers/profileC');
+const chatC = require('./controllers/chatC');
 //var router = express.Router(); no utilizado
 
-var app = express();
+const app = express();
 
 app.use(session({
   secret: 'clave secreta',
@@ -49,13 +49,13 @@ app.use(function(req, res, next) {
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(({ status = 500 }, req, res, next) => {
   // set locals, only providing error in development
   // res.locals.message = err.message;
   // res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
+  res.status(status);
   res.render('./pages/404.ejs', {title: 'Page not found'});
 });
 

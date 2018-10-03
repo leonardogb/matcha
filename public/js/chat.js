@@ -1,7 +1,8 @@
 $(function(){
     
     // var login = $('#desplegable').text(); ya esta en el header
-    var img = $('#userImg').attr('src');
+    var userImg = $('#userImg').attr('src');
+    var destinoImg = $('#imgAvatar').attr('src');
 
     // socket.emit('subscribe', '5', 'Leonardo');
 
@@ -39,7 +40,7 @@ $(function(){
                     <span class="direct-chat-name pull-left">` + login + `</span>
                 </div>
                 <!-- /.direct-chat-info -->
-                <img alt="message user image" src="` + img + `"class="direct-chat-img"><!-- /.direct-chat-img -->
+                <img alt="message user image" src="` + userImg + `"class="direct-chat-img"><!-- /.direct-chat-img -->
                 <div class="triangulo-izq"></div>
                 <div class="direct-chat-text">`
                 + message +                
@@ -53,7 +54,7 @@ $(function(){
             $('.direct-chat-messages').append(elemento);
             $(".popup-messages").animate({ scrollTop: $(".popup-messages").prop('scrollHeight')}, 'slow');
 
-            socket.emit('newMsg', {dst: destinatario, msg: message, user: login, foto: img});
+            socket.emit('newMsg', {user: login, userImg: userImg, dst: destinatario, dstImg: destinoImg, msg: message});
         }
     }
     socket.on('newMessage', function(data)
@@ -66,7 +67,7 @@ $(function(){
                     <span class="direct-chat-name-right pull-right">` + data.user + `</span>
                 </div>
                 <!-- /.direct-chat-info -->
-                <img alt="message user image" src="` + data.foto + `"class="direct-chat-img-right"><!-- /.direct-chat-img -->
+                <img alt="message user image" src="` + data.userImg + `"class="direct-chat-img-right"><!-- /.direct-chat-img -->
                 <div class="triangulo-der"></div>
                 <div class="direct-chat-text-right">`
                 + data.msg +                

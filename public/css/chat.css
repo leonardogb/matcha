@@ -28,26 +28,26 @@ body
     bottom: 15px; */
 }
 .round.hollow {
-    margin: 10px 0 0;
+    margin: 5px 0 0;
 }
 .round.hollow a {
     border: 2px solid #ff6701;
-    border-radius: 35px;
-    color: red;
+    border-radius: 10px;
     color: #ff6701;
+    background-color: white;
     font-size: 23px;
-    padding: 10px 21px;
+    padding: 5px 20px;
     text-decoration: none;
     font-family: 'Open Sans', sans-serif;
 }
 .round.hollow a:hover {
-    border: 2px solid #000;
+    border: 2px solid #ff6701;
     border-radius: 35px;
-    color: red;
-    color: #000;
+    color: #ff6701;
     font-size: 23px;
-    padding: 10px 21px;
+    padding: 5px 20px;
     text-decoration: none;
+    cursor: pointer;
 }
 .popup-box-on {
     display: block !important;
@@ -162,6 +162,7 @@ body
     font-size: 14px;
     height: 30px;
     width: 30px;
+    cursor: pointer;
 }
 .popup-head-right .btn-group .dropdown-menu {
     border: medium none;
@@ -321,7 +322,9 @@ body
     position: absolute;
     top: 15px;
 }
-
+.boton:hover {
+    cursor: pointer;
+}
 /* triangulo-derecha */
 .triangulo-dr {
     width: 0;
