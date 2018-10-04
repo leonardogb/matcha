@@ -28,12 +28,24 @@ $(function(){
         $('#status_message').val('');
     });
 
+    function formatAMPM(date) {
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0'+minutes : minutes;
+        var strTime = hours + ':' + minutes + ' ' + ampm;
+        return strTime;
+    }
+
     function insertChat()
     {
         var message = $.trim($('#status_message').val());
         var destinatario = $('#login').text();
         if (message != "")
         {
+            hora = formatAMPM(new Date());
             var elemento = `
             <div>
                 <div class="direct-chat-info clearfix">
@@ -46,7 +58,7 @@ $(function(){
                 + message +                
                 `</div>
                 <div class="direct-chat-info clearfix">
-                <span class="direct-chat-timestamp pull-right">` + "hora" + `</span>
+                <span class="direct-chat-timestamp pull-right">` + hora + `</span>
                 </div>
                 <div class="direct-chat-info clearfix"></div>
                 <!-- /.direct-chat-text -->
@@ -61,6 +73,7 @@ $(function(){
     {
         if (data.msg != "")
         {
+            hora = formatAMPM(new Date());
             var elemento = `
             <div>
                 <div class="direct-chat-info clearfix">
@@ -73,7 +86,7 @@ $(function(){
                 + data.msg +                
                 `</div>
                 <div class="direct-chat-info clearfix">
-                <span class="direct-chat-timestamp pull-left">` + "hora" + `</span>
+                <span class="direct-chat-timestamp pull-left">` + hora + `</span>
                 </div>
                 <div class="direct-chat-info clearfix"></div>
                 <!-- /.direct-chat-text -->
