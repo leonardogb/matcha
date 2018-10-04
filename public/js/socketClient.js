@@ -23,7 +23,8 @@
                 <!-- /.direct-chat-text -->
             </div>`;
             $('#' + data.user + ' .chat-popup .popup-messages .direct-chat-messages').append(elemento);
-            $(".popup-messages").animate({ scrollTop: $(".popup-messages").prop('scrollHeight')}, 'slow');
+            var parteChat = $('#' + data.user + ' .chat-popup .popup-messages');
+            parteChat.animate({ scrollTop: parteChat.prop('scrollHeight')}, 'slow');
           }
           else
           {
@@ -66,9 +67,9 @@
                             </div>
                         </div>
                         <div class="popup-messages-footer">
-                            <textarea id="status_message" placeholder="Type a message..." rows="10" cols="40" name="message"></textarea>
+                            <textarea placeholder="Type a message..." rows="10" cols="40" name="message"></textarea>
                             <!-- <div class="btn-footer"> -->
-                            <button id="enviar" class="btn-outline-info rounded-circle boton">
+                            <button class="enviar" class="btn-outline-info rounded-circle boton">
                                 <i class="fa fa-share"></i>
                             </button>
                         </div>
@@ -80,20 +81,22 @@
                 </div>`;
 
             $('.contenedorChat').append(elemento);
-            $(".popup-messages").animate({ scrollTop: $(".popup-messages").prop('scrollHeight')}, 'slow');
+            var parteChat = $('#' + data.user + ' .chat-popup .popup-messages');
+            parteChat.animate({ scrollTop: parteChat.prop('scrollHeight')}, 'slow');
           }
         
             //onclick="enviar(this)"  onkeypress="intro(this)"
-            $("#status_message").keydown(function(e){
+            $("textarea").keydown(function(e){
                 if (e.which == 13){
+                    var user = $(this).closest('.blockChat').attr('id');
                     var text = $(this).val();
                     if (text !== ""){
-                        insertChat();              
+                        insertChat(text, user);              
                         $(this).val('');
                     }
                 }
             });
-            $("#enviar").click(function(){
+            $("#" + data.user + " .popup-box .popup-messages-footer .status_message .enviar").click(function(){
                 insertChat();
                 $('#status_message').val('');
             });
@@ -117,12 +120,12 @@
     //     ele.value = '';
     // }
 
-    function insertChat()
+    function insertChat(text, user)
     {
-        var message = $.trim($('#status_message').val());
-        var destinatario = $('#dstImg').attr('alt');
+        var message = $.trim(text);
+        var destinatario = user;
         var userImg = $('#userImg').attr('src');
-        var destinoImg = $('#dstImg').attr('src')
+        var destinoImg = $(user).attr('src')
 
         if (message != "")
         {
@@ -144,7 +147,8 @@
                 <!-- /.direct-chat-text -->
             </div>`;
             $('#' + destinatario + ' .chat-popup .popup-messages .direct-chat-messages').append(elemento);
-            $(".popup-messages").animate({ scrollTop: $(".popup-messages").prop('scrollHeight')}, 'slow');
+            var parteChat = $('#' + destinatario + ' .chat-popup .popup-messages');
+            parteChat.animate({ scrollTop: parteChat.prop('scrollHeight')}, 'slow');
 
             //console.log(login + " " + userImg + " " + destinatario + " " + destinoImg + " " + message);
             socket.emit('newMsg', {user: login, userImg: userImg, dst: destinatario, dstImg: destinoImg, msg: message});
