@@ -42,6 +42,7 @@ router.post('/login', function(req, res)
 {
     if (!req.session.user)
     {
+        //validar datos?
         userModel.auth(req.body.login, req.body.passwd).then(result => {
             console.log(result);
             var sesion = {id: result.id, login: result.login, prenom: result.prenom, nom: result.nom, mail: result.mail, img0: result.img0};

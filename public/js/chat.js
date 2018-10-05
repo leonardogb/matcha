@@ -1,10 +1,20 @@
 $(function(){
-    
-    // var login = $('#desplegable').text(); ya esta en el header
-    var userImg = $('#userImg').attr('src');
-    var destinoImg = $('#imgAvatar').attr('src');
 
-    // socket.emit('subscribe', '5', 'Leonardo');
+    function escapeHtml(text) {
+        var map = {
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#039;'
+        };
+      
+        return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+      }
+
+// var login = $('#desplegable').text(); ya esta en el header
+    var userImg = escapeHtml($('#userImg').attr('src'));
+    var destinoImg = escapeHtml($('#imgAvatar').attr('src'));
 
     $("#addClass").click(function () {
         $('#qnimate').addClass('popup-box-on');
@@ -14,11 +24,11 @@ $(function(){
         $('#qnimate').removeClass('popup-box-on');
     });
 
-    $("#status_message").on("keydown", function(e){
+    $("#status_message").on("keydown", function(e) {
         if (e.which == 13){
             var text = $(this).val();
             if (text !== ""){
-                insertChat();              
+                insertChat();
                 $(this).val('');
             }
         }
@@ -41,11 +51,12 @@ $(function(){
 
     function insertChat()
     {
-        var message = $.trim($('#status_message').val());
-        var destinatario = $('#login').text();
+        var message = escapeHtml($.trim($('#status_message').val()));
+        var destinatario = escapeHtml($('#login').text());
+        login = escapeHtml(login);
         if (message != "")
         {
-            hora = formatAMPM(new Date());
+            var hora = formatAMPM(new Date());
             var elemento = `
             <div>
                 <div class="direct-chat-info clearfix">
@@ -69,7 +80,7 @@ $(function(){
             socket.emit('newMsg', {user: login, userImg: userImg, dst: destinatario, dstImg: destinoImg, msg: message});
         }
     }
-    socket.on('newMessage', function(data)
+    socket.on('newMessage', (data) =>
     {
         if (data.msg != "")
         {

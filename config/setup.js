@@ -61,7 +61,7 @@ var bcrypt    = require('bcrypt');
         var passAdmin = bcrypt.hashSync('lgarcia-', 10);
 
         var insertAdmin = "INSERT INTO users (\
-          `login`, `passwd`, `mail`, `active`)\
+          `login`, passwd, mail, active)\
           VALUES ('admin', '" + passAdmin + "', 'lgarcia-@student.le-101.fr', 1)";
         database.query(insertAdmin, function (err, result)
         {
@@ -96,39 +96,50 @@ var bcrypt    = require('bcrypt');
     //   console.log("Table profil created");
     // });
 
-      var sql2 = "CREATE TABLE IF NOT EXISTS tags (\
-        id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,\
-        tag VARCHAR(30))";
+      var sql2 = `CREATE TABLE IF NOT EXISTS tags (
+        id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        tag VARCHAR(30))`;
       database.query(sql2, function (err, result) {
         if (err) throw err;
         console.log("Table tags created");
       });
 
-      var sql3 = "CREATE TABLE IF NOT EXISTS usertags (\
-        `id` INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,\
-        `id_user` INT(6) NOT NULL,\
-        `id_tag` INT(6) NOT NULL)";
+      var sql3 = `CREATE TABLE IF NOT EXISTS usertags (
+        id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        id_user INT(6) NOT NULL,
+        id_tag INT(6) NOT NULL)`;
       database.query(sql3, function (err, result) {
         if (err) throw err;
         console.log("Table usertags created");
       });
 
-      var sql4 = "CREATE TABLE IF NOT EXISTS likes (\
-        id INT(3) UNSIGNED AUTO_INCREMENT PRIMARY KEY,\
-        id_user INT(6) NOT NULL,\
-        id_user_like INT(6) NOT NULL)";
+      var sql4 = `CREATE TABLE IF NOT EXISTS likes (
+        id INT(3) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        id_user INT(6) NOT NULL,
+        id_user_like INT(6) NOT NULL)`;
       database.query(sql4, function (err, result) {
         if (err) throw err;
         console.log("Table likes created");
       });
 
-      var sql5 = "CREATE TABLE IF NOT EXISTS historique (\
-        id INT(3) UNSIGNED AUTO_INCREMENT PRIMARY KEY,\
-        username VARCHAR(30) NOT NULL,\
-        visited VARCHAR(30) NOT NULL)";
+      var sql5 = `CREATE TABLE IF NOT EXISTS historique (
+        id INT(3) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        username VARCHAR(30) NOT NULL,
+        visited VARCHAR(30) NOT NULL)`;
       database.query(sql5, function (err, result) {
           if (err) throw err;
           console.log("Table likes created");
         });
+
+        var sql6 = `CREATE TABLE IF NOT EXISTS messages (
+          id INT(3) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+          id_user INT(3) NOT NULL,
+          id_dst INT(3) NOT NULL,
+          message VARCHAR(500) NOT NULL,
+          date_msg DATETIME NOT NULL)`;
+        database.query(sql6, function (err, result) {
+            if (err) throw err;
+            console.log("Table messages created");
+          });
     //database.end();
 

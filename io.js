@@ -2,6 +2,8 @@ module.exports = function(server)
 {
     var io = require('socket.io')(server);
     var ent = require('ent');
+    var chatModel = require('./models/chatM');
+    var userModel = require('./models/userM');
     var users = [];
 
     function formatAMPM(date) {
@@ -40,15 +42,47 @@ module.exports = function(server)
 
         socket.on('newMsg', function(data)
         {
-            var destId = users[data.dst];
+            
+            chatModel.isValidData(data).then(result => {
+                console.log(result);
+                if (result)
+                {
+                    data['user'] = ent.encode(data.user);
+                    data['userImg'] = ent.encode(data.userImg);
+                    data['dst'] = ent.encode(data.dst);
+                    data['dstImg'] = ent.encode(data.dstImg);
+                    data['msg'] = ent.encode(data.msg);
+                    var destId = users[data.dst];
+                    var userId = users[data.user];
+                    if (userId)
+                    {
+                        var usuarios = [];
+                        usuarios.push(userModel.getUserByUsername(data.user));
+                        usuarios.push(userModel.getUserByUsername(data.dst));
+                        Promise.all(usuarios).then(resultado => {
+                            if (destId)
+                            {
+                                data['date'] = date;
+                                console.log(data);
+                                socket.to(destId).emit('newMessage', data);
+                            }
+                            // chatModel.newMsg(data).then(resultado =>
+                            // {
+                            //     //
+                            //     data['date'] = date;
+                            //     console.log(data);
+                            //     socket.to(destId).emit('newMessage', data);
+                            //     //socket.to(destId).emit('newNot', "una notificación");
+                            // });
+                        });
+                        
+                    }
+                    
+                }
+            });
+            
             var date = formatAMPM(new Date());
-            if (destId)
-            {
-                data['date'] = date;
-                console.log(data);
-                socket.to(destId).emit('newMessage', data);
-                socket.to(destId).emit('newNot', "una notificación");
-            }
+            
         });
     });
     

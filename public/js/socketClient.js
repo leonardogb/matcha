@@ -1,18 +1,33 @@
 
-    socket.on('newMessage', function(data)
+    
+function escapeHtml(text) {
+    var map = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;'
+    };
+  
+    return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+  }
+    socket.on('newMessage', (data) =>
     {
         if (data.msg != "")
         {
           if (!$('#' + data.user).length)
           {
+            var d = new Date(); 
+            var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+            var date = d.toLocaleDateString('fr-FR', options);
             var elemento = 
             `
               <div id="` + data.user + `" class="blockChat">
                     <div class="popup-box chat-popup popup-box-on" id="qnimate">
                         <div class="popup-head">
                             <div class="popup-head-left pull-left">
-                                <img id="dstImg" src="` + data.userImg + `" alt="` + data.user + `"> ` + data.user +
-                                ` - ` + data.dst + ` <img id="userImg" src="` + data.dstImg + `" alt="` + data.dst + `">` +
+                                <img class="dstImg" src="` + data.userImg + `" alt="` + data.user + `"> ` + data.user +
+                                ` - ` + data.dst + ` <img class="userImg" src="` + data.dstImg + `" alt="` + data.dst + `">` +
                             ` </div>
                             <div class="popup-head-right pull-right">
                                 <button data-widget="remove"  class="removeClass chat-header-button pull-right" type="button">
@@ -23,7 +38,7 @@
                         <div class="popup-messages">
                             <div class="direct-chat-messages" id="mensajes">
                                 <div class="chat-box-single-line">
-                                    <abbr class="timestamp">October 8th, 2015</abbr>
+                                    <abbr class="timestamp">` + date + `</abbr>
                                 </div>
                             </div>
                         </div>
@@ -73,6 +88,7 @@
                     var user = $(this).closest('.blockChat').attr('id');
                     var text = $(this).val();
                     if (text !== ""){
+                        text = escapeHtml(text);
                         insertChat(text, user);              
                         $(this).val('');
                     }
@@ -81,6 +97,7 @@
             $(".enviar").click(function(){
                 var user = $(this).closest('.blockChat').attr('id');
                 var text = $(this).prev().val();
+                text = escapeHtml(text);
                 insertChat(text, user);
                 $(this).prev().val('');
             });
@@ -128,8 +145,8 @@
     {
         var message = $.trim(text);
         var destinatario = user;
-        var userImg = $('#userImg').attr('src');
-        var destinoImg = $(user).attr('src')
+        var userImg = $('#'+ user + ' .popup-box .popup-head .popup-head-left .userImg').attr('src');
+        var destinoImg = $('#'+ user + ' .popup-box .popup-head .popup-head-left .dstImg').attr('src')
 
         if (message != "")
         {

@@ -83,5 +83,12 @@ module.exports = {
         if (tag.length > 20 || tag.length < 0)
           error.push("Le tag doit avoir moins de 20 caractères");
         return ( (error.length > 0 ? error : true) );
+      },
+      isValidImg: (path) => {
+        if (path.length == 0 || path == "")
+          return (false);
+        if (!/^\/img\/user\/[a-zA-Z0-9]+\/[a-zA-Z0-9]+\..{3}$/g.test(path))
+          return(false);
+        return (true);
       }
 }

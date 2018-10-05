@@ -17,8 +17,8 @@ const chatC = require('./controllers/chatC');
 const app = express();
 
 app.use(session({
-  secret: 'clave secreta',
-  name: 'sessionId',
+  name: 'ID_SESSION',
+  secret: 'cl4v3 s3cr3t4',
   resave: true,
   saveUninitialized: true
 }));
