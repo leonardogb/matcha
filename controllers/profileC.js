@@ -9,6 +9,7 @@ var profileModel = require('../models/profileM');
 var tagModel = require('../models/tagsM');
 var likesModel = require('../models/likesM');
 var visitsModel = require('../models/visitsM');
+var chatModel = require('../models/chatM');
 var validator = require('../middleware/validator');
 var sessionOk = require('../middleware/session').isOkLogin;
 
@@ -290,16 +291,22 @@ router.get('/user/:login', function(req, res)
                         datos.push(visitsModel.getNbVisits(result.login));
                         Promise.all(datos).then(resultado => {
                             //console.log(resultado);
-                            res.render('pages/profile-autre', {
-                                title: "Profil de " + result.prenom,
-                                message: "",
-                                error: "",
-                                login: user_login,
-                                tabuser: result,
-                                tabTags: tagsTab,
-                                datos: resultado,
-                                userImg: userImg
+                            chatModel.getMsgs(user_id, result.id).then(response => {
+                                console.log(response);
+                                res.render('pages/profile-autre', {
+                                    title: "Profil de " + result.prenom,
+                                    message: "",
+                                    error: "",
+                                    login: user_login,
+                                    id: user_id,
+                                    tabuser: result,
+                                    tabTags: tagsTab,
+                                    datos: resultado,
+                                    userImg: userImg,
+                                    msg: response
+                                });
                             });
+                            
                         }).catch(function(err)
                         {
                             console.log(err);

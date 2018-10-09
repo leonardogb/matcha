@@ -14,7 +14,37 @@
                         </div>
                         <div class="popup-messages">
                             <div class="direct-chat-messages" id="mensajes">
-
+                                <% if (tabuser && msg) { msg.forEach(function(elem){ if (id == elem.id_user) {%>
+                                    <div>
+                                        <div class="direct-chat-info clearfix">
+                                            <span class="direct-chat-name pull-left"><%= login %></span>
+                                        </div>
+                                        <!-- /.direct-chat-info -->
+                                        <img alt="message user image" src="<%= userImg %>" class="direct-chat-img"><!-- /.direct-chat-img -->
+                                        <div class="triangulo-izq"></div>
+                                        <div class="direct-chat-text"><%= elem.message %></div>
+                                        <div class="direct-chat-info clearfix">
+                                        <span class="direct-chat-timestamp pull-right"><%= elem.time %></span>
+                                        </div>
+                                        <div class="direct-chat-info clearfix"></div>
+                                        <!-- /.direct-chat-text -->
+                                    </div>
+                                <% } else { %>
+                                    <div>
+                                        <div class="direct-chat-info clearfix">
+                                            <span class="direct-chat-name-right pull-right"><%= tabuser.login%></span>
+                                        </div>
+                                        <!-- /.direct-chat-info -->
+                                        <img alt="message user image" src="<%= tabuser.img0 %>" class="direct-chat-img-right"><!-- /.direct-chat-img -->
+                                        <div class="triangulo-der"></div>
+                                        <div class="direct-chat-text-right"><%= elem.message %></div>
+                                        <div class="direct-chat-info clearfix">
+                                        <span class="direct-chat-timestamp pull-left"><%= elem.time %></span>
+                                        </div>
+                                        <div class="direct-chat-info clearfix"></div>
+                                        <!-- /.direct-chat-text -->
+                                    </div>
+                                <% } });}%>
                             </div>
                         </div>
                         <div class="popup-messages-footer">

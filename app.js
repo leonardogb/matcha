@@ -37,7 +37,7 @@ app.set('view engine', 'ejs');
 
 
 
-app.get('/favicon.ico', (req, res) => res.status(204)); //Si no hay favicon
+app.get('/favicon.ico', (req, res) => res.status(204).send('/img/hombre-mujer-blanco.svg'));
 app.use('/user', userC);
 app.use('/profile', profileC);
 app.use('/chat', chatC);

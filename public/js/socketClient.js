@@ -23,7 +23,7 @@ function escapeHtml(text) {
             var elemento = 
             `
               <div id="` + data.user + `" class="blockChat">
-                    <div class="popup-box chat-popup popup-box-on" id="qnimate">
+                    <div class="popup-box chat-popup popup-box-on">
                         <div class="popup-head">
                             <div class="popup-head-left pull-left">
                                 <img class="dstImg" src="` + data.userImg + `" alt="` + data.user + `"> ` + data.user +
@@ -104,12 +104,18 @@ function escapeHtml(text) {
         }
 
         $(".addClass").click(function () {
-            //console.log($(this).closest('.popup-box').addClass('popup-box-on'));
-            $(this).closest('.popup-box').addClass('popup-box-on');
+            var midiv = $(this).closest('div');
+            $(midiv).prev().addClass('popup-box-on');
         });
             
         $(".removeClass").click(function () {
             $(this).closest('.popup-box').removeClass('popup-box-on');
+        });
+
+        socket.on('disconnect', function(desconexion)
+        {
+            console.log('Desconectado');
+            //socket.leave(socket.room);
         });
     });
 

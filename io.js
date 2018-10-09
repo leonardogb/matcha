@@ -16,6 +16,17 @@ module.exports = function(server)
         var strTime = hours + ':' + minutes + ' ' + ampm;
         return strTime;
     }
+    function escapeHtml(text) {
+        var map = {
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#039;'
+        };
+      
+        return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+      }
     //console.log(io);
     io.on('connection', function(socket)
     {
@@ -30,7 +41,7 @@ module.exports = function(server)
         socket.on('disconnect', function(desconexion)
         {
             delete users[socket.user];
-            socket.leave(socket.room);
+            //socket.leave(socket.room);
         });
         // socket.on('subscribe', function(room, user)
         // {
@@ -42,23 +53,23 @@ module.exports = function(server)
 
         socket.on('newMsg', function(data)
         {
-            
+            var date = formatAMPM(new Date());
             chatModel.isValidData(data).then(result => {
                 console.log(result);
                 if (result)
                 {
-                    data['user'] = ent.encode(data.user);
-                    data['userImg'] = ent.encode(data.userImg);
-                    data['dst'] = ent.encode(data.dst);
-                    data['dstImg'] = ent.encode(data.dstImg);
-                    data['msg'] = ent.encode(data.msg);
+                    data['user'] = escapeHtml(data.user);
+                    data['userImg'] = escapeHtml(data.userImg);
+                    data['dst'] = escapeHtml(data.dst);
+                    data['dstImg'] = escapeHtml(data.dstImg);
+                    data['msg'] = escapeHtml(data.msg);
                     var destId = users[data.dst];
                     var userId = users[data.user];
                     if (userId)
-                    {
+                    {   
                         var usuarios = [];
-                        usuarios.push(userModel.getUserByUsername(data.user));
-                        usuarios.push(userModel.getUserByUsername(data.dst));
+                        usuarios.push(userModel.getIdUser(data.user));
+                        usuarios.push(userModel.getIdUser(data.dst));
                         Promise.all(usuarios).then(resultado => {
                             if (destId)
                             {
@@ -66,23 +77,14 @@ module.exports = function(server)
                                 console.log(data);
                                 socket.to(destId).emit('newMessage', data);
                             }
-                            // chatModel.newMsg(data).then(resultado =>
-                            // {
-                            //     //
-                            //     data['date'] = date;
-                            //     console.log(data);
-                            //     socket.to(destId).emit('newMessage', data);
-                            //     //socket.to(destId).emit('newNot', "una notificación");
-                            // });
+                            chatModel.newMsg(resultado[0].id, resultado[1].id, data.msg, new Date()).then(resultado =>
+                            {
+                                console.log(resultado);
+                            });
                         });
-                        
                     }
-                    
                 }
             });
-            
-            var date = formatAMPM(new Date());
-            
         });
     });
     

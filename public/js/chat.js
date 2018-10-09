@@ -24,6 +24,15 @@ $(function(){
         $('#qnimate').removeClass('popup-box-on');
     });
 
+    $(".addClass").click(function () {
+        var midiv = $(this).closest('div');
+        $(midiv).prev().addClass('popup-box-on');
+    });
+        
+    $(".removeClass").click(function () {
+        $(this).closest('.popup-box').removeClass('popup-box-on');
+    });
+
     $("#status_message").on("keydown", function(e) {
         if (e.which == 13){
             var text = $(this).val();
@@ -84,6 +93,53 @@ $(function(){
     {
         if (data.msg != "")
         {
+
+            if (!$('#' + data.user).length)
+          {
+            var d = new Date(); 
+            var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+            var date = d.toLocaleDateString('fr-FR', options);
+            var elemento = 
+            `
+              <div id="` + data.user + `" class="blockChat">
+                    <div class="popup-box chat-popup popup-box-on">
+                        <div class="popup-head">
+                            <div class="popup-head-left pull-left">
+                                <img class="dstImg" src="` + data.userImg + `" alt="` + data.user + `"> ` + data.user +
+                                ` - ` + data.dst + ` <img class="userImg" src="` + data.dstImg + `" alt="` + data.dst + `">` +
+                            ` </div>
+                            <div class="popup-head-right pull-right">
+                                <button data-widget="remove"  class="removeClass chat-header-button pull-right" type="button">
+                                    <i class="fa fa-power-off"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="popup-messages">
+                            <div class="direct-chat-messages" id="mensajes">
+                                <div class="chat-box-single-line">
+                                    <abbr class="timestamp">` + date + `</abbr>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="popup-messages-footer">
+                            <textarea class="input" placeholder="Type a message..." rows="10" cols="40" name="message"></textarea>
+                            <!-- <div class="btn-footer"> -->
+                            <button class="enviar btn-outline-info rounded-circle boton">
+                                <i class="fa fa-share"></i>
+                            </button>
+                        </div>
+                        <!-- <div class="btn-footer"></div> -->
+                    </div>
+                    <div class="round hollow text-center botonChat">
+                        <a class="addClass"><span class="fa fa-comment"></span>` + data.user + `</a>
+                    </div>
+                </div>`;
+
+            $('.contenedorChat').append(elemento);
+            var parteChat = $('#' + data.user + ' .chat-popup .popup-messages');
+            parteChat.animate({ scrollTop: parteChat.prop('scrollHeight')}, 'slow');
+          }
+            data['msg'] = escapeHtml(data.msg);
             hora = formatAMPM(new Date());
             var elemento = `
             <div>

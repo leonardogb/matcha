@@ -87,7 +87,7 @@ module.exports = {
       isValidImg: (path) => {
         if (path.length == 0 || path == "")
           return (false);
-        if (!/^\/img\/user\/[a-zA-Z0-9]+\/[a-zA-Z0-9]+\..{3}$/g.test(path))
+        if (!/^\/img\/user\/[a-zA-Z0-9\-\_]+\/[a-zA-Z0-9\-\_]+\..{3}$|\/img\/no-img.png/g.test(path))
           return(false);
         return (true);
       }
