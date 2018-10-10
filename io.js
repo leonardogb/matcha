@@ -33,14 +33,45 @@ module.exports = function(server)
         //console.log('Una conexión!');
         socket.on('conectado', function(newUser)
         {
-            socket.user = newUser;
-            users[newUser] = socket.id;
-            console.log(users);
-            console.log(io.engine.clientsCount);
+            userModel.getIdUser(newUser).then(usuario => {
+                if (usuario)
+                {
+                    userModel.setVisite(usuario.id, "on").then( visite => {
+                        if (visite)
+                        {
+                            socket.user = newUser;
+                            users[newUser] = socket.id;
+                            socket.broadcast.emit('newOnline', newUser);
+                            console.log(users);
+                            console.log(io.engine.clientsCount);
+                        }
+                    });
+                }
+            });
+            
+            
         });
         socket.on('disconnect', function(desconexion)
         {
-            delete users[socket.user];
+            if (users[socket.user])
+            {
+                userModel.getIdUser(socket.user).then(usuario => {
+                    if (usuario)
+                    {
+                        userModel.setVisite(usuario.id, "off").then( visite => {
+                            if (visite)
+                            {
+                                delete users[socket.user];
+                                socket.broadcast.emit('newOffline', socket.user);
+                                console.log(users);
+                                console.log(io.engine.clientsCount);
+                            }
+                        });
+                    }
+                });
+            }
+            
+            
             //socket.leave(socket.room);
         });
         // socket.on('subscribe', function(room, user)

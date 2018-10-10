@@ -289,6 +289,7 @@ router.get('/user/:login', function(req, res)
                         datos.push(likesModel.likeExists(result.id, user_id));
                         datos.push(likesModel.getNbLikes(result.id));
                         datos.push(visitsModel.getNbVisits(result.login));
+                        datos.push(userModel.setPopularite(1, result.id));
                         Promise.all(datos).then(resultado => {
                             //console.log(resultado);
                             chatModel.getMsgs(user_id, result.id).then(response => {
@@ -349,8 +350,11 @@ router.get('/like/:login', function(req, res)
                 if (resultado == 0)
                 {
                     likesModel.addLike(user_id, result.id).then(results => {
-                        if (results)
-                            res.send("added");
+                        userModel.setPopularite(5, result.id).then(popularite => {
+                            if (results && popularite)
+                                res.send({action: "added", value: 5});
+                        });
+                        
                     }).catch(function(err)
                     {
                         console.log(err);
@@ -359,8 +363,10 @@ router.get('/like/:login', function(req, res)
                 else if (resultado == 1)
                 {
                     likesModel.suprimeLike(user_id, result.id).then(results => {
-                        if (results)
-                            res.send("removed");
+                        userModel.setPopularite(-5, result.id).then(popularite => {
+                            if (results && popularite)
+                                res.send({action: "removed", value: -5});
+                        });
                     }).catch(function(err)
                     {
                         console.log(err);

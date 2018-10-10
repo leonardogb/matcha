@@ -170,3 +170,14 @@ body { padding-top: 90px; }
   color: white;
 }
 /* Fin estilo link eliminar tags */
+
+/* online */
+.online {
+  box-shadow: 0px 0px 40px 4px #93ff04;
+  transition: box-shadow 0.5s ease-in-out;
+}
+/* offline e*/
+.offline {
+  box-shadow: 0px 0px 40px 4px #dc1400;
+  transition: box-shadow 0.5s ease-in-out;
+}

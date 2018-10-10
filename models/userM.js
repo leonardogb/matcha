@@ -244,6 +244,56 @@ var userM = {
             });
         });
     },
+    setPopularite: function(valeur, id_user)
+    {
+        return new Promise(function(resolve, reject)
+        {
+            database.query("UPDATE users SET popularite = popularite + ? WHERE id = ?", [valeur, id_user], function(err, result)
+            {
+                if (err) reject(err);
+                if (result.affectedRows == 1)
+                    resolve(true);
+                else
+                    resolve(false);
+            });
+        });
+    },
+    setVisite: function(userId, estado)
+    {
+        return new Promise(function(resolve, reject)
+        {
+            if (estado == "on")
+            {
+                database.query("UPDATE users SET visite = 'online' WHERE id = ?", userId, function(err, result)
+                {
+                    if (err) reject(err);
+                    if (result.affectedRows == 1)
+                        resolve(true);
+                    else
+                        resolve(false);
+                });
+            }
+            else if (estado == "off")
+            {
+                var d = new Date(),
+                    month = '' + (d.getMonth() + 1),
+                    day = '' + d.getDate(),
+                    year = d.getFullYear();
+
+                if (month.length < 2) month = '0' + month;
+                if (day.length < 2) day = '0' + day;
+                var fecha = day + "-" + month + "-" + year;
+                database.query("UPDATE users SET visite = ? WHERE id = ?", [fecha, userId], function(err, result)
+                {
+                    if (err) reject(err);
+                    if (result.affectedRows == 1)
+                        resolve(true);
+                    else
+                        resolve(false);
+                });
+            }
+        });
+    }
 };
 
 module.exports = userM;

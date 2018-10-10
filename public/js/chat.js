@@ -162,4 +162,21 @@ $(function(){
             $(".popup-messages").animate({ scrollTop: $(".popup-messages").prop('scrollHeight')}, 'slow');
         }
     });
+
+    socket.on('newOnline', (newUser) =>
+    {
+        if (newUser == $('#login').text())
+        {
+            $('#imgAvatar').removeClass('offline');
+            $('#imgAvatar').addClass('online');
+        }
+    });
+    socket.on('newOffline', (newUser) =>
+    {
+        if (newUser == $('#login').text())
+        {
+            $('#imgAvatar').removeClass('online');
+            //$('#imgAvatar').addClass('offline');
+        }
+    });
 });

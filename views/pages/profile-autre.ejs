@@ -19,10 +19,11 @@
                     </div><br>
                     <div>
                         <ul class="list-group panel-default">
-                        <li class="list-group-item panel-heading text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
-                        <li class="list-group-item text-right"><span class="pull-left"><strong>Popularité</strong></span> 125</li>
-                        <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span> <%= datos[2] %></li>
-                        <li class="list-group-item text-right"><span class="pull-left"><strong>Vues profil</strong></span> <%= datos[3] %> </li>
+                            <li class="list-group-item panel-heading text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
+                            <li class="list-group-item text-right"><span class="pull-left"><strong>Popularité</strong></span><span id="nbPop"> <%= tabuser.popularite %></span></li>
+                            <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span><span id="nbLikes"><%= datos[2] %></span></li>
+                            <li class="list-group-item text-right"><span class="pull-left"><strong>Vues profil</strong></span> <%= datos[3] %> </li>
+                            <li class="list-group-item text-right"><span class="pull-left"><strong>Connecté : </strong><span id="estado"><%= tabuser.visite %></span></li>
                         </ul>
                     </div>
                 </div>

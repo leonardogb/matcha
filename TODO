@@ -20,12 +20,48 @@ Profil:
     ✔ Images (5) @done(18-09-12 20:23)
   ✔ Modification des informations, nom, prénom, email, mot de passe @done(18-09-21 18:44)
   ☐ Changer ou réinitialiser mot de passe s'il est connecté ou pas
-  ☐ Consulter les personnes ayant consulté son profil
-  ☐ Consulter les personnes qui l'ont liké
-  ☐ Score de popularité publique
+  ✔ Consulter les personnes ayant consulté son profil @done(18-10-10 11:58)
+  ✔ Consulter les personnes qui l'ont liké @done(18-10-10 11:58)
+  ✔ Score de popularité publique @done(18-10-10 13:52)
   ☐ Géolocalisation de l'utilisateur même s'il ne veut pas
   ☐ Modification de la localisation depuis le profil
-  
-  Securité:
-    ☐ Vérifier tous les input
-    ☐ Vérifier toutes les requêtes SQL
+
+Liste profils:
+  ☐ Afficher une liste de profils qui correspondent à l'utilisateur
+  ☐ La liste s'affiche si le profil de l'utilisateur est complet (inviter l'utilisateur a le remplir)
+  ☐ Afficher les profils matchant au moins un crittère
+    Orientation sexuelle définie
+    Proximité géographique avec l'utilisateur
+    Rapport de matching par centre d'intérêts (hastag)
+    Score de popularité
+  ☐ Possibilité de trier la liste par
+    Âge
+    Localisation
+    Popularité
+    Tags en communs
+
+Profil autres:
+✔ Consulter le profil d'un autre utilisater @done(18-10-10 14:01)
+✔ Historique de visites @done(18-10-10 14:01)
+☐ Liker ou unliker (s'il possède au moins une photo)
+✔ Voir que le profil visité a déjà liké l'utilisateur (et liker un retour) @done(18-10-10 14:04)
+✔ Consulter le score de popularité @done(18-10-10 14:04)
+✔ Voir si l'utilisateur est en ligne ou afficher la date de sa dernière visite. @done(18-10-10 22:24)
+☐ Report l'utilisateur (faux compte)
+☐ Bloquer l'utilisateur
+
+Chat:
+  ✔ Pouvoir chatter en temps réel @done(18-10-10 14:07)
+  ☐ Seulement si les utilisateurs se sont likés
+  ☐ Voir de n'importe quelle page qu'il a un nouveau message
+Notifications:
+  ☐ Il a reçu un like
+  ☐ Il a reçu une visite
+  ☐ Il a reçu un message
+  ☐ Un utilisateur liké a liké en retour
+  ☐ Un utilisateur matché ne vous like plus
+  ☐ Voir de n'importe quelle page qu'il a une notification non lue
+
+Securité:
+  ☐ Vérifier tous les input
+  ☐ Vérifier toutes les requêtes SQL
