@@ -63,4 +63,22 @@ $(document).ready(function() {
             readURL(this, "img4");
         });
     });
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    }
+    function showPosition(position)
+    {
+        //alert(position.coords.latitude + ", " + position.coords.longitude);
+        $('#lat').val(position.coords.latitude);
+        $('#lon').val(position.coords.longitude);
+        $.getJSON('https://nominatim.openstreetmap.org/reverse', {
+            lat: position.coords.latitude,
+            lon: position.coords.longitude,
+            format: 'json',
+        }, function (result) {
+            console.log(result);
+            $('#location').text(result.address.city_district);
+        });
+    }
 });

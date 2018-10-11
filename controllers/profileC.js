@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var formidable = require('formidable');
+var iplocation = require('iplocation');
 var fse = require('fs-extra');
 var path = require('path');
 //var iplocation = require('iplocation')
@@ -423,31 +424,54 @@ router.get('/', function(req, res)
     var user_id = req.session.user.id;
     var user_login = req.session.user.login;
 
-    userModel.getUserById(user_id).then(result => {
-        delete result.passwd;
-        delete result.cle;
-        //console.log(result);
-        tagModel.getTags(user_id).then( tagsTab => {
-            console.log(tagsTab);
-            res.render('pages/profileUpdate', {
-                title: "Profil de " + result.prenom,
-                message: "",
-                error: "",
-                login: user_login,
-                tabuser: result,
-                tabTags: tagsTab
-            });
-        }).catch(function(err)
+    //var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
+    //console.log(req.connection);
+    
+    userModel.getLatLon().then(latLon => {
+        if (latLon)
         {
-            console.log(err);
-            //res.redirect('/');
-        });
-        
-    }).catch(function(err)
-    {
-        console.log(err);
-        //res.redirect('/');
+            userModel.setLatLon(latLon.lat, latLon.lon, user_id).then(latLonOk => {
+                if (latLonOk)
+                {
+                    userModel.getUserById(user_id).then(result => {
+                        delete result.passwd;
+                        delete result.cle;
+                        //console.log(result);
+                        tagModel.getTags(user_id).then( tagsTab => {
+                            console.log(tagsTab);
+                            res.render('pages/profileUpdate', {
+                                title: "Profil de " + result.prenom,
+                                message: "",
+                                error: "",
+                                login: user_login,
+                                tabuser: result,
+                                tabTags: tagsTab
+                            });
+                        }).catch(function(err)
+                        {
+                            console.log(err);
+                            //res.redirect('/');
+                        });
+                        
+                    }).catch(function(err)
+                    {
+                        console.log(err);
+                        //res.redirect('/');
+                    });
+                }
+            });
+        }
     });
+        
+    
+    // iplocation('185.15.27.37').then(res => {
+    //     console.log(res);
+    // })
+    // .catch(err => {
+    //     console.error(err)
+    // });
+
+    
 });
 
 

@@ -4,6 +4,7 @@ var ent = require('ent');
 var uniqid = require('uniqid');
 var nodemailer = require('nodemailer');
 var base64url = require('base64url');
+const request = require('request');
 
 database.query('USE db_matcha');
 var userM = {
@@ -293,7 +294,33 @@ var userM = {
                 });
             }
         });
-    }
+    },
+    getLatLon: function()
+    {
+        return new Promise(function(resolve, reject)
+        {
+            request('http://ip-api.com/json', { json: true }, (err, res, body) => {
+            if (err) reject(err);
+            console.log(body);
+            resolve({lat: body.lat, lon: body.lon});
+            });
+        });
+    },
+    setLatLon: function(lat, lon, user_id)
+    {
+        return new Promise(function(resolve, reject)
+        {
+            database.query("UPDATE users SET lat = ?, lon = ? WHERE id = ?", [lat, lon, user_id], function(err, result)
+            {
+                if (err) reject(err);
+                if (result.affectedRows == 1)
+                    resolve(true);
+                else
+                    resolve(false);
+            });
+        });
+    },
+
 };
 
 module.exports = userM;

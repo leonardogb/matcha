@@ -36,9 +36,8 @@ var bcrypt    = require('bcrypt');
       `lat` FLOAT,\
       `lon` FLOAT,\
       `popularite` INT(4) DEFAULT 0,\
-      `visite` DATE,\
       `complet` BOOLEAN DEFAULT FALSE,\
-      `online` BOOLEAN DEFAULT FALSE)";
+      `visite` DATE)";
     database.query(sql, function (err, result) {
       if (err) throw err;
       console.log("Table users created");
