@@ -54,6 +54,17 @@
                             </ul> 
                             <input type="submit" name="submit" value="Envoyer" class="btn btn-success">
                         </form>
+                        <div><strong>Localisation : </strong><span id="location">Activez la localisation</span></div>
+                        <input type="hidden" id="lat" name="lat" value="">
+                        <input type="hidden" id="lon" name="lon" value="">
+                        <div class="input-group mb-3">
+                            <input type="text" id="newLoc" name="newLoc">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-outline-secondary" id="setLoc">Modifier</button>
+                            </div>
+                        </div>
+                        
+                        
                     </div>
                 </div>
                 <div class="col-sm-8">  
@@ -118,9 +129,6 @@
                                             </div>
                                             <input class="form-control" type="text" placeholder="Votre ville" name="ville" required>
                                         </div>
-                                        <div><strong>Localisation : </strong><span id="location">Activez la localisation</span></div>
-                                        <input type="hidden" id="lat" name="lat" value="">
-                                        <input type="hidden" id="lon" name="lon" value="">
                                     </div>
                                 </div>
                 <!-- Textarea -->

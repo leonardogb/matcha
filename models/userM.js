@@ -320,6 +320,19 @@ var userM = {
             });
         });
     },
+    getLocation: function(address)
+    {
+        return new Promise(function(resolve, reject)
+        {
+            address = address.replace(/^\s+|\s+$|[\s]+/g, ' ').trim();
+            address = address.replace(/[ ]/g, '+');
+            request("https://api.tomtom.com/search/2/geocode/" + address + ".JSON?key=14hKz7D9ojvNcaHNaBAqvePAM4QTu6ki&limit=1", (err, res, body) => {
+                if (err) reject(err);
+                //console.log(body);
+                resolve(body);
+            });
+        });
+    }
 
 };
 

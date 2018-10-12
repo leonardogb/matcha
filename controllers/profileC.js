@@ -338,6 +338,56 @@ router.get('/user/:login', function(req, res)
     });
 });
 
+router.post('/setLoc', function(req, res)
+{
+    var address = req.body.address;
+
+    function escapeHtml(text) {
+        var map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+    address = escapeHtml(address);
+    console.log(address);
+    userModel.getLocation(address).then(localizacion => {
+        localizacion = JSON.parse(localizacion);
+        console.log(localizacion);
+        //console.log(localizacion.results);
+        if (localizacion.summary.numResults == 1)
+        {
+            var direccion = localizacion.results[0].address.freeformAddress;
+            var coordenadas = localizacion.results[0].position;
+            var user_id = req.session.user.id;
+
+            userModel.setLatLon(coordenadas.lat, coordenadas.lon, user_id).then( latLonOk => {
+                if (latLonOk)
+                {
+                    //console.log(localizacion.results[0].address.freeformAddress);
+                    //console.log(localizacion.results[0].position);
+                    res.send({address: direccion, lat: coordenadas.lat, lon: coordenadas.lon});
+                }
+                else
+                    res.send({address: "L'address n'est pas valide", lat: "undefined", lon: "undefined"});
+            }).catch(function(err)
+            {
+                console.log(err);
+            });
+            
+        }
+        else
+            res.send({address: "L'address n'est pas valide", lat: "undefined", lon: "undefined"});
+        
+    }).catch(function(err)
+    {
+        console.log(err);
+    });
+});
+
 router.get('/like/:login', function(req, res)
 {
     var user_id = req.session.user.id;

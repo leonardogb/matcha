@@ -77,8 +77,20 @@ $(document).ready(function() {
             lon: position.coords.longitude,
             format: 'json',
         }, function (result) {
-            console.log(result);
+            //console.log(result);
             $('#location').text(result.address.city_district);
         });
     }
+    $('#setLoc').click(function() {
+        var text = $('#newLoc').val();
+        $('#newLoc').val('');
+        $.post( "/profile/setLoc", {address: text}, function( data ) {
+            if (data)
+            {
+                $('#location').text(data.address);
+                $('#lat').val(data.lat);
+                $('#lon').val(data.lon);
+            }
+        });
+    });
 });
