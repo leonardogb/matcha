@@ -5,6 +5,7 @@ module.exports = function(server)
     var chatModel = require('./models/chatM');
     var userModel = require('./models/userM');
     var notifModel = require('./models/notifM');
+    var likesModel = require('./models/likesM');
     var users = [];
 
     function formatAMPM(date) {
@@ -120,14 +121,56 @@ module.exports = function(server)
             notif['userDst'] = escapeHtml(notif.userDst);
             notif['notif'] = escapeHtml(notif.notif);
             userModel.getIdUser(notif.userDst).then(userid => {
-                if (userid)
+                if (userid.id)
                 {
-                    if (notif.notif == "Vous avez un nouveau like de ")
-                    {
-                        notifModel.addNotif(userid, notif.notif + socket.user).then(resp => {
-                            //
-                        });
-                    }
+                    userModel.getIdUser(socket.user).then(userid1 => {
+                        if (userid1.id)
+                        {
+                            var likes = [];
+                            likes.push(likesModel.likeExists(userid1.id, userid.id));
+                            likes.push(likesModel.likeExists(userid.id, userid1.id));
+                            Promise.all(likes).then(lik => {
+                                if (notif.notif == "addLike")
+                                {
+                                    if (lik[0] == 1 && lik[1] == 1)
+                                    {
+                                        notifModel.addNotif(userid.id, "Bravo, vous matchez avec " + socket.user).then(resp => {
+                                            //emit😊
+                                            if (resp)
+                                                socket.to(users[notif.userDst]).emit('newNot', "Bravo, vous matchez avec " + socket.user);
+                                        });
+                                    }
+                                    else
+                                    {
+                                        notifModel.addNotif(userid.id, "Vous avez un nouveau like de " + socket.user).then(resp => {
+                                            //emit
+                                            if (resp)
+                                                socket.to(users[notif.userDst]).emit('newNot', "Vous avez un nouveau like de " + socket.user);
+                                        });
+                                    }
+                                }
+                                else if (notif.notif == "removeLike")
+                                {
+                                    if (lik[0] == 1 && lik[1] == 0)
+                                    {
+                                        notifModel.addNotif(userid.id, "Vous ne matchez plus avec " + socket.user).then(resp => {
+                                            //emit 😢
+                                            if (resp)
+                                                socket.to(users[notif.userDst]).emit('newNot', "Vous ne matchez plus avec " + socket.user);
+                                        });
+                                    }
+                                    else
+                                    {
+                                        notifModel.addNotif(userid.id, socket.user + " ne vous like plus !").then(resp => {
+                                            //emit
+                                            if (resp)
+                                                socket.to(users[notif.userDst]).emit('newNot', socket.user + " ne vous like plus !");
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    });
                 }
             });
         });

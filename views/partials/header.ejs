@@ -20,14 +20,18 @@
                 Mon profil
               </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <i class="fa fa-envelope-o">
-                    <span id="badgeNb" class="badge badge-danger">20</span>
-                  </i>
-                  Messages
-                </a>
-              </li>
+            <li class="nav-item dropdown">
+              <a id="showNotif" class="nav-link" href="#" data-toggle="dropdown">
+                <i class="fa fa-envelope-o">
+                  <span id="badgeNb" class="badge badge-danger"><% if (notif.length > 0){%><%= notif.length%><%}%></span>
+                </i>
+                Notifications
+              </a>
+              <ul id="notifications" class="dropdown-menu" aria-labelledby="showNotif">
+                <% if (notif.length == 0) {%><li id="no_not"><span>Aucune notification</span></li><%} else {
+                  notif.forEach(function(elem){%><li><span class="dropdown-item"><%= elem.notif %></span></li><%});}%>
+              </ul>
+            </li>
             <!-- <li class="nav-item">
               <a class="nav-link disabled" href="#">
                 <i class="fa fa-envelope-o">
@@ -46,11 +50,10 @@
                     <li><a class="dropdown-item fa fa-instagram" href="#"> Instagram</a></li>
                 </ul>
             </li> -->
-            
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="desplegable"><span class="fa fa-user"></span><%= login %></a>
+                    <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="desplegable"><span class="fa fa-user"></span><%= login %></a>
                     <ul class="dropdown-menu" aria-labelledby="desplegable">
                         <li><a class="dropdown-item" href="/profile"><span class="fa fa-gear"></span> Profil utilisateur</a></li>
                         <li><a class="dropdown-item" href="/user/logout"><span class="fa fa-sign-out"></span> Logout</a></li>
@@ -66,4 +69,22 @@
     var login = $('#desplegable').text();
 
     socket.emit('conectado', login);
+    socket.on('newNot', (notif) => {
+      var nbNot = parseInt($('#badgeNb').text()) || 0;
+
+      $('#badgeNb').text(nbNot + 1);
+      $('#badgeNb').addClass("badge-danger");
+      $('#no_not').remove();
+      $('#notifications').append(`<li><span class="dropdown-item">` + notif + `</span></li>`);
+
+    });
+    $('#showNotif').click(function() {
+      $.post("/profile/removeNot").done(function(data) {
+        if (data)
+        {
+          $('#badgeNb').text('');
+          $('#badgeNb').removeClass('badge-danger');
+        }
+      });
+    });
 </script>

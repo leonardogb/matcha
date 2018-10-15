@@ -11,6 +11,7 @@ var tagModel = require('../models/tagsM');
 var likesModel = require('../models/likesM');
 var visitsModel = require('../models/visitsM');
 var chatModel = require('../models/chatM');
+var notifModel = require('../models/notifM');
 var validator = require('../middleware/validator');
 var sessionOk = require('../middleware/session').isOkLogin;
 
@@ -33,14 +34,18 @@ router.post('/update', function(req, res)
             //console.log(result);
             tagModel.getTags(user_id).then( tagsTab => {
                 console.log(tagsTab);
-                res.render('pages/profileUpdate', {
-                    title: "Profil de " + result.prenom,
-                    message: "",
-                    error: update,
-                    login: user_login,
-                    tabuser: result,
-                    tabTags: tagsTab
+                notifModel.getNotifs(req.session.user.id).then(notif => {
+                    res.render('pages/profileUpdate', {
+                        title: "Profil de " + result.prenom,
+                        message: "",
+                        error: update,
+                        login: user_login,
+                        tabuser: result,
+                        tabTags: tagsTab,
+                        notif: notif
+                    });
                 });
+                
             }).catch(function(err)
             {
                 console.log(err);
@@ -70,14 +75,17 @@ router.post('/update', function(req, res)
                 datos.push(likesModel.getNbLikes(user_id));
                 datos.push(visitsModel.getNbVisits(user));
                 Promise.all(datos).then(datos => {
-                    res.render('pages/profile', {
-                        title: "Profil de " + result.prenom,
-                        message: respuesta,
-                        error: "",
-                        login: result.login,
-                        tabuser: result,
-                        tabTags: tagsTab,
-                        datos: datos
+                    notifModel.getNotifs(req.session.user.id).then(notif => {
+                        res.render('pages/profile', {
+                            title: "Profil de " + result.prenom,
+                            message: respuesta,
+                            error: "",
+                            login: result.login,
+                            tabuser: result,
+                            tabTags: tagsTab,
+                            datos: datos,
+                            notif: notif
+                        });
                     });
                 });
             }).catch(function(err)
@@ -126,14 +134,18 @@ router.post('/updatePerso', function(req, res)
             //console.log(result);
             tagModel.getTags(user_id).then( tagsTab => {//cambiar id de usuario
                 console.log(tagsTab);
-                res.render('pages/profileUpdate', {
-                    title: "Profil de " + result.prenom, //cambiar por el login
-                    message: "",
-                    error: "Vérifier les champs",
-                    login: result.login,
-                    tabuser: result,
-                    tabTags: tagsTab
+                notifModel.getNotifs(req.session.user.id).then(notif => {
+                    res.render('pages/profileUpdate', {
+                        title: "Profil de " + result.prenom, //cambiar por el login
+                        message: "",
+                        error: "Vérifier les champs",
+                        login: result.login,
+                        tabuser: result,
+                        tabTags: tagsTab,
+                        notif: notif
+                    });
                 });
+                
             }).catch(function(err)
             {
                 console.log(err);
@@ -270,18 +282,22 @@ router.get('/user/:login', function(req, res)
                             //console.log(resultado);
                             chatModel.getMsgs(user_id, result.id).then(response => {
                                 console.log(response);
-                                res.render('pages/profile-autre', {
-                                    title: "Profil de " + result.prenom,
-                                    message: "",
-                                    error: "",
-                                    login: user_login,
-                                    id: user_id,
-                                    tabuser: result,
-                                    tabTags: tagsTab,
-                                    datos: resultado,
-                                    userImg: userImg,
-                                    msg: response
+                                notifModel.getNotifs(req.session.user.id).then(notif => {
+                                    res.render('pages/profile-autre', {
+                                        title: "Profil de " + result.prenom,
+                                        message: "",
+                                        error: "",
+                                        login: user_login,
+                                        id: user_id,
+                                        tabuser: result,
+                                        tabTags: tagsTab,
+                                        datos: resultado,
+                                        userImg: userImg,
+                                        msg: response,
+                                        notif: notif
+                                    });
                                 });
+                                
                             });
                             
                         }).catch(function(err)
@@ -422,13 +438,17 @@ router.get('/likes', function(req, res)
 
     profileModel.getProfileLike(user_id).then(result => {
         console.log(result);
-        res.render('pages/profileslike', {
-            title: "I like you!",
-            message: "",
-            error: "",
-            login: user_login,
-            miniProfil: result
+        notifModel.getNotifs(req.session.user.id).then(notif => {
+            res.render('pages/profileslike', {
+                title: "I like you!",
+                message: "",
+                error: "",
+                login: user_login,
+                miniProfil: result,
+                notif: notif
+            });
         });
+        
     });
 });
 
@@ -438,13 +458,29 @@ router.get('/vues', function(req, res)
 
     profileModel.getProfileVues(user_login).then(result => {
         console.log(result);
-        res.render('pages/vues', {
-            title: "I visit you!",
-            message: "",
-            error: "",
-            login: user_login,
-            miniProfil: result
+        notifModel.getNotifs(req.session.user.id).then(notif => {
+            res.render('pages/vues', {
+                title: "I visit you!",
+                message: "",
+                error: "",
+                login: user_login,
+                miniProfil: result,
+                notif: notif
+            });
         });
+        
+    });
+});
+
+router.post('/removeNot', function(req, res)
+{
+    var userid = req.session.user.id;
+
+    notifModel.removeNotif(userid).then(removeOk => {
+        if (removeOk)
+            res.send(true);
+        else
+            res.send(false);
     });
 });
 
@@ -468,14 +504,18 @@ router.get('/', function(req, res)
                         //console.log(result);
                         tagModel.getTags(user_id).then( tagsTab => {
                             console.log(tagsTab);
-                            res.render('pages/profileUpdate', {
-                                title: "Profil de " + result.prenom,
-                                message: "",
-                                error: "",
-                                login: user_login,
-                                tabuser: result,
-                                tabTags: tagsTab
+                            notifModel.getNotifs(req.session.user.id).then(notif => {
+                                res.render('pages/profileUpdate', {
+                                    title: "Profil de " + result.prenom,
+                                    message: "",
+                                    error: "",
+                                    login: user_login,
+                                    tabuser: result,
+                                    tabTags: tagsTab,
+                                    notif: notif
+                                });
                             });
+                            
                         }).catch(function(err)
                         {
                             console.log(err);

@@ -5,6 +5,7 @@ var userModel = require('../models/userM');
 var tagModel = require('../models/tagsM');
 var likesModel = require('../models/likesM');
 var visitsModel = require('../models/visitsM');
+var notifModel = require('../models/notifM');
 //var profileModel = require('../models/profileM');
 var validator = require('../middleware/validator');
 var sessionOk = require('../middleware/session').isOkLogin;
@@ -169,15 +170,19 @@ router.get('/profile', function(req, res)
             datos.push(likesModel.getNbLikes(id_user));
             datos.push(visitsModel.getNbVisits(user));
             Promise.all(datos).then(datos => {
-                res.render('pages/profile', {
-                    title: "Profil de " + result.prenom,
-                    message: "",
-                    error: "",
-                    login: result.login,
-                    tabuser: result,
-                    tabTags: tagsTab,
-                    datos: datos
+                notifModel.getNotifs(req.session.user.id).then(notif => {
+                    res.render('pages/profile', {
+                        title: "Profil de " + result.prenom,
+                        message: "",
+                        error: "",
+                        login: result.login,
+                        tabuser: result,
+                        tabTags: tagsTab,
+                        datos: datos,
+                        notif: notif
+                    });
                 });
+                
             });
             
         }).catch(function(err)

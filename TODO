@@ -1,6 +1,6 @@
 Matcha
 Inscription et connexion:
-  ☐ Inscriptión usuario
+  ✔ Inscriptión usuario @done(18-10-15 14:32)
     ✔ Adresse email @done(18-09-12 20:21)
     ✔ Nom d'utilisateur @done(18-09-12 20:21)
     ✔ Nom @done(18-09-12 20:21)
@@ -55,12 +55,12 @@ Chat:
   ☐ Seulement si les utilisateurs se sont likés
   ☐ Voir de n'importe quelle page qu'il a un nouveau message
 Notifications:
-  ☐ Il a reçu un like
+  ✔ Il a reçu un like @done(18-10-15 21:33)
   ☐ Il a reçu une visite
   ☐ Il a reçu un message
-  ☐ Un utilisateur liké a liké en retour
-  ☐ Un utilisateur matché ne vous like plus
-  ☐ Voir de n'importe quelle page qu'il a une notification non lue
+  ✔ Un utilisateur liké a liké en retour @done(18-10-15 21:33)
+  ✔ Un utilisateur matché ne vous like plus @done(18-10-15 21:33)
+  ✔ Voir de n'importe quelle page qu'il a une notification non lue @done(18-10-15 21:33)
 
 Securité:
   ☐ Vérifier tous les input

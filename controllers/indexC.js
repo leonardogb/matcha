@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var notifModel = require('../models/notifM');
 
 router.get('/', function(req, res)
 {
@@ -7,7 +8,15 @@ router.get('/', function(req, res)
     {
         console.log('sesion iniciada');
         console.log(req.session.user);
-        res.render('pages/index', {title: 'Matcha !', login: req.session.user.login});
+        notifModel.getNotifs(req.session.user.id).then(notif => {
+            console.log(notif);
+            res.render('pages/index', {
+                title: 'Matcha !',
+                login: req.session.user.login,
+                notif: notif
+            });
+        });
+        
     }
     else
     {

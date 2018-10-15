@@ -16,6 +16,29 @@ var notifM = {
             });
         });
     },
+    removeNotif: function(id_user)
+    {
+        return new Promise((resolve, reject) => {
+            database.query("DELETE FROM notifications WHERE id_user = ?", id_user, (err, resp) => {
+                if (err) reject(err);
+                // console.log(resp);
+                if (resp.affectedRows >= 1)
+                    resolve(true);
+                else
+                    resolve(false);
+            });
+        });
+    },
+    getNotifs: function(id_user)
+    {
+        return new Promise((resolve, reject) => {
+            database.query("SELECT * FROM notifications WHERE id_user = ?", id_user, function(err, resp)
+            {
+                if (err) reject(err);
+                resolve(resp);
+            });
+        });
+    }
 };
 
 module.exports = notifM;

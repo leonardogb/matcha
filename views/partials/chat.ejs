@@ -65,18 +65,3 @@
     </div>
     <!-- incluye el socket.io -->
     <script src="/js/chat.js"></script>
-    <script>
-        // conexion al socket
-
-        //socket.emit('conectado', login);
-        var badgeNb = $('#badgeNb').text();
-        
-        socket.on('newNot', function(notification)
-        {
-
-        if (badgeNb)
-            $('#badgeNb').addClass('badge-danger');
-        else
-            $('#badgeNb').removeClass('badge-danger');
-        });
-    </script>
