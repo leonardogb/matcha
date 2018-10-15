@@ -23,8 +23,8 @@ Profil:
   ✔ Consulter les personnes ayant consulté son profil @done(18-10-10 11:58)
   ✔ Consulter les personnes qui l'ont liké @done(18-10-10 11:58)
   ✔ Score de popularité publique @done(18-10-10 13:52)
-  ☐ Géolocalisation de l'utilisateur même s'il ne veut pas
-  ☐ Modification de la localisation depuis le profil
+  ✔ Géolocalisation de l'utilisateur même s'il ne veut pas @done(18-10-12 17:09)
+  ✔ Modification de la localisation depuis le profil @done(18-10-12 17:09)
 
 Liste profils:
   ☐ Afficher une liste de profils qui correspondent à l'utilisateur

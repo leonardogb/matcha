@@ -13,6 +13,7 @@ $(document).ready(function(){
                 $('#nbPop').text(nb + result.value);
                 var nb2 = parseInt($('#nbLikes').text());
                 $('#nbLikes').text(nb2 + 1);
+                socket.emit('newNotif', {notif: 'Vous avez un nouveau like de ', userDst: login});
             }
             else if (result.action == "removed")
             {
@@ -23,6 +24,5 @@ $(document).ready(function(){
                 $('#nbLikes').text(nb2 - 1);
             }
         }});
-        
     });
 });

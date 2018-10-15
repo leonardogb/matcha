@@ -27,56 +27,31 @@ router.post('/update', function(req, res)
     if (update != true)
     {
         console.log(req.body);
-        // userModel.getUserById(id_user).then(result => {
-        //     delete result.passwd;
-        //     delete result.cle;
-        //     console.log(result);
-        //     tagModel.getTags(id_user).then( tagsTab => {
-        //         console.log(tagsTab);
-        //         res.render('pages/profileUpdate', {
-        //             title: "Profil de " + result.prenom,
-        //             message: "",
-        //             error: update,
-        //             login: user_login,
-        //             tabuser: result,
-        //             tabTags: tagsTab
-        //         });
-        //     }).catch(function(err)
-        //     {
-        //         console.log(err);
-        //         //res.redirect('/');
-        //     });
-        // }).catch(function(err)
-        // {
-        //     console.log(err);
-        //     //res.redirect('/pages/profileUpdate');
-        // });
-
-    userModel.getUserById(user_id).then(result => {
-        delete result.passwd;
-        delete result.cle;
-        //console.log(result);
-        tagModel.getTags(user_id).then( tagsTab => {
-            console.log(tagsTab);
-            res.render('pages/profileUpdate', {
-                title: "Profil de " + result.prenom,
-                message: "",
-                error: update,
-                login: user_login,
-                tabuser: result,
-                tabTags: tagsTab
+        userModel.getUserById(user_id).then(result => {
+            delete result.passwd;
+            delete result.cle;
+            //console.log(result);
+            tagModel.getTags(user_id).then( tagsTab => {
+                console.log(tagsTab);
+                res.render('pages/profileUpdate', {
+                    title: "Profil de " + result.prenom,
+                    message: "",
+                    error: update,
+                    login: user_login,
+                    tabuser: result,
+                    tabTags: tagsTab
+                });
+            }).catch(function(err)
+            {
+                console.log(err);
+                //res.redirect('/');
             });
+            
         }).catch(function(err)
         {
             console.log(err);
             //res.redirect('/');
         });
-        
-    }).catch(function(err)
-    {
-        console.log(err);
-        //res.redirect('/');
-    });
     }
     else
     {
@@ -404,6 +379,8 @@ router.get('/like/:login', function(req, res)
                         userModel.setPopularite(5, result.id).then(popularite => {
                             if (results && popularite)
                                 res.send({action: "added", value: 5});
+                            else
+                                res.send({action: "removed"});
                         });
                         
                     }).catch(function(err)
@@ -417,6 +394,8 @@ router.get('/like/:login', function(req, res)
                         userModel.setPopularite(-5, result.id).then(popularite => {
                             if (results && popularite)
                                 res.send({action: "removed", value: -5});
+                            else
+                                res.send({action: "added"});
                         });
                     }).catch(function(err)
                     {

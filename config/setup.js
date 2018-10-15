@@ -26,7 +26,7 @@ var bcrypt    = require('bcrypt');
       `genre` ENUM('Masculin', 'Féminin') NOT NULL,\
       `age` INT(3) UNSIGNED NOT NULL DEFAULT 18,\
       `orientation` ENUM('Hétérosexuel', 'Homosexuel', 'Bisexuel') NOT NULL DEFAULT 'Bisexuel',\
-      `bio` VARCHAR(255) NOT NULL,\
+      `bio` VARCHAR(255),\
       `img0` VARCHAR(100) DEFAULT '/img/no-img.png' NOT NULL,\
       `img1` VARCHAR(100) DEFAULT '/img/no-img.png' NOT NULL,\
       `img2` VARCHAR(100) DEFAULT '/img/no-img.png' NOT NULL,\
@@ -131,15 +131,25 @@ var bcrypt    = require('bcrypt');
           console.log("Table likes created");
         });
 
-        var sql6 = `CREATE TABLE IF NOT EXISTS messages (
-          id INT(3) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-          id_user INT(3) NOT NULL,
-          id_dst INT(3) NOT NULL,
-          message VARCHAR(500) NOT NULL,
-          date_msg DATETIME NOT NULL)`;
-        database.query(sql6, function (err, result) {
-            if (err) throw err;
-            console.log("Table messages created");
-          });
+      var sql6 = `CREATE TABLE IF NOT EXISTS messages (
+        id INT(3) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        id_user INT(3) NOT NULL,
+        id_dst INT(3) NOT NULL,
+        message VARCHAR(500) NOT NULL,
+        date_msg DATETIME NOT NULL)`;
+      database.query(sql6, function (err, result) {
+          if (err) throw err;
+          console.log("Table messages created");
+        });
+      
+      var sql7 = `CREATE TABLE IF NOT EXISTS notifications (
+        id INT(3) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        id_user INT(3) NOT NULL,
+        notif VARCHAR(255) NOT NULL,
+        date_notif DATETIME NOT NULL)`;
+      database.query(sql7, function (err, result) {
+          if (err) throw err;
+          console.log("Table notification created");
+        });
     //database.end();
 

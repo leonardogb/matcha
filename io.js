@@ -4,6 +4,7 @@ module.exports = function(server)
     var ent = require('ent');
     var chatModel = require('./models/chatM');
     var userModel = require('./models/userM');
+    var notifModel = require('./models/notifM');
     var users = [];
 
     function formatAMPM(date) {
@@ -70,8 +71,6 @@ module.exports = function(server)
                     }
                 });
             }
-            
-            
             //socket.leave(socket.room);
         });
         // socket.on('subscribe', function(room, user)
@@ -117,7 +116,20 @@ module.exports = function(server)
                 }
             });
         });
+        socket.on('newNotif', (notif) => {
+            notif['userDst'] = escapeHtml(notif.userDst);
+            notif['notif'] = escapeHtml(notif.notif);
+            userModel.getIdUser(notif.userDst).then(userid => {
+                if (userid)
+                {
+                    if (notif.notif == "Vous avez un nouveau like de ")
+                    {
+                        notifModel.addNotif(userid, notif.notif + socket.user).then(resp => {
+                            //
+                        });
+                    }
+                }
+            });
+        });
     });
-    
-
 };
