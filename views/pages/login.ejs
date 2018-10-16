@@ -29,13 +29,37 @@
                             </div>
                             <input name="passwd" class="form-control" placeholder="password" type="password" required>
                         </div> <!-- form-group// -->
-                                                           
+
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-block"> Login  </button>
-                        </div>   
-                        <p class="text-center">Don't have an account! <a href="/">Sign Up Here</a> </p>                                                                 
+                        </div>
+                        <p class="text-center">Don't have an account! <a href="/">Sign Up Here</a></p>
                     </form>
-                    
+                    <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal">Forgot password ?</button>
+                    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Forgot password</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST" action="/recup">
+                                    <div class="form-group">
+                                        <label for="recipient-name" class="col-form-label">E-mail:</label>
+                                        <input type="text" class="form-control" id="mailRecup">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Send message</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
                 </article>
                 <% if (error != '') { %>
                 <div class="alert alert-danger">

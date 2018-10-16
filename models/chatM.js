@@ -25,7 +25,7 @@ var chatM = {
                 if(result.affectedRows == 1)
                     resolve("Message: " + msg + " added to the database");
                 else
-                    resolve("The message " + msg + " could not be added to the database");
+                    resolve(false);
             });
         });
     },

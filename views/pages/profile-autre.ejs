@@ -89,5 +89,9 @@
         </div>
         <% include ../partials/chat %>
         <script src="/js/like.js"></script>
+        <script>
+            var userDst = $('#login').text();
+            socket.emit('newNotif', {notif: 'visit', userDst: userDst});
+        </script>
     </body>
 </html>

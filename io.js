@@ -108,9 +108,19 @@ module.exports = function(server)
                                 console.log(data);
                                 socket.to(destId).emit('newMessage', data);
                             }
-                            chatModel.newMsg(resultado[0].id, resultado[1].id, data.msg, new Date()).then(resultado =>
+                            chatModel.newMsg(resultado[0].id, resultado[1].id, data.msg, new Date()).then(messageOk =>
                             {
-                                console.log(resultado);
+                                console.log(messageOk);
+                                // if (messageOk)
+                                // {
+                                //     notifModel.addNotif(resultado[1].id, "Message de " + socket.user + " : " + data.msg).then(resp => {
+                                //         if (resp)
+                                //             socket.to(users[data.dst]).emit('newNot', "Message de " + socket.user + " : " + data.msg);
+                                //     }).catch(function(err)
+                                //     {
+                                //         console.log(err);
+                                //     });
+                                // }
                             });
                         });
                     }
@@ -167,6 +177,13 @@ module.exports = function(server)
                                                 socket.to(users[notif.userDst]).emit('newNot', socket.user + " ne vous like plus !");
                                         });
                                     }
+                                }
+                                else if (notif.notif == "visit")
+                                {
+                                    notifModel.addNotif(userid.id, socket.user + " a visité ton profil").then(resp => {
+                                        if (resp)
+                                                socket.to(users[notif.userDst]).emit('newNot', socket.user + " a visité ton profil");
+                                    });
                                 }
                             });
                         }

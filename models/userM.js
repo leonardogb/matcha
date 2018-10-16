@@ -231,6 +231,34 @@ var userM = {
             });
         });
     },
+    getUserBySex: function(sex)
+    {
+        return new Promise(function(resolve, reject)
+        {
+            if (sex == "Autre")
+            {
+                database.query('SELECT * FROM users WHERE complet = 1', function (err, users)
+                {
+                    if (err) reject(err);
+                    if (users)
+                        resolve(users);
+                    else
+                        resolve(false);
+                });
+            }
+            else
+            {
+                database.query('SELECT * FROM users WHERE genre=? AND complet = 1', sex, function (err, users)
+                {
+                    if (err) reject(err);
+                    if (users)
+                        resolve(users);
+                    else
+                        resolve(false);
+                });
+            }
+        });
+    },
     getIdUser: function(username)
     {
         return new Promise(function(resolve, reject)

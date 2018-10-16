@@ -9,7 +9,7 @@ var notifM = {
             database.query("INSERT INTO notifications (id_user, notif, date_notif) VALUES (?, ?, NOW())", [id_user, notif], (err, resp) => {
                 if (err) reject(err);
                 //console.log(resp);
-                if (resp.affectedRows == 1)
+                if (resp && resp.affectedRows == 1)
                     resolve(true);
                 else
                     resolve(false);
