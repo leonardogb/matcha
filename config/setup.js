@@ -36,6 +36,7 @@ var bcrypt    = require('bcrypt');
       `lat` FLOAT,\
       `lon` FLOAT,\
       `popularite` INT(4) DEFAULT 0,\
+      `puntos` INT(4) DEFAULT 0,\
       `complet` BOOLEAN DEFAULT FALSE,\
       `visite` DATE)";
     database.query(sql, function (err, result) {

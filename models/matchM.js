@@ -18,13 +18,62 @@ function distance(lat1, lon1, lat2, lon2) {
 var matchM = {
     getPtsDistance: function(lat1, lon1, lat2, lon2)
     {
-        const distancia = distance(lat1, lon1, lat2, lon2);
-        const puntos = 1000 - distancia;
-        if (puntos < 0)
-            puntos = 0;
-        //Continuar Cálculo puntos distancia
-
-    }
+        return new Promise(function(resolve, reject)
+        {
+            const distancia = distance(lat1, lon1, lat2, lon2);
+            var puntos = 1000 - distancia;
+            puntos = puntos / 1000;
+            puntos = puntos * 50;
+            resolve(puntos);
+        });
+    },
+    getPtsTags: function(user1Id, user2Id)
+    {
+        return new Promise(function(resolve, reject)
+        {
+            database.query("SELECT tags.tag FROM tags INNER JOIN usertags ON tags.id = usertags.id_tag WHERE usertags.id_user = ?", user1Id, function(err, tags1)
+            {
+                if (err) reject(err);
+                database.query("SELECT tags.tag FROM tags INNER JOIN usertags ON tags.id = usertags.id_tag WHERE usertags.id_user = ?", user2Id, function(err, tags2)
+                {
+                    if (err) reject(err);
+                    var puntos = 0;
+                    tags1.forEach(elem1 => {
+                        tags2.forEach(elem2 => {
+                            if (elem1.tag == elem2.tag)
+                                puntos = puntos + 10;
+                        });
+                    });
+                    if (puntos > 40)
+                        puntos = 40;
+                    resolve(puntos);
+                });
+            });
+        });
+    },
+    getPtsPopul: function(popularite)
+    {
+        return new Promise(function(resolve, reject)
+        {
+            var puntos = popularite / 500;
+            puntos =puntos * 25;
+            resolve(puntos);
+        });
+    },
+    setPuntos: function(user2Id, total)
+    {
+        return new Promise(function(resolve, reject)
+        {
+            database.query("UPDATE users SET puntos = ? WHERE id = ?", [total, user2Id], function(err, ok)
+            {
+                if (err) reject(err);
+                if (ok && ok.affectedRows == 1)
+                    resolve(true);
+                else
+                    resolve(false);
+            });
+        });
+    },
 }
 
 module.exports = matchM;

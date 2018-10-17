@@ -32,21 +32,39 @@ router.get('/', function(req, res)
                     else
                         sex = "Autre";
                 }
-
                 userModel.getUserBySex(sex).then(userTab => {
                     console.log("Perfiles:");
                     console.log(userTab);
                     userTab.forEach(element => {
-                        const puntos = [];
-                        puntos.push(matchimetro.getPtsDistance(user1.lat, user1.lon, element.lat, element.lon))
-                        Promise.all(puntos).then(punts => {
-                            console.log(punts);
-                        });
-                        
+                        if (element.orientation == user1.orientation)
+                        {
+                            const puntos = [];
+                            puntos.push(matchimetro.getPtsDistance(user1.lat, user1.lon, element.lat, element.lon));
+                            puntos.push(matchimetro.getPtsTags(user1.id, element.id));
+                            puntos.push(matchimetro.getPtsPopul(element.popularite));
+                            Promise.all(puntos).then(punts => {
+                                console.log("Puntos: ");
+                                console.log(punts);
+                                var total = 0;
+                                punts.forEach(elem => {
+                                    total = total + elem;
+                                });
+                                console.log("Total:");
+                                console.log(total);
+                                matchimetro.setPuntos(element.id, total).then(ptsOk => {
+                                    if (ptsOk)
+                                    {
+                                        userModel.getUserMatch().then(result => {
+                                            //Continuar. buscar perfiles a partir de criterios
+                                        });
+                                    }
+                                });
+                            });
+                        }
+
                     });
                 });
             }
-            
         });
         notifModel.getNotifs(req.session.user.id).then(notif => {
             console.log(notif);
