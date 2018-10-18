@@ -10,6 +10,7 @@ router.get('/', function(req, res)
     {
         console.log('sesion iniciada');
         console.log(req.session.user);
+        var usuarios = [];
         userModel.getUserById(req.session.user.id).then( user1 => {
             if (user1)
             {
@@ -32,12 +33,10 @@ router.get('/', function(req, res)
                     else
                         sex = "Autre";
                 }
-                userModel.getUserBySex(sex).then(userTab => {
+                userModel.getUserBySex(sex, user1.orientation).then(userTab => {
                     console.log("Perfiles:");
                     console.log(userTab);
                     userTab.forEach(element => {
-                        if (element.orientation == user1.orientation)
-                        {
                             const puntos = [];
                             puntos.push(matchimetro.getPtsDistance(user1.lat, user1.lon, element.lat, element.lon));
                             puntos.push(matchimetro.getPtsTags(user1.id, element.id));
@@ -54,15 +53,18 @@ router.get('/', function(req, res)
                                 matchimetro.setPuntos(element.id, total).then(ptsOk => {
                                     if (ptsOk)
                                     {
-                                        userModel.getUserMatch().then(result => {
-                                            //Continuar. buscar perfiles a partir de criterios
-                                        });
+                                        // userModel.getUserById(element.id).then(result => {
+                                        //     //Continuar. buscar perfiles a partir de criterios
+                                        //     usuarios.push(result);
+                                        // });
                                     }
                                 });
                             });
-                        }
-
                     });
+                    return(true);
+                }).then(hecho => {
+                    console.log("hecho:");
+                    console.log(hecho);
                 });
             }
         });

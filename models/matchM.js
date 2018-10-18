@@ -24,6 +24,8 @@ var matchM = {
             var puntos = 1000 - distancia;
             puntos = puntos / 1000;
             puntos = puntos * 50;
+            if (puntos < 0)
+                puntos = 0;
             resolve(puntos);
         });
     },

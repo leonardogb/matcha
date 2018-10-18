@@ -231,13 +231,13 @@ var userM = {
             });
         });
     },
-    getUserBySex: function(sex)
+    getUserBySex: function(sex, orientation)
     {
         return new Promise(function(resolve, reject)
         {
             if (sex == "Autre")
             {
-                database.query('SELECT * FROM users WHERE complet = 1', function (err, users)
+                database.query('SELECT * FROM users WHERE complet = 1 AND orientation = ?', orientation, function (err, users)
                 {
                     if (err) reject(err);
                     if (users)
@@ -248,7 +248,7 @@ var userM = {
             }
             else
             {
-                database.query('SELECT * FROM users WHERE genre=? AND complet = 1', sex, function (err, users)
+                database.query('SELECT * FROM users WHERE genre=? AND orientation = ? AND complet = 1', [sex, orientation], function (err, users)
                 {
                     if (err) reject(err);
                     if (users)
