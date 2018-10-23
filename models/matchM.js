@@ -46,8 +46,8 @@ var matchM = {
                                 puntos = puntos + 10;
                         });
                     });
-                    if (puntos > 40)
-                        puntos = 40;
+                    if (puntos > 35)
+                        puntos = 35;
                     resolve(puntos);
                 });
             });
@@ -58,7 +58,7 @@ var matchM = {
         return new Promise(function(resolve, reject)
         {
             var puntos = popularite / 500;
-            puntos =puntos * 25;
+            puntos =puntos * 15;
             resolve(puntos);
         });
     },

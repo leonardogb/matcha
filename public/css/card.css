@@ -5,9 +5,9 @@
     top:50%;
     left:50%;
     transform:translate(-50%,-50%); */
-    width:300px;
+    width:310px;
     margin: 10px;
-    min-height:350px;
+    min-height:370px;
     background:#fff;
     box-shadow:0 20px 50px rgba(0,0,0,.1);
     border-radius:10px;
@@ -74,3 +74,13 @@
   }
   
   /* Fin estilo mini perfil */
+
+  /* Estilo barra de progreso */
+  .glyphicon { margin-right:5px;}
+  .rating .glyphicon {font-size: 22px;}
+  .rating-num { margin-top:0px;font-size: 54px; }
+  .progress { margin-bottom: 5px; line-height: 2px}
+  .progress-bar { text-align: left; }
+  .rating-desc .col-md-3 {padding-right: 0px;}
+  .textoCentro {margin: auto;}
+  /*fin estilo barra de progreso*/
