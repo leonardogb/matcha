@@ -67,9 +67,8 @@ router.get('/', function(req, res)
                             // });
                             if (++i == userTab.length)
                             {
-                                console.log("Usuarios:");
-                                console.log(usuarios);
-                                //usuarios.sort();
+                                // console.log("Usuarios:");
+                                // console.log(usuarios);
                                 function compare(a, b) {
                                     if (a[0] > b[0])
                                        return -1;

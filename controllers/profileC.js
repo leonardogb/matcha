@@ -347,7 +347,7 @@ router.post('/setLoc', function(req, res)
     console.log(address);
     userModel.getLocation(address).then(localizacion => {
         localizacion = JSON.parse(localizacion);
-        console.log(localizacion);
+        //console.log(localizacion);
         //console.log(localizacion.results);
         if (localizacion.summary.numResults == 1)
         {
@@ -355,7 +355,7 @@ router.post('/setLoc', function(req, res)
             var coordenadas = localizacion.results[0].position;
             var user_id = req.session.user.id;
 
-            userModel.setLatLon(coordenadas.lat, coordenadas.lon, user_id).then( latLonOk => {
+            userModel.setLatLon(coordenadas.lat, coordenadas.lon, direccion, user_id).then( latLonOk => {
                 if (latLonOk)
                 {
                     //console.log(localizacion.results[0].address.freeformAddress);
@@ -493,9 +493,10 @@ router.get('/', function(req, res)
     //console.log(req.connection);
     
     userModel.getLatLon().then(latLon => {
+        //console.log(latLon);
         if (latLon)
         {
-            userModel.setLatLon(latLon.lat, latLon.lon, user_id).then(latLonOk => {
+            userModel.setLatLon(latLon.lat, latLon.lon, latLon.city, user_id).then(latLonOk => {
                 if (latLonOk)
                 {
                     userModel.getUserById(user_id).then(result => {

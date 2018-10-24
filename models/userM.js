@@ -235,28 +235,54 @@ var userM = {
     {
         return new Promise(function(resolve, reject)
         {
+            var sql;
+            var params;
             if (sex == "Autre")
             {
-                database.query('SELECT * FROM users WHERE complet = 1 AND orientation = ?', orientation, function (err, users)
-                {
-                    if (err) reject(err);
-                    if (users)
-                        resolve(users);
-                    else
-                        resolve(false);
-                });
+                sql = 'SELECT * FROM users WHERE complet = 1 AND orientation = ?';
+                params = orientation;
             }
             else
             {
-                database.query('SELECT * FROM users WHERE genre=? AND orientation = ? AND complet = 1', [sex, orientation], function (err, users)
-                {
-                    if (err) reject(err);
-                    if (users)
-                        resolve(users);
-                    else
-                        resolve(false);
-                });
+                sql = 'SELECT * FROM users WHERE complet = 1 AND orientation = ? AND genre=?';
+                params = [orientation, sex];
             }
+            database.query(sql, params, function(err, users)
+            {
+                if (err) reject(err);
+                if (users)
+                    resolve(users);
+                else
+                    resolve(false);
+            });
+        });
+    },
+    getUsersLimits: function(sex, orientation, age, popul, tri)
+    {
+        return new Promise(function(resolve, reject)
+        {
+            var sql;
+            var params;
+            console.log("edad:");
+            console.log(age);
+            if (sex == "Autre")
+            {
+                sql = 'SELECT * FROM users WHERE complet = 1 AND orientation = ? AND age >= ? AND age <= ? AND popularite >= ? AND popularite <= ? ORDER BY ?';
+                params = [orientation, age.ageMin, age.ageMax, popul.populMin, popul.populMax, tri];
+            }
+            else
+            {
+                sql = 'SELECT * FROM users WHERE complet = 1 AND orientation = ? AND age >= ? AND age <= ? AND popularite >= ? AND popularite <= ? AND genre=? ORDER BY ?';
+                params = [orientation, age.ageMin, age.ageMax, popul.populMin, popul.populMax, sex, tri];
+            }
+            database.query(sql, params, function(err, users)
+            {
+                if (err) reject(err);
+                if (users)
+                    resolve(users);
+                else
+                    resolve(false);
+            });
         });
     },
     getIdUser: function(username)
@@ -330,15 +356,15 @@ var userM = {
             request('http://ip-api.com/json', { json: true }, (err, res, body) => {
             if (err) reject(err);
             console.log(body);
-            resolve({lat: body.lat, lon: body.lon});
+            resolve({lat: body.lat, lon: body.lon, city: body.city});
             });
         });
     },
-    setLatLon: function(lat, lon, user_id)
+    setLatLon: function(lat, lon, direccion, user_id)
     {
         return new Promise(function(resolve, reject)
         {
-            database.query("UPDATE users SET lat = ?, lon = ? WHERE id = ?", [lat, lon, user_id], function(err, result)
+            database.query("UPDATE users SET lat = ?, lon = ?, location = ? WHERE id = ?", [lat, lon, direccion, user_id], function(err, result)
             {
                 if (err) reject(err);
                 if (result.affectedRows == 1)

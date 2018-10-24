@@ -35,6 +35,7 @@ var bcrypt    = require('bcrypt');
       `ville` VARCHAR(255),\
       `lat` FLOAT,\
       `lon` FLOAT,\
+      `location` VARCHAR(255) DEFAULT NULL,\
       `popularite` INT(4) DEFAULT 0,\
       `puntos` INT(4) DEFAULT 0,\
       `complet` BOOLEAN DEFAULT FALSE,\

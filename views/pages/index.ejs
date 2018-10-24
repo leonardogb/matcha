@@ -8,6 +8,7 @@
     <header>
         <% include ../partials/header %>
         <link rel="stylesheet" type="text/css" href="/css/card.css" />
+        <link rel="stylesheet" type="text/css" href="/css/bootstrap-tagsinput.css" />
     </header>
     <main>
         <div class="container">
@@ -15,24 +16,44 @@
                 <h2>Profils !</h2>
             </div>
             <div class="row">
-                <form method="post" action="">
+                <form method="POST" action="/search" id="searchForm">
                     <div class="form-group">
                         <span>Âge entre </span>
-                        <input type="number" name="age-min" id="age-min" value="18" min="18" max="99">
+                        <input type="number" name="ageMin" id="ageMin" value="18" min="18" max="99">
                         <span> et </span>
-                        <input type="number" name="age-max" id="age-max" value="99" min="18" max="99">
+                        <input type="number" name="ageMax" id="ageMax" value="99" min="18" max="99">
                     </div>
                     <div class="form-group">
                         <span>Popularité entre </span>
-                        <input type="number" name="popul-min" value="0" min="0">
+                        <input type="number" name="populMin" value="0" min="0">
                         <span> et </span>
-                        <input type="number" name="popul-max">
+                        <input type="number" name="populMax" value="500">
                     </div>
-                        
-                        <input type="submit" data-inline="true" class="btn btn-success" value="Submit">
+                    <div class="form-group">
+                        <span>Localisation : </span>
+                        <input type="text" name="location">
+                    </div>
+                    <div class="form-group">
+                        <span>Interêts :</span>
+                        <input name="tags" type="text" value="" placeholder="Écrivez un hashtag" data-role="tagsinput">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Trier</label>
+                        </div>
+                        <select class="custom-select" name="tri">
+                            <option value=""></option>
+                            <option value="age">Âge</option>
+                            <option value="location">Localisation</option>
+                            <option value="popularite">Popularité</option>
+                            <option value="tags">Tags</option>
+                        </select> 
+                    </div>
+                                            
+                    <input type="submit" data-inline="true" class="btn btn-success" value="Submit">
                 </form>
             </div>
-            <div class="row">
+            <div class="row" id="perfiles">
                 <% if (profil) { profil.forEach(function(element){ %>
                 <a href="/profile/user/<%= element[1].login %>">
                     <div class="card">
@@ -60,6 +81,8 @@
             <div class="row contenedorChat"></div>
         </div>
         <script src="/js/socketClient.js"></script>
+        <script src="/js/bootstrap-tagsinput.js"></script>
+        <script src="/js/search.js"></script>
     </main>
     <footer>
 
