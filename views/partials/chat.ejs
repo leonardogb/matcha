@@ -2,12 +2,14 @@
 
         <div class="blockFixe">
             <div class="row contenedorChat">
-                <div id="<%= login %>" class="blockChat">
+                <div id="<%= tabuser.login %>" class="blockChat">
                     <div class="popup-box chat-popup" id="qnimate">
                         <div class="popup-head">
-                            <div class="popup-head-left pull-left"><img id="userImg" src="<%= userImg %>" alt="<%= login %>"> <%= login %></div>
+                            <div class="popup-head-left pull-left">
+                                <img class="dstImg" src="<%= tabuser.img0 %>" alt="<%= tabuser.login %>"> <%= tabuser.login %> - <%= login %><img class="userImg" src="<%= userImg %>" alt="<%= login %>">
+                            </div>
                             <div class="popup-head-right pull-right">
-                                <button data-widget="remove" id="removeClass" class="chat-header-button pull-right" type="button">
+                                <button data-widget="remove" class="removeClass chat-header-button pull-right" type="button">
                                     <i class="fa fa-power-off"></i>
                                 </button>
                             </div>
@@ -48,16 +50,16 @@
                             </div>
                         </div>
                         <div class="popup-messages-footer">
-                            <textarea id="status_message" placeholder="Type a message..." rows="10" cols="40" name="message"></textarea>
+                            <textarea placeholder="Type a message..." rows="10" cols="40" name="message"></textarea>
                             <!-- <div class="btn-footer"> -->
-                            <button id="enviar" class="btn-outline-info rounded-circle boton">
+                            <button class="enviar btn-outline-info rounded-circle boton">
                                 <i class="fa fa-share"></i>
                             </button>
                         </div>
                         <!-- <div class="btn-footer"></div> -->
                     </div>
                     <div class="round hollow text-center botonChat">
-                        <a id="addClass"><span class="fa fa-comment"></span> Chat </a>
+                        <a class="addClass"><span class="fa fa-comment"></span> Chat </a>
                     </div>
                 </div>
             </div>
