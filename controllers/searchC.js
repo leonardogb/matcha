@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var userModel = require('../models/userM');
 var matchimetro = require('../models/matchM');
+var tagsModel = require('../models/tagsM');
 var sessionOk = require('../middleware/session').isOkLogin;
 
 router.use(sessionOk);
@@ -71,6 +72,24 @@ function escapeHtml(text) {
     return text.replace(/[&<>"']/g, function(m) { return map[m]; });
   }
 
+function compareMatch(a, b) {
+    if (a[0] > b[0])
+       return -1;
+    if (a[0] < b[0])
+       return 1;
+    // a doit être égal à b
+    return 0;
+}
+
+function compareTags(a, b) {
+    if (a[2] > b[2])
+       return -1;
+    if (a[2] < b[2])
+       return 1;
+    // a doit être égal à b
+    return 0;
+}
+
 router.post('/', function(req, res)
 {
     //console.log(req.body);
@@ -103,17 +122,16 @@ router.post('/', function(req, res)
                 var location = escapeHtml(req.body.location);
                 var tags = isValidTag(req.body.tags);
                 var tri;
-                if (req.body.tri == "" || req.body.tri.length == 0)
-                    tri = "prenom";
-                else if (req.body.tri == "age" || req.body.tri == "location" || req.body.tri == "popularite")
+
+                if (req.body.tri == "age" || req.body.tri == "location" || req.body.tri == "popularite" || req.body.tri == "tags")
                     tri = req.body.tri;
-                else if (req.body.tri == "tags")
-                    tri = "nom";
+                else
+                    tri = "default";
                 if (age && popul)
                 {
-                    
+
                     userModel.getUsersLimits(sex, user1.orientation, age, popul, tri).then(userTab => {
-                        console.log(userTab);
+                        //console.log(userTab);
                         var usuarios = [];
                         var i = 0;
 
@@ -133,86 +151,47 @@ router.post('/', function(req, res)
                             puntos.push(matchimetro.getPtsDistance(user1.lat, user1.lon, element.lat, element.lon));
                             puntos.push(matchimetro.getPtsTags(user1.id, element.id));
                             puntos.push(matchimetro.getPtsPopul(element.popularite));
+                            puntos.push(tagsModel.getTags(element.id));
                             Promise.all(puntos).then(punts => {
                                 // console.log("Puntos: ");
                                 // console.log(punts);
                                 var total = 0;
-                                punts.forEach(elem => {
-                                    total = total + elem;
-                                });
+                                total = punts[0] + punts[1] + punts[2];
                                 total = parseInt(total, 10);
-                                usuarios.push([total, element]);
+
+                                if (location.length != 0 || location != "")
+                                {
+                                    if (location == element.location)
+                                        usuarios.push([total, element]);
+                                }
+                                if (tags)
+                                {
+                                    tags.forEach(ele => {
+                                        punts[3].forEach(el => {
+                                            if (ele == el)
+                                                usuarios.push([total, element, punts[1]]);
+                                        });
+                                    });
+                                }
+                                if (location.length == 0 && location == "" && !tags)
+                                    usuarios.push([total, element]);
                                 
                                 if (++i == userTab.length)
                                 {
-                                    console.log("Usuarios:");
-                                    console.log(usuarios);
-                                    //usuarios.sort();
-                                    function compare(a, b) {
-                                        if (a[0] > b[0])
-                                           return -1;
-                                        if (a[0] < b[0])
-                                           return 1;
-                                        // a doit être égal à b
-                                        return 0;
-                                    }
-                                    if (tri == "prenom")
-                                        usuarios.sort(compare);
+                                    if (tri == "default")
+                                        usuarios.sort(compareMatch);
+                                    else if (tri == "tags")
+                                        usuarios.sort(compareTags);
                                     res.send(usuarios);
                                 }
                             });
                         });
-
                         //res.send("Bien...");
                     });
                 }
-                // userModel.getUserBySex(sex, user1.orientation).then(userTab => {
-                //     // console.log("Perfiles:");
-                //     // console.log(userTab);
-                //     var usuarios = [];
-                //     var i = 0;
-                    // userTab.forEach(element => {
-                    //     delete element.passwd;
-                    //     delete element.cle;
-                    //     delete element.mail;
-                    //     const puntos = [];
-                    //     puntos.push(matchimetro.getPtsDistance(user1.lat, user1.lon, element.lat, element.lon));
-                    //     puntos.push(matchimetro.getPtsTags(user1.id, element.id));
-                    //     puntos.push(matchimetro.getPtsPopul(element.popularite));
-                    //     Promise.all(puntos).then(punts => {
-                    //         // console.log("Puntos: ");
-                    //         // console.log(punts);
-                    //         var total = 0;
-                    //         punts.forEach(elem => {
-                    //             total = total + elem;
-                    //         });
-                    //         total = parseInt(total, 10);
-                    //         usuarios.push([total, element]);
-                            
-                    //         if (++i == userTab.length)
-                    //         {
-                    //             console.log("Usuarios:");
-                    //             console.log(usuarios);
-                    //             //usuarios.sort();
-                    //             function compare(a, b) {
-                    //                 if (a[0] > b[0])
-                    //                    return -1;
-                    //                 if (a[0] < b[0])
-                    //                    return 1;
-                    //                 // a doit être égal à b
-                    //                 return 0;
-                    //             }
-                    //             usuarios.sort(compare);
-                    //         }
-                    //     });
-                    // });
-                // });
             }
-            
         });
-        
     }
-    
 });
 
 module.exports = router;

@@ -263,20 +263,32 @@ var userM = {
         {
             var sql;
             var params;
-            console.log("edad:");
-            console.log(age);
+
             if (sex == "Autre")
             {
-                sql = 'SELECT * FROM users WHERE complet = 1 AND orientation = ? AND age >= ? AND age <= ? AND popularite >= ? AND popularite <= ? ORDER BY ?';
+                sql = 'SELECT * FROM users WHERE complet = 1 AND orientation = ? AND age >= ? AND age <= ? AND popularite >= ? AND popularite <= ?';
+                if (tri == "age")
+                    sql += ' ORDER BY age';
+                else if (tri == "location")
+                    sql += ' ORDER BY location';
+                else if (tri == "popularite")
+                    sql += ' ORDER BY popularite';
                 params = [orientation, age.ageMin, age.ageMax, popul.populMin, popul.populMax, tri];
             }
             else
             {
-                sql = 'SELECT * FROM users WHERE complet = 1 AND orientation = ? AND age >= ? AND age <= ? AND popularite >= ? AND popularite <= ? AND genre=? ORDER BY ?';
+                sql = 'SELECT * FROM users WHERE complet = 1 AND orientation = ? AND age >= ? AND age <= ? AND popularite >= ? AND popularite <= ? AND genre = ?';
+                if (tri == "age")
+                    sql += ' ORDER BY age';
+                else if (tri == "location")
+                    sql += ' ORDER BY location';
+                else if (tri == "popularite")
+                    sql += ' ORDER BY popularite';
                 params = [orientation, age.ageMin, age.ageMax, popul.populMin, popul.populMax, sex, tri];
             }
             database.query(sql, params, function(err, users)
             {
+                console.log("Tri: " + tri);
                 if (err) reject(err);
                 if (users)
                     resolve(users);
