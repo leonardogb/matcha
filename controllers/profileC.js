@@ -42,7 +42,8 @@ router.post('/update', function(req, res)
                         login: user_login,
                         tabuser: result,
                         tabTags: tagsTab,
-                        notif: notif
+                        notif: notif,
+                        userImg: req.session.user.img0
                     });
                 });
                 
@@ -84,7 +85,8 @@ router.post('/update', function(req, res)
                             tabuser: result,
                             tabTags: tagsTab,
                             datos: datos,
-                            notif: notif
+                            notif: notif,
+                            userImg: req.session.user.img0
                         });
                     });
                 });
@@ -142,7 +144,8 @@ router.post('/updatePerso', function(req, res)
                         login: result.login,
                         tabuser: result,
                         tabTags: tagsTab,
-                        notif: notif
+                        notif: notif,
+                        userImg: req.session.user.img0
                     });
                 });
                 
@@ -294,7 +297,8 @@ router.get('/user/:login', function(req, res)
                                         datos: resultado,
                                         userImg: userImg,
                                         msg: response,
-                                        notif: notif
+                                        notif: notif,
+                                        userImg: req.session.user.img0
                                     });
                                 });
                                 
@@ -445,7 +449,8 @@ router.get('/likes', function(req, res)
                 error: "",
                 login: user_login,
                 miniProfil: result,
-                notif: notif
+                notif: notif,
+                userImg: req.session.user.img0
             });
         });
         
@@ -465,7 +470,8 @@ router.get('/vues', function(req, res)
                 error: "",
                 login: user_login,
                 miniProfil: result,
-                notif: notif
+                notif: notif,
+                userImg: req.session.user.img0
             });
         });
         
@@ -513,7 +519,8 @@ router.get('/', function(req, res)
                                     login: user_login,
                                     tabuser: result,
                                     tabTags: tagsTab,
-                                    notif: notif
+                                    notif: notif,
+                                    userImg: req.session.user.img0
                                 });
                             });
                             

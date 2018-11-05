@@ -53,7 +53,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="nav-item dropdown">
-                    <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="desplegable"><span class="fa fa-user"></span><%= login %></a>
+                    <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="desplegable"><img id="monImg" src="<%= userImg %>" class="miniAvatar img-circle" alt="Mon avatar"><%= login %></a>
                     <ul class="dropdown-menu" aria-labelledby="desplegable">
                         <li><a class="dropdown-item" href="/profile"><span class="fa fa-gear"></span> Profil utilisateur</a></li>
                         <li><a class="dropdown-item" href="/user/logout"><span class="fa fa-sign-out"></span> Logout</a></li>
@@ -65,7 +65,7 @@
 </nav>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-    var socket = io.connect('localhost:8080');
+    var socket = io.connect('z2r1p5.le-101.fr:8080');
     var login = $('#desplegable').text();
 
     socket.emit('conectado', login);

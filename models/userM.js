@@ -304,14 +304,20 @@ var userM = {
     {
         return new Promise(function(resolve, reject)
         {
-            database.query("SELECT id FROM users WHERE login = ?", username, function(err, resultado)
+            if (username)
             {
-                if (err) reject(err);
-                if (resultado && resultado.length == 1)
-                    resolve(resultado[0]);
-                else
-                    resolve(false);
-            });
+                database.query("SELECT id FROM users WHERE login = ?", username, function(err, resultado)
+                {
+                    if (err) reject(err);
+                    if (resultado && resultado.length == 1)
+                        resolve(resultado[0]);
+                    else
+                        resolve(false);
+                });
+            }
+            else
+                resolve(false);
+            
         });
     },
     setPopularite: function(valeur, id_user)

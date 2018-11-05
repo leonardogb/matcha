@@ -27,18 +27,18 @@ Profil:
   ✔ Modification de la localisation depuis le profil @done(18-10-12 17:09)
 
 Liste profils:
-  ☐ Afficher une liste de profils qui correspondent à l'utilisateur
+  ✔ Afficher une liste de profils qui correspondent à l'utilisateur @done(18-11-05 14:20)
   ☐ La liste s'affiche si le profil de l'utilisateur est complet (inviter l'utilisateur a le remplir)
-  ☐ Afficher les profils matchant au moins un crittère
-    Orientation sexuelle définie
-    Proximité géographique avec l'utilisateur
-    Rapport de matching par centre d'intérêts (hastag)
-    Score de popularité
-  ☐ Possibilité de trier la liste par
-    Âge
-    Localisation
-    Popularité
-    Tags en communs
+  ✔ Afficher les profils matchant au moins un crittère @done(18-11-05 14:21)
+    ✔ Orientation sexuelle définie @done(18-11-05 14:21)
+    ✔ Proximité géographique avec l'utilisateur @done(18-11-05 14:21)
+    ✔ Rapport de matching par centre d'intérêts (hastag) @done(18-11-05 14:21)
+    ✔ Score de popularité @done(18-11-05 14:21)
+  ✔ Possibilité de trier la liste par @done(18-11-05 14:21)
+    ✔ Âge @done(18-11-05 14:21)
+    ✔ Localisation @done(18-11-05 14:21)
+    ✔ Popularité @done(18-11-05 14:21)
+    ✔ Tags en communs @done(18-11-05 14:21)
 
 Profil autres:
 ✔ Consulter le profil d'un autre utilisater @done(18-10-10 14:01)
@@ -52,8 +52,8 @@ Profil autres:
 
 Chat:
   ✔ Pouvoir chatter en temps réel @done(18-10-10 14:07)
-  ☐ Seulement si les utilisateurs se sont likés
-  ☐ Voir de n'importe quelle page qu'il a un nouveau message
+  ✔ Seulement si les utilisateurs se sont likés @done(18-11-05 19:24)
+  ✔ Voir de n'importe quelle page qu'il a un nouveau message (ventana chat) @done(18-11-05 14:03)
 Notifications:
   ✔ Il a reçu un like @done(18-10-15 21:33)
   ✔ Il a reçu une visite @done(18-10-16 14:14)

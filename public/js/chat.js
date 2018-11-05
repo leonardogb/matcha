@@ -19,7 +19,7 @@ $(function(){
       }
 
 // var login = $('#desplegable').text(); ya esta en el header
-    var userImg = escapeHtml($('.userImg').attr('src'));
+    var userImg = escapeHtml($('#monImg').attr('src'));
     var destinoImg = escapeHtml($('#imgAvatar').attr('src'));
 
     // $(".addClass").click(function () {
@@ -129,8 +129,15 @@ $(function(){
                 <div class="direct-chat-info clearfix"></div>
                 <!-- /.direct-chat-text -->
             </div>`;
-            $('#' + userDst + ' .chat-popup .popup-messages .direct-chat-messages').append(elemento);
-            $(".popup-messages").animate({ scrollTop: $(".popup-messages").prop('scrollHeight')}, 'slow');
+            if (destinatario == $('#login').text() && ($('#mylike').text() == "  Like-moi ! " || $('#yourlike').text() == " Je ne te like pas ! "))
+            {
+                alert("Attention ! Vous devez matcher avec " + destinatario + " pour utiliser le chat.")
+            }
+            else
+            {
+                $('#' + userDst + ' .chat-popup .popup-messages .direct-chat-messages').append(elemento);
+                $(".popup-messages").animate({ scrollTop: $(".popup-messages").prop('scrollHeight')}, 'slow');
+            }
 
             socket.emit('newMsg', {user: login, userImg: userImg, dst: destinatario, dstImg: destinoImg, msg: message});
         }

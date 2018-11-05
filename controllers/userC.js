@@ -36,7 +36,10 @@ router.get('/activation/:login/:cle', function(req, res)
 
 router.get('/login', function(req, res)
 {
-    res.render('pages/login', {title: 'Login Matcha !', message: '', error: ''});
+    if (!req.session.user)
+        res.render('pages/login', {title: 'Login Matcha !', message: '', error: ''});
+    else
+        res.redirect('/');
 });
 
 router.post('/login', function(req, res)
@@ -58,6 +61,8 @@ router.post('/login', function(req, res)
         });
 
     }
+    else
+        res.redirect('/');
     
     
 });
@@ -179,7 +184,8 @@ router.get('/profile', function(req, res)
                         tabuser: result,
                         tabTags: tagsTab,
                         datos: datos,
-                        notif: notif
+                        notif: notif,
+                        userImg: req.session.user.img0
                     });
                 });
                 

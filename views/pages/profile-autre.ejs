@@ -84,11 +84,13 @@
             </div>
             <div>
                 <button type="button" id="mylike" value="<%= tabuser.login %>" class="btn btn-<% if (datos[0] == 0) { %>outline-<%}%>danger"> <span class="fa fa-heart"></span> <% if (datos[0] == 0) { %>Like-moi ! <%} else {%>Je suis liké(e)<%}%></button>
-                <div class="btn btn-<% if (datos[1] == 0) { %>outline-<%}%>danger"> <span class="fa fa-heart"></span> <% if (datos[1] == 0) { %>Je ne te like pas ! <%} else {%>Je t'est liké<%}%></div>
+                <div id="yourlike" class="btn btn-<% if (datos[1] == 0) { %>outline-<%}%>danger"> <span class="fa fa-heart"></span> <% if (datos[1] == 0) { %>Je ne te like pas ! <%} else {%>Je t'est liké<%}%></div>
             </div>
         </div>
-        <% include ../partials/chat %>
+        <div class="blockFixe">
+            <div class="row contenedorChat"><% if (datos[0] == 1 && datos[1] == 1) { %><% include ../partials/chat %><% } %></div></div>
         <script src="/js/like.js"></script>
+        <script src="/js/chat.js"></script>
         <script>
             var userDst = $('#login').text();
             socket.emit('newNotif', {notif: 'visit', userDst: userDst});

@@ -83,6 +83,7 @@ router.get('/', function(req, res)
                                     res.render('pages/index', {
                                         title: 'Matcha !',
                                         login: req.session.user.login,
+                                        userImg: req.session.user.img0,
                                         notif: notif,
                                         profil: usuarios
                                     });

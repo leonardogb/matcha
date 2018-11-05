@@ -84,9 +84,9 @@ module.exports = function(server)
 
         socket.on('newMsg', function(data)
         {
+            console.log(data);
             var date = formatAMPM(new Date());
             chatModel.isValidData(data).then(result => {
-                console.log(result);
                 if (result)
                 {
                     data['user'] = escapeHtml(data.user);
@@ -102,26 +102,39 @@ module.exports = function(server)
                         usuarios.push(userModel.getIdUser(data.user));
                         usuarios.push(userModel.getIdUser(data.dst));
                         Promise.all(usuarios).then(resultado => {
-                            if (destId)
+                            if (resultado[0] && resultado[1])
                             {
-                                data['date'] = date;
-                                console.log(data);
-                                socket.to(destId).emit('newMessage', data);
-                            }
-                            chatModel.newMsg(resultado[0].id, resultado[1].id, data.msg, new Date()).then(messageOk =>
-                            {
-                                console.log(messageOk);
-                                if (messageOk && !users[data.dst])
-                                {
-                                    notifModel.addNotif(resultado[1].id, "Message de " + socket.user + " : " + data.msg).then(resp => {
-                                        if (resp)
-                                            socket.to(users[data.dst]).emit('newNot', "Message de " + socket.user + " : " + data.msg);
-                                    }).catch(function(err)
+                                var likes = [];
+                                likes.push(likesModel.likeExists(resultado[0].id, resultado[1].id));
+                                likes.push(likesModel.likeExists(resultado[1].id, resultado[0].id));
+                                Promise.all(likes).then(likes => {
+                                    console.log(likes);
+                                    if (likes[0] && likes[1] && likes[0] == 1 && likes[1] == 1)
                                     {
-                                        console.log(err);
-                                    });
-                                }
-                            });
+                                        if (destId)
+                                        {
+                                            data['date'] = date;
+                                            console.log(data);
+                                            socket.to(destId).emit('newMessage', data);
+                                        }
+                                        chatModel.newMsg(resultado[0].id, resultado[1].id, data.msg, new Date()).then(messageOk =>
+                                        {
+                                            console.log(messageOk);
+                                            if (messageOk && !users[data.dst])
+                                            {
+                                                notifModel.addNotif(resultado[1].id, "Message de " + socket.user + " : " + data.msg).then(resp => {
+                                                    if (resp)
+                                                        socket.to(users[data.dst]).emit('newNot', "Message de " + socket.user + " : " + data.msg);
+                                                }).catch(function(err)
+                                                {
+                                                    console.log(err);
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                            
                         });
                     }
                 }
