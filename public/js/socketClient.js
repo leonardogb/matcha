@@ -11,6 +11,28 @@ function escapeHtml(text) {
   
     return text.replace(/[&<>"']/g, function(m) { return map[m]; });
   }
+
+    $(".blockFixe").on("keydown", "textarea", function(e){
+        if (e.which == 13){
+            var user = $(this).closest('.blockChat').attr('id');
+            var text = $(this).val();
+            if (text !== ""){
+                text = escapeHtml(text);
+                if (text && user)
+                    insertChat(text, user);              
+                $(this).val('');
+            }
+        }
+    });
+    $(".blockFixe").on("click", ".enviar", function(){
+        var user = $(this).closest('.blockChat').attr('id');
+        var text = $(this).prev().val();
+        text = escapeHtml(text);
+        if (text && user)
+            insertChat(text, user);
+        $(this).prev().val('');
+    });
+
     socket.on('newMessage', (data) =>
     {
         if (data.msg != "")
@@ -83,24 +105,26 @@ function escapeHtml(text) {
             parteChat.animate({ scrollTop: parteChat.prop('scrollHeight')}, 'slow');
         
             //onclick="enviar(this)"  onkeypress="intro(this)"
-            $("textarea").keydown(function(e){
-                if (e.which == 13){
-                    var user = $(this).closest('.blockChat').attr('id');
-                    var text = $(this).val();
-                    if (text !== ""){
-                        text = escapeHtml(text);
-                        insertChat(text, user);              
-                        $(this).val('');
-                    }
-                }
-            });
-            $(".enviar").click(function(){
-                var user = $(this).closest('.blockChat').attr('id');
-                var text = $(this).prev().val();
-                text = escapeHtml(text);
-                insertChat(text, user);
-                $(this).prev().val('');
-            });
+            // $(".blockFixe").on("keydown", "textarea", function(e){
+            //     if (e.which == 13){
+            //         var user = $(this).closest('.blockChat').attr('id');
+            //         var text = $(this).val();
+            //         if (text !== ""){
+            //             text = escapeHtml(text);
+            //             if (text && user)
+            //                 insertChat(text, user);              
+            //             $(this).val('');
+            //         }
+            //     }
+            // });
+            // $(".blockFixe").on("click", ".enviar", function(){
+            //     var user = $(this).closest('.blockChat').attr('id');
+            //     var text = $(this).prev().val();
+            //     text = escapeHtml(text);
+            //     if (text && user)
+            //         insertChat(text, user);
+            //     $(this).prev().val('');
+            // });
         }
 
         $(".addClass").click(function () {

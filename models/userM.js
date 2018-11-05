@@ -28,7 +28,10 @@ var userM = {
             database.query('SELECT `mail` FROM users WHERE mail=?', email, function (err, results)
             {
                 if (err) reject(err);
-                resolve(results.length);
+                if (results)
+                    resolve(results.length);
+                else
+                    resolve(false);
             });
         });
     },
@@ -210,7 +213,7 @@ var userM = {
             database.query('SELECT * FROM users WHERE login=?', username, function (err, results)
             {
                 if (err) reject(err);
-                if (results.length == 1)
+                if (results && results.length == 1)
                     resolve(results[0]);
                 else
                     resolve(false);
@@ -304,7 +307,7 @@ var userM = {
             database.query("SELECT id FROM users WHERE login = ?", username, function(err, resultado)
             {
                 if (err) reject(err);
-                if (resultado.length == 1)
+                if (resultado && resultado.length == 1)
                     resolve(resultado[0]);
                 else
                     resolve(false);
@@ -318,7 +321,7 @@ var userM = {
             database.query("UPDATE users SET popularite = popularite + ? WHERE id = ?", [valeur, id_user], function(err, result)
             {
                 if (err) reject(err);
-                if (result.affectedRows == 1)
+                if (result && result.affectedRows == 1)
                     resolve(true);
                 else
                     resolve(false);
@@ -334,7 +337,7 @@ var userM = {
                 database.query("UPDATE users SET visite = 'online' WHERE id = ?", userId, function(err, result)
                 {
                     if (err) reject(err);
-                    if (result.affectedRows == 1)
+                    if (result && result.affectedRows == 1)
                         resolve(true);
                     else
                         resolve(false);
@@ -379,7 +382,7 @@ var userM = {
             database.query("UPDATE users SET lat = ?, lon = ?, location = ? WHERE id = ?", [lat, lon, direccion, user_id], function(err, result)
             {
                 if (err) reject(err);
-                if (result.affectedRows == 1)
+                if (result && result.affectedRows == 1)
                     resolve(true);
                 else
                     resolve(false);

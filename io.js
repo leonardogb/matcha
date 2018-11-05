@@ -111,16 +111,16 @@ module.exports = function(server)
                             chatModel.newMsg(resultado[0].id, resultado[1].id, data.msg, new Date()).then(messageOk =>
                             {
                                 console.log(messageOk);
-                                // if (messageOk)
-                                // {
-                                //     notifModel.addNotif(resultado[1].id, "Message de " + socket.user + " : " + data.msg).then(resp => {
-                                //         if (resp)
-                                //             socket.to(users[data.dst]).emit('newNot', "Message de " + socket.user + " : " + data.msg);
-                                //     }).catch(function(err)
-                                //     {
-                                //         console.log(err);
-                                //     });
-                                // }
+                                if (messageOk && !users[data.dst])
+                                {
+                                    notifModel.addNotif(resultado[1].id, "Message de " + socket.user + " : " + data.msg).then(resp => {
+                                        if (resp)
+                                            socket.to(users[data.dst]).emit('newNot', "Message de " + socket.user + " : " + data.msg);
+                                    }).catch(function(err)
+                                    {
+                                        console.log(err);
+                                    });
+                                }
                             });
                         });
                     }

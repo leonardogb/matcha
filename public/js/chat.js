@@ -52,7 +52,7 @@ $(function(){
     //     insertChat();
     //     $('#status_message').val('');
     // });
-
+/*
     $("textarea").keydown(function(e){
         if (e.which == 13){
             var user = $(this).closest('.blockChat').attr('id');
@@ -71,7 +71,28 @@ $(function(){
         insertChat(text, user);
         $(this).prev().val('');
     });
+*/
+    $(".blockFixe").on("keydown", "textarea", function(e){
+        if (e.which == 13){
+            var user = $(this).closest('.blockChat').attr('id');
+            var text = $(this).val();
+            if (text !== ""){
+                text = escapeHtml(text);
+                if (text && user)
+                    insertChat(text, user);              
+                $(this).val('');
+            }
+        }
+    });
 
+    $(".blockFixe").on("click", ".enviar", function(){
+        var user = $(this).closest('.blockChat').attr('id');
+        var text = $(this).prev().val();
+        text = escapeHtml(text);
+        if (text && user)
+            insertChat(text, user);
+        $(this).prev().val('');
+    });
     function formatAMPM(date) {
         var hours = date.getHours();
         var minutes = date.getMinutes();
@@ -108,7 +129,7 @@ $(function(){
                 <div class="direct-chat-info clearfix"></div>
                 <!-- /.direct-chat-text -->
             </div>`;
-            $('.direct-chat-messages').append(elemento);
+            $('#' + userDst + ' .chat-popup .popup-messages .direct-chat-messages').append(elemento);
             $(".popup-messages").animate({ scrollTop: $(".popup-messages").prop('scrollHeight')}, 'slow');
 
             socket.emit('newMsg', {user: login, userImg: userImg, dst: destinatario, dstImg: destinoImg, msg: message});
