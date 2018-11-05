@@ -9,12 +9,10 @@
         <div class="container">
             <br>  <p class="text-center">Matcha ! Votre site de rencontre</p>
             <hr>
-
             <div class="card bg-light">
                 <article class="card-body mx-auto" style="max-width: 400px;">
                     <h4 class="card-title mt-3 text-center">Sign In Matcha !</h4>
                     <p class="text-center">Sign In Matchat !</p>
-                
                     <form method="POST" action="/user/login">
                         <div class="form-group input-group">
                             <div class="input-group-prepend">
@@ -22,14 +20,12 @@
                             </div>
                             <input name="login" class="form-control" placeholder="Username" type="text" required>
                         </div> <!-- form-group// -->
-
                         <div class="form-group input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                             </div>
                             <input name="passwd" class="form-control" placeholder="password" type="password" required>
                         </div> <!-- form-group// -->
-
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-block"> Login  </button>
                         </div>
@@ -49,14 +45,13 @@
                                 <form method="POST" action="/recup">
                                     <div class="form-group">
                                         <label for="recipient-name" class="col-form-label">E-mail:</label>
-                                        <input type="text" class="form-control" id="mailRecup">
+                                        <input type="text" class="form-control" name="mail" id="mailRecup">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <input type="submit" class="btn btn-primary" value="Send">
                                     </div>
                                 </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Send message</button>
-                            </div>
                             </div>
                         </div>
                     </div>

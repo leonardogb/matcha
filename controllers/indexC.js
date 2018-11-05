@@ -1,8 +1,35 @@
-var express = require('express');
-var router = express.Router();
-var notifModel = require('../models/notifM');
-var userModel = require('../models/userM');
+const express = require('express');
+const router = express.Router();
+const notifModel = require('../models/notifM');
+const userModel = require('../models/userM');
+const profileModel = require('../models/profileM');
 const matchimetro = require('../models/matchM');
+
+
+function escapeHtml(text) {
+    const map = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;'
+    };
+  
+    return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+  }
+
+router.post('/recup', function(req, res)
+{
+    const mail = escapeHtml(req.body.mail);
+    userModel.emailExists(mail).then(mailOk => {
+        if (mailOk)
+        {
+            // profileModel.setMDP()
+            // Reinitialisation du mot de passe...
+        }
+    });
+    res.send(mail);
+});
 
 router.get('/', function(req, res)
 {
