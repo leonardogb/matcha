@@ -82,10 +82,12 @@
                 <span class="badge badge-info"><%= "#" + element %></span>
                 <% }); %></div><% } %>
             </div>
+            <% if (tabuser.img0 != "" && tabuser.img0 != "/img/no-img.png") { %>
             <div>
                 <button type="button" id="mylike" value="<%= tabuser.login %>" class="btn btn-<% if (datos[0] == 0) { %>outline-<%}%>danger"> <span class="fa fa-heart"></span> <% if (datos[0] == 0) { %>Like-moi ! <%} else {%>Je suis liké(e)<%}%></button>
                 <div id="yourlike" class="btn btn-<% if (datos[1] == 0) { %>outline-<%}%>danger"> <span class="fa fa-heart"></span> <% if (datos[1] == 0) { %>Je ne te like pas ! <%} else {%>Je t'est liké<%}%></div>
             </div>
+            <% } %>
         </div>
         <div class="blockFixe">
             <div class="row contenedorChat"><% if (datos[0] == 1 && datos[1] == 1) { %><% include ../partials/chat %><% } %></div></div>

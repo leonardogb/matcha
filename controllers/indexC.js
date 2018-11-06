@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const uniqid = require('uniqid');
 const notifModel = require('../models/notifM');
 const userModel = require('../models/userM');
+const tagModel = require('../models/tagsM');
 const profileModel = require('../models/profileM');
 const matchimetro = require('../models/matchM');
 
@@ -21,14 +23,27 @@ function escapeHtml(text) {
 router.post('/recup', function(req, res)
 {
     const mail = escapeHtml(req.body.mail);
+    console.log("Tres");
     userModel.emailExists(mail).then(mailOk => {
         if (mailOk)
         {
-            // profileModel.setMDP()
-            // Reinitialisation du mot de passe...
+            console.log("Cuatro");
+            userModel.reinitMDP(mail).then(MdpTemp => {
+                if (MdpTemp)
+                {
+                    userModel.sendMailMdp(mail, MdpTemp).then(ok => {
+                        if (ok)
+                        {
+                            console.log("Message envoyé !");
+                            res.render('pages/login', {title: 'Login Matcha !', message: 'Votre mot de passe a été réinitialisé. Vérifier votre mél.', error: ''});
+                        }
+                    });
+                }
+            });
         }
+        else
+            res.render('pages/login', {title: 'Login Matcha !', message: '', error: 'Votre mot de passe ne peut pas être réinitialisé. Merci d\'essayer plus tard.'});
     });
-    res.send(mail);
 });
 
 router.get('/', function(req, res)
@@ -39,7 +54,7 @@ router.get('/', function(req, res)
         // console.log(req.session.user);
         
         userModel.getUserById(req.session.user.id).then( user1 => {
-            if (user1)
+            if (user1 && user1.complet == 1)
             {
                 var sex;
                 if (user1.genre == "Masculin")
@@ -120,6 +135,32 @@ router.get('/', function(req, res)
                     });
                     // console.log("Usuarios:");
                     // console.log(usuarios);
+                });
+            }
+            else
+            {
+                delete user1.passwd;
+                delete user1.cle;
+                //console.log(result);
+                tagModel.getTags(user1.id).then( tagsTab => {
+                    console.log(tagsTab);
+                    notifModel.getNotifs(req.session.user.id).then(notif => {
+                        res.render('pages/profileUpdate', {
+                            title: "Profil de " + user1.prenom,
+                            message: "",
+                            error: "Vous devez completer votre profil.",
+                            login: user1.login,
+                            tabuser: user1,
+                            tabTags: tagsTab,
+                            notif: notif,
+                            userImg: req.session.user.img0
+                        });
+                    });
+                    
+                }).catch(function(err)
+                {
+                    console.log(err);
+                    //res.redirect('/');
                 });
             }
         });

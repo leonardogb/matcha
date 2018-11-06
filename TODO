@@ -8,7 +8,7 @@ Inscription et connexion:
     Mot de passe sécurisé
   ✔ E-mail de confirmation avec lien unique @done(18-09-12 20:22)
   ✔ Connexion (avec Nom utilisateur et mot de passe) @done(18-09-12 20:22)
-  ☐ Mail de réinitialisation
+  ✔ Mail de réinitialisation @done(18-11-06 16:56)
   ✔ Déconnexion depuis n'importe quelle page @done(18-09-12 20:22)
 
 Profil:
@@ -19,7 +19,7 @@ Profil:
     ✔ Liste d'interêts (tags) @done(18-09-21 17:57)
     ✔ Images (5) @done(18-09-12 20:23)
   ✔ Modification des informations, nom, prénom, email, mot de passe @done(18-09-21 18:44)
-  ☐ Changer ou réinitialiser mot de passe s'il est connecté ou pas
+  ✔ Changer ou réinitialiser mot de passe s'il est connecté ou pas @done(18-11-06 16:56)
   ✔ Consulter les personnes ayant consulté son profil @done(18-10-10 11:58)
   ✔ Consulter les personnes qui l'ont liké @done(18-10-10 11:58)
   ✔ Score de popularité publique @done(18-10-10 13:52)
@@ -28,7 +28,7 @@ Profil:
 
 Liste profils:
   ✔ Afficher une liste de profils qui correspondent à l'utilisateur @done(18-11-05 14:20)
-  ☐ La liste s'affiche si le profil de l'utilisateur est complet (inviter l'utilisateur a le remplir)
+  ✔ La liste s'affiche si le profil de l'utilisateur est complet (inviter l'utilisateur a le remplir) @done(18-11-06 19:04)
   ✔ Afficher les profils matchant au moins un crittère @done(18-11-05 14:21)
     ✔ Orientation sexuelle définie @done(18-11-05 14:21)
     ✔ Proximité géographique avec l'utilisateur @done(18-11-05 14:21)
@@ -43,7 +43,7 @@ Liste profils:
 Profil autres:
 ✔ Consulter le profil d'un autre utilisater @done(18-10-10 14:01)
 ✔ Historique de visites @done(18-10-10 14:01)
-☐ Liker ou unliker (s'il possède au moins une photo)
+✔ Liker ou unliker (s'il possède au moins une photo) @done(18-11-06 20:05)
 ✔ Voir que le profil visité a déjà liké l'utilisateur (et liker un retour) @done(18-10-10 14:04)
 ✔ Consulter le score de popularité @done(18-10-10 14:04)
 ✔ Voir si l'utilisateur est en ligne ou afficher la date de sa dernière visite. @done(18-10-10 22:24)

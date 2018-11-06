@@ -32,6 +32,18 @@
                   notif.forEach(function(elem){%><li><span class="dropdown-item"><%= elem.notif %></span></li><%});}%>
               </ul>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/profile/likes">
+                <i class="fa fa-thumbs-up"></i>
+                Likes
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/profile/vues">
+                <i class="fa fa-eye"></i>
+                Vues
+              </a>
+            </li>
             <!-- <li class="nav-item">
               <a class="nav-link disabled" href="#">
                 <i class="fa fa-envelope-o">
@@ -65,7 +77,7 @@
 </nav>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-    var socket = io.connect('z2r1p5.le-101.fr:8080');
+    var socket = io.connect('localhost:8080');
     var login = $('#desplegable').text();
 
     socket.emit('conectado', login);

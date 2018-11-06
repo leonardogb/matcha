@@ -153,6 +153,75 @@ var userM = {
             return result;
         });
     },
+    reinitMDP: function(mail)
+    {
+        return new Promise(function(resolve, reject)
+        {
+            var mdp = uniqid();
+            var mdpHash = bcrypt.hashSync(mdp, 10);
+
+            console.log("Uno");
+            database.query("UPDATE `users` SET passwd = ? WHERE mail = ?", [mdpHash, mail], function(err, MdpOk)
+            {
+                if (err) reject(err);
+                console.log("Dos");
+                if (MdpOk)
+                    resolve(mdp);
+                else
+                    resolve(false);
+            });
+        });
+    },
+    sendMailMdp: function(mail, mdp)
+    {
+        return new Promise(function(resolve, reject)
+        {
+            var transporter = nodemailer.createTransport({
+                host: 'smtp.gmail.com',
+                port: 465,
+                secure: true,
+                auth: {
+                    type: 'OAuth2',
+                    user: 'hercules.le101@gmail.com',
+                    clientId: '297940244352-6kp2r7cei6307aeh2vfgc7pvkmt1k12c.apps.googleusercontent.com',
+                    clientSecret: 'x3zxH4cpRLmQCg24qFbtsEU3',
+                    refreshToken: '1/rFA3EGVpfNx4E7S0FB58aEkIyuLLc1sGVsoRjSj8KNc',
+                    accessToken: 'ya29.GlsQBhUek2ReCSoGNzuu_B7n-BD6pdpgPxP8AA5G9Gr4fw1kIKPoDpQphoeoLz1Fqq8Oo76V-h-ItRZA0vpU-yT9M79yAOuIgb2WyFfLH8dmj6kMzEWJCcZs3LGs',
+                    expires: 3600
+                }
+              });
+
+            var mailOptions = {
+                from: 'info@matcha.com',
+                to: mail,
+                subject: 'Réinitialisation MDP Matcha !',
+                html: `<html>
+                <head>
+                    <title>Réinitialisation du mot de passe Matcha</title>
+                </head>
+                <body
+                    <p>Vous avez oublié votre mot de passe ?</p>
+                    <p>Il n'y a pas de problème, voici votre mot de passe temporaire :</p>
+                    <p>Mot de passe temporaire: <strong>` + mdp + `</strong></p>
+                    <p>Vous pouvez changer votre mot de passe dans votre profil personnel.</p><br>
+                    <p>Pour éviter que cela ne se reproduise encore une fois, voici quelque conséils:<br>
+                    <a href="http://www.travailler-la-memoire.com/simples-conseils-pour-ameliorer-la-memoire/">Améliorer la mémoire</a></p>
+                    <p>---------------
+                    Ceci est un mail automatique, merci de ne pas y répondre.
+                    </p>\
+                </body>\
+                </html>`
+            };
+              
+            transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+                reject(error);
+            } else {
+                resolve('Email sent: ' + info.response);
+            }
+            });
+        });
+    },
     auth: function(username, passwd)
     {
         //valider username y passwd
@@ -306,7 +375,7 @@ var userM = {
         {
             if (username)
             {
-                database.query("SELECT id FROM users WHERE login = ?", username, function(err, resultado)
+                database.query("SELECT id, img0 FROM users WHERE login = ?", username, function(err, resultado)
                 {
                     if (err) reject(err);
                     if (resultado && resultado.length == 1)

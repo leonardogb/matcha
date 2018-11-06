@@ -298,7 +298,6 @@ router.get('/user/:login', function(req, res)
                                         userImg: userImg,
                                         msg: response,
                                         notif: notif,
-                                        userImg: req.session.user.img0
                                     });
                                 });
                                 
@@ -389,7 +388,7 @@ router.get('/like/:login', function(req, res)
     var username = req.params.login;
 
     userModel.getIdUser(username).then(result => {
-        if (result && user_id != result.id)
+        if (result && user_id != result.id && result.img0 != "" && result.img0 != "/img/no-img.png")
         {
             likesModel.likeExists(user_id, result.id).then(resultado => {
 
@@ -453,7 +452,6 @@ router.get('/likes', function(req, res)
                 userImg: req.session.user.img0
             });
         });
-        
     });
 });
 
