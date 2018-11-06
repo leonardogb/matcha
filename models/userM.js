@@ -79,7 +79,7 @@ var userM = {
                     var mailOptions = {
                         from: 'info@matcha.com',
                         to: tab.email,
-                        subject: 'Welcome to Matchat ! 👭👫👬',
+                        subject: 'Welcome to Matcha ! 👭👫👬',
                         html: '<html>\
                         <head>\
                             <title>Welcome to Matcha ! ♥️</title>\

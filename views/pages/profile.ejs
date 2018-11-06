@@ -15,7 +15,10 @@
                 <div class="col-sm-4">
                     <div class="text-center">
                         <img src="<%= tabuser.img0 %>" class="avatar img-circle img-thumbnail" alt="avatar">
-                    </div><br>
+                    </div>
+                    <div class="text-center">
+                        <a class="btn btn-primary" href="/profile" role="button">Modifier mon profil</a>
+                    </div>
                     <div>
                         <ul class="list-group panel-default">
                         <li class="list-group-item panel-heading text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
@@ -79,10 +82,6 @@
                 <% if (tabTags) { %><div><% tabTags.forEach(function(element){ %>
                 <span class="badge badge-info"><%= "#" + element %></span>
                 <% }); %></div><% } %>
-            </div>
-
-            <div>
-                <a class="btn btn-primary" href="/profile" role="button">Modifier mon profil</a>
             </div>
 
             <% if (error != '') { %>

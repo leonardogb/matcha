@@ -429,7 +429,7 @@ router.get('/like/:login', function(req, res)
             });
         }
         else
-            res.send(false);//este else esta bien?
+            res.redirect('/');//este else esta bien?
         //res.redirect('/profile/user/' + username);
     });
 });

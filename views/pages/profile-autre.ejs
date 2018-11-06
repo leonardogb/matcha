@@ -11,6 +11,15 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-10"><h1 id="login"><%= tabuser.login %></h1></div>
+                <div class="dropdown">
+                    <a class="btn btn-default" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <i class="fa fa-ellipsis-h fa-3x"></i>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li><a class="dropdown-item" href="" title="Reporter un faux compte"><i class="fa fa-exclamation-triangle"></i> Signaler un faux compte</a></li>
+                        <li><a class="dropdown-item" href="" title="Bloquer l'utilisateur"><i class="fa fa-ban"></i> Bloquer l'utilisateur</a></li>
+                    </ul>
+                </div>
             </div>
             <div class="row">
                 <div class="col-sm-4">
@@ -84,8 +93,8 @@
             </div>
             <% if (tabuser.img0 != "" && tabuser.img0 != "/img/no-img.png") { %>
             <div>
-                <button type="button" id="mylike" value="<%= tabuser.login %>" class="btn btn-<% if (datos[0] == 0) { %>outline-<%}%>danger"> <span class="fa fa-heart"></span> <% if (datos[0] == 0) { %>Like-moi ! <%} else {%>Je suis liké(e)<%}%></button>
-                <div id="yourlike" class="btn btn-<% if (datos[1] == 0) { %>outline-<%}%>danger"> <span class="fa fa-heart"></span> <% if (datos[1] == 0) { %>Je ne te like pas ! <%} else {%>Je t'est liké<%}%></div>
+                <button type="button" id="mylike" value="<%= tabuser.login %>" class="btn btn-<% if (datos[0] == 0) { %>outline-<%}%>danger"> <span class="fa fa-heart"></span> <% if (datos[0] == 0) { %>Like-moi ! <%} else {%>J'ai liké<%}%></button>
+                <div id="yourlike" class="btn btn-<% if (datos[1] == 0) { %>outline-<%}%>danger"> <span class="fa fa-heart"></span> <% if (datos[1] == 0) { %>Je ne te like pas ! <%} else {%><%= tabuser.login %> t'a liké<%}%></div>
             </div>
             <% } %>
         </div>

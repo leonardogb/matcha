@@ -8,7 +8,7 @@ $(document).ready(function(){
         {
             if (result.action == "added")
             {
-                $('#mylike').attr('class', 'btn btn-danger').html("<span class=\"fa fa-heart\"></span> Je suis liké(e)");
+                $('#mylike').attr('class', 'btn btn-danger').html("<span class=\"fa fa-heart\"></span> J'ai liké");
                 var nb = parseInt($('#nbPop').text());
                 $('#nbPop').text(nb + result.value);
                 var nb2 = parseInt($('#nbLikes').text());
