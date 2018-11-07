@@ -47,8 +47,8 @@ Profil autres:
 ✔ Voir que le profil visité a déjà liké l'utilisateur (et liker un retour) @done(18-10-10 14:04)
 ✔ Consulter le score de popularité @done(18-10-10 14:04)
 ✔ Voir si l'utilisateur est en ligne ou afficher la date de sa dernière visite. @done(18-10-10 22:24)
-☐ Report l'utilisateur (faux compte)
-☐ Bloquer l'utilisateur
+✔ Report l'utilisateur (faux compte) @done(18-11-07 20:12)
+✔ Bloquer l'utilisateur @done(18-11-07 20:12)
 
 Chat:
   ✔ Pouvoir chatter en temps réel @done(18-10-10 14:07)
@@ -65,3 +65,8 @@ Notifications:
 Securité:
   ☐ Vérifier tous les input
   ☐ Vérifier toutes les requêtes SQL
+
+Autres:
+  ☐ Gestion des messages par la session
+  ☐ Réviser la recherche la popularité ne marche pas tout à fait bien (affiche profil 0 si on cherche entre 100 et 500)]
+  

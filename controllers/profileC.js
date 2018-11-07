@@ -122,22 +122,35 @@ router.post('/updatePerso', function(req, res)
     //console.log(req.body);
     if (validator.isValidUsername(req.body.login) == true && validator.isValidNom(req.body.prenom, req.body.nom) == true && validator.isValidPass(req.body.mdp, req.body.mdp) == true && validator.isValidEmail(req.body.mail) == true)
     {
-        var tab = [user_id, req.body.login, req.body.prenom, req.body.nom, req.body.mdp, req.body.mail];
+        userModel.loginExists(req.body.login).then(loginExists => {
+            if (loginExists == 0)
+            {
+                var tab = [user_id, req.body.login, req.body.prenom, req.body.nom, req.body.mdp, req.body.mail];
 
-        profileModel.updatePerso(tab).then(respuesta => {
-            console.log(respuesta);
+                profileModel.updatePerso(tab).then(respuesta => {
+                    console.log(respuesta);
 
-            //Actualizar la sesion
-            req.session.user.login = req.body.login;
-            req.session.user.prenom = req.body.prenom;
-            req.session.user.nom = req.body.nom;
-            req.session.user.mail = req.body.mail;
-            console.log(req.session.user);
+                    //Actualizar la sesion
+                    req.session.user.login = req.body.login;
+                    req.session.user.prenom = req.body.prenom;
+                    req.session.user.nom = req.body.nom;
+                    req.session.user.mail = req.body.mail;
+                    console.log(req.session.user);
+                }).catch(function(err)
+                {
+                    console.log(err);
+                });
+            }
+            else
+            {
+                req.session.user.error = "Le login n'est pas disponible";
+            }
             res.redirect("/user/profile");
         }).catch(function(err)
         {
             console.log(err);
         });
+        
     }
     else
     {

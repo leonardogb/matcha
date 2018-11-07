@@ -97,6 +97,7 @@
                 <div id="yourlike" class="btn btn-<% if (datos[1] == 0) { %>outline-<%}%>danger"> <span class="fa fa-heart"></span> <% if (datos[1] == 0) { %>Je ne te like pas ! <%} else {%><%= tabuser.login %> t'a liké<%}%></div>
             </div>
             <% } %>
+            <div id="messages"></div>
         </div>
         <div class="blockFixe">
             <div class="row contenedorChat"><% if (datos[0] == 1 && datos[1] == 1) { %><% include ../partials/chat %><% } %></div></div>

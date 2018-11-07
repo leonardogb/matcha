@@ -129,8 +129,7 @@ router.post('/', function(req, res)
                     tri = "default";
                 if (age && popul)
                 {
-
-                    userModel.getUsersLimits(sex, user1.orientation, age, popul, tri).then(userTab => {
+                    userModel.getUsersLimits(user1.id, sex, user1.orientation, age, popul, tri).then(userTab => {
                         //console.log(userTab);
                         var usuarios = [];
                         var i = 0;

@@ -164,7 +164,19 @@ router.get('/profile', function(req, res)
 {
     var id_user = req.session.user.id;
     var user = req.session.user.login;
+    var error = false;
+    var message = false;
 
+    if (req.session.user.error)
+    {
+        error = req.session.user.error;
+        req.session.user.error = null;
+    }
+    if (req.session.user.message)
+    {
+        error = req.session.user.message;
+        req.session.user.message = null;
+    }
     userModel.getUserById(id_user).then(result => {
         delete result.passwd;
         delete result.cle;
@@ -178,8 +190,8 @@ router.get('/profile', function(req, res)
                 notifModel.getNotifs(req.session.user.id).then(notif => {
                     res.render('pages/profile', {
                         title: "Profil de " + result.prenom,
-                        message: "",
-                        error: "",
+                        message: message,
+                        error: error,
                         login: result.login,
                         tabuser: result,
                         tabTags: tagsTab,

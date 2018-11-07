@@ -73,7 +73,7 @@ router.get('/', function(req, res)
                     else
                         sex = "Autre";
                 }
-                userModel.getUserBySex(sex, user1.orientation).then(userTab => {
+                userModel.getUserBySex(user1.id, sex, user1.orientation).then(userTab => {
                     // console.log("Perfiles:");
                     // console.log(userTab);
                     var usuarios = [];
@@ -137,7 +137,7 @@ router.get('/', function(req, res)
                 delete user1.cle;
                 //console.log(result);
                 tagModel.getTags(user1.id).then( tagsTab => {
-                    console.log(tagsTab);
+                    //console.log(tagsTab);
                     notifModel.getNotifs(req.session.user.id).then(notif => {
                         res.render('pages/profileUpdate', {
                             title: "Profil de " + user1.prenom,
@@ -158,15 +158,6 @@ router.get('/', function(req, res)
                 });
             }
         });
-        // notifModel.getNotifs(req.session.user.id).then(notif => {
-        //     //console.log(notif);
-        //     res.render('pages/index', {
-        //         title: 'Matcha !',
-        //         login: req.session.user.login,
-        //         notif: notif
-        //     });
-        // });
-        
     }
     else
     {

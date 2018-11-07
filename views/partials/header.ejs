@@ -77,7 +77,7 @@
 </nav>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-    var socket = io.connect('z2r1p2.le-101.fr:8080');
+    var socket = io.connect('localhost:8080');
     var login = $('#desplegable').text();
 
     socket.emit('conectado', login);
