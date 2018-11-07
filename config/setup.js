@@ -153,5 +153,25 @@ var bcrypt    = require('bcrypt');
           if (err) throw err;
           console.log("Table notification created");
         });
+      
+      var sql8 = `CREATE TABLE IF NOT EXISTS faux (
+        id INT(3) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        complainant INT(3) NOT NULL,
+        reported INT(3) NOT NULL,
+        date_report DATETIME NOT NULL)`;
+      database.query(sql8, function (err, result) {
+          if (err) throw err;
+          console.log("Table faux created");
+        });
+
+      var sql9 = `CREATE TABLE IF NOT EXISTS block (
+        id INT(3) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        complainant INT(3) NOT NULL,
+        reported INT(3) NOT NULL,
+        date_report DATETIME NOT NULL)`;
+      database.query(sql9, function (err, result) {
+          if (err) throw err;
+          console.log("Table block created");
+        });
     //database.end();
 

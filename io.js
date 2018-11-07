@@ -1,11 +1,12 @@
 module.exports = function(server)
 {
-    var io = require('socket.io')(server);
-    var ent = require('ent');
-    var chatModel = require('./models/chatM');
-    var userModel = require('./models/userM');
-    var notifModel = require('./models/notifM');
-    var likesModel = require('./models/likesM');
+    const io = require('socket.io')(server);
+    const ent = require('ent');
+    const chatModel = require('./models/chatM');
+    const userModel = require('./models/userM');
+    const notifModel = require('./models/notifM');
+    const likesModel = require('./models/likesM');
+    const profileModel = require('./models/profileM');
     var users = [];
 
     function formatAMPM(date) {
@@ -111,23 +112,29 @@ module.exports = function(server)
                                     console.log(likes);
                                     if (likes[0] && likes[1] && likes[0] == 1 && likes[1] == 1)
                                     {
-                                        if (destId)
-                                        {
-                                            data['date'] = date;
-                                            console.log(data);
-                                            socket.to(destId).emit('newMessage', data);
-                                        }
-                                        chatModel.newMsg(resultado[0].id, resultado[1].id, data.msg, new Date()).then(messageOk =>
-                                        {
-                                            console.log(messageOk);
-                                            if (messageOk && !users[data.dst])
+                                        profileModel.reportBlockExists(resultado[1].id, resultado[0].id).then(bloqueado => {
+                                            if (!bloqueado)
                                             {
-                                                notifModel.addNotif(resultado[1].id, "Message de " + socket.user + " : " + data.msg).then(resp => {
-                                                    if (resp)
-                                                        socket.to(users[data.dst]).emit('newNot', "Message de " + socket.user + " : " + data.msg);
-                                                }).catch(function(err)
+                                                if (destId)
                                                 {
-                                                    console.log(err);
+                                                    data['date'] = date;
+                                                    console.log(data);
+                                                    socket.to(destId).emit('newMessage', data);
+                                                }
+
+                                                chatModel.newMsg(resultado[0].id, resultado[1].id, data.msg, new Date()).then(messageOk =>
+                                                {
+                                                    console.log(messageOk);
+                                                    if (messageOk && !users[data.dst])
+                                                    {
+                                                        notifModel.addNotif(resultado[1].id, "Message de " + socket.user + " : " + data.msg).then(resp => {
+                                                            if (resp)
+                                                                socket.to(users[data.dst]).emit('newNot', "Message de " + socket.user + " : " + data.msg);
+                                                        }).catch(function(err)
+                                                        {
+                                                            console.log(err);
+                                                        });
+                                                    }
                                                 });
                                             }
                                         });
@@ -157,45 +164,71 @@ module.exports = function(server)
                                 {
                                     if (lik[0] == 1 && lik[1] == 1)
                                     {
-                                        notifModel.addNotif(userid.id, "Bravo, vous matchez avec " + socket.user).then(resp => {
-                                            //emit😊
-                                            if (resp)
-                                                socket.to(users[notif.userDst]).emit('newNot', "Bravo, vous matchez avec " + socket.user);
+                                        profileModel.reportBlockExists(userid.id, userid1.id).then(bloqueado => {
+                                            if (!bloqueado)
+                                            {
+                                                notifModel.addNotif(userid.id, "Bravo, vous matchez avec " + socket.user).then(resp => {
+                                                    //emit😊
+                                                    if (resp)
+                                                        socket.to(users[notif.userDst]).emit('newNot', "Bravo, vous matchez avec " + socket.user);
+                                                });
+                                            }
                                         });
                                     }
                                     else
                                     {
-                                        notifModel.addNotif(userid.id, "Vous avez un nouveau like de " + socket.user).then(resp => {
-                                            //emit
-                                            if (resp)
-                                                socket.to(users[notif.userDst]).emit('newNot', "Vous avez un nouveau like de " + socket.user);
+                                        profileModel.reportBlockExists(userid.id, userid1.id).then(bloqueado => {
+                                            if (!bloqueado)
+                                            {
+                                                notifModel.addNotif(userid.id, "Vous avez un nouveau like de " + socket.user).then(resp => {
+                                                    //emit
+                                                    if (resp)
+                                                        socket.to(users[notif.userDst]).emit('newNot', "Vous avez un nouveau like de " + socket.user);
+                                                });
+                                            }
                                         });
+                                        
                                     }
                                 }
                                 else if (notif.notif == "removeLike")
                                 {
                                     if (lik[0] == 1 && lik[1] == 0)
                                     {
-                                        notifModel.addNotif(userid.id, "Vous ne matchez plus avec " + socket.user).then(resp => {
-                                            //emit 😢
-                                            if (resp)
-                                                socket.to(users[notif.userDst]).emit('newNot', "Vous ne matchez plus avec " + socket.user);
+                                        profileModel.reportBlockExists(userid.id, userid1.id).then(bloqueado => {
+                                            if (!bloqueado)
+                                            {
+                                                notifModel.addNotif(userid.id, "Vous ne matchez plus avec " + socket.user).then(resp => {
+                                                    //emit 😢
+                                                    if (resp)
+                                                        socket.to(users[notif.userDst]).emit('newNot', "Vous ne matchez plus avec " + socket.user);
+                                                });
+                                            }
                                         });
                                     }
                                     else
                                     {
-                                        notifModel.addNotif(userid.id, socket.user + " ne vous like plus !").then(resp => {
-                                            //emit
-                                            if (resp)
-                                                socket.to(users[notif.userDst]).emit('newNot', socket.user + " ne vous like plus !");
+                                        profileModel.reportBlockExists(userid.id, userid1.id).then(bloqueado => {
+                                            if (!bloqueado)
+                                            {
+                                                notifModel.addNotif(userid.id, socket.user + " ne vous like plus !").then(resp => {
+                                                    //emit
+                                                    if (resp)
+                                                        socket.to(users[notif.userDst]).emit('newNot', socket.user + " ne vous like plus !");
+                                                });
+                                            }
                                         });
                                     }
                                 }
                                 else if (notif.notif == "visit")
                                 {
-                                    notifModel.addNotif(userid.id, socket.user + " a visité ton profil").then(resp => {
-                                        if (resp)
-                                                socket.to(users[notif.userDst]).emit('newNot', socket.user + " a visité ton profil");
+                                    profileModel.reportBlockExists(userid.id, userid1.id).then(bloqueado => {
+                                        if (!bloqueado)
+                                        {
+                                            notifModel.addNotif(userid.id, socket.user + " a visité ton profil").then(resp => {
+                                                if (resp)
+                                                        socket.to(users[notif.userDst]).emit('newNot', socket.user + " a visité ton profil");
+                                            });
+                                        }
                                     });
                                 }
                             });

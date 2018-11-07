@@ -137,6 +137,62 @@ var profileM = {
                 resolve(miniProfiles);
             });
         });
+    },
+    reportFauxExists: function(user1, user2)
+    {
+        return new Promise(function(resolve, reject)
+        {
+            database.query("SELECT * FROM faux WHERE complainant = ? AND reported = ?", [user1, user2], function(err, result)
+            {
+                if (err) reject(err);
+                if (result && result.length == 1)
+                    resolve(true);
+                else
+                    resolve(false);
+            });
+        });
+    },
+    addReportFaux: function(user1, user2)
+    {
+        return new Promise(function(resolve, reject)
+        {
+            database.query("INSERT INTO faux (complainant, reported, date_report) VALUES (?, ?, NOW())", [user1, user2], function(err, result)
+            {
+                if (err) reject(err);
+                if (result && result.affectedRows == 1)
+                    resolve(true);
+                else
+                    resolve(false);
+            });
+        });
+    },
+    reportBlockExists: function(user1, user2)
+    {
+        return new Promise(function(resolve, reject)
+        {
+            database.query("SELECT * FROM block WHERE complainant = ? AND reported = ?", [user1, user2], function(err, result)
+            {
+                if (err) reject(err);
+                if (result && result.length == 1)
+                    resolve(true);
+                else
+                    resolve(false);
+            });
+        });
+    },
+    addReportBlock: function(user1, user2)
+    {
+        return new Promise(function(resolve, reject)
+        {
+            database.query("INSERT INTO block (complainant, reported, date_report) VALUES (?, ?, NOW())", [user1, user2], function(err, result)
+            {
+                if (err) reject(err);
+                if (result && result.affectedRows == 1)
+                    resolve(true);
+                else
+                    resolve(false);
+            });
+        });
     }
 };
 

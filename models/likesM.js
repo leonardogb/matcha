@@ -37,7 +37,7 @@ var likesM = {
             {
                 if (err) reject(err);
                 //console.log(response);
-                if (response.affectedRows == 1)
+                if (response && response.affectedRows == 1)
                     resolve(true);
                 else
                     resolve(false);

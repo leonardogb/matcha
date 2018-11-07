@@ -16,8 +16,8 @@
                         <i class="fa fa-ellipsis-h fa-3x"></i>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li><a class="dropdown-item" href="" title="Reporter un faux compte"><i class="fa fa-exclamation-triangle"></i> Signaler un faux compte</a></li>
-                        <li><a class="dropdown-item" href="" title="Bloquer l'utilisateur"><i class="fa fa-ban"></i> Bloquer l'utilisateur</a></li>
+                        <li><button id="reportFaux" value="<%= tabuser.login %>" type="button" class="btn btn-light btn-block"><i class="fa fa-exclamation-triangle"></i> Signaler un faux compte</button></li>
+                        <li><button id="reportBlock" value="<%= tabuser.login %>" type="button" class="btn btn-light btn-block"><i class="fa fa-ban"></i> Bloquer l'utilisateur</button></li>
                     </ul>
                 </div>
             </div>
@@ -101,6 +101,7 @@
         <div class="blockFixe">
             <div class="row contenedorChat"><% if (datos[0] == 1 && datos[1] == 1) { %><% include ../partials/chat %><% } %></div></div>
         <script src="/js/like.js"></script>
+        <script src="/js/report.js"></script>
         <script src="/js/chat.js"></script>
         <script>
             var userDst = $('#login').text();

@@ -23,11 +23,9 @@ function escapeHtml(text) {
 router.post('/recup', function(req, res)
 {
     const mail = escapeHtml(req.body.mail);
-    console.log("Tres");
     userModel.emailExists(mail).then(mailOk => {
         if (mailOk)
         {
-            console.log("Cuatro");
             userModel.reinitMDP(mail).then(MdpTemp => {
                 if (MdpTemp)
                 {
@@ -91,46 +89,42 @@ router.get('/', function(req, res)
                         Promise.all(puntos).then(punts => {
                             // console.log("Puntos: ");
                             // console.log(punts);
-                            var total = 0;
-                            punts.forEach(elem => {
-                                total = total + elem;
-                            });
-                            total = parseInt(total, 10);
-                            usuarios.push([total, element]);
-                            
-                            // matchimetro.setPuntos(element.id, total).then(ptsOk => {
-                            //     if (ptsOk)
-                            //     {
-                            //         userModel.getUserById(element.id).then(result => {
-                            //             //Continuar. buscar perfiles a partir de criterios
-                            //             usuarios.push(result);
-                            //         });
-                            //     }
-                            // });
-                            if (++i == userTab.length)
-                            {
-                                // console.log("Usuarios:");
-                                // console.log(usuarios);
-                                function compare(a, b) {
-                                    if (a[0] > b[0])
-                                       return -1;
-                                    if (a[0] < b[0])
-                                       return 1;
-                                    // a doit être égal à b
-                                    return 0;
-                                }
-                                usuarios.sort(compare);
-                                notifModel.getNotifs(req.session.user.id).then(notif => {
-                                    //console.log(notif);
-                                    res.render('pages/index', {
-                                        title: 'Matcha !',
-                                        login: req.session.user.login,
-                                        userImg: req.session.user.img0,
-                                        notif: notif,
-                                        profil: usuarios
+                            profileModel.reportBlockExists(user1.id, element.id).then(bloqueado => {
+                                if (!bloqueado)
+                                {
+                                    var total = 0;
+                                    punts.forEach(elem => {
+                                        total = total + elem;
                                     });
-                                });
-                            }
+                                    total = parseInt(total, 10);
+                                    usuarios.push([total, element]);
+                                }
+                                if (++i == userTab.length)
+                                {
+                                    // console.log("Usuarios:");
+                                    // console.log(usuarios);
+                                    function compare(a, b) {
+                                        if (a[0] > b[0])
+                                        return -1;
+                                        if (a[0] < b[0])
+                                        return 1;
+                                        // a doit être égal à b
+                                        return 0;
+                                    }
+                                    usuarios.sort(compare);
+                                    notifModel.getNotifs(req.session.user.id).then(notif => {
+                                        //console.log(notif);
+                                        res.render('pages/index', {
+                                            title: 'Matcha !',
+                                            login: req.session.user.login,
+                                            userImg: req.session.user.img0,
+                                            notif: notif,
+                                            profil: usuarios
+                                        });
+                                    });
+                                }
+                            });
+                            
                         });
                     });
                     // console.log("Usuarios:");

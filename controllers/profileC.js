@@ -18,6 +18,18 @@ var sessionOk = require('../middleware/session').isOkLogin;
 
 router.use(sessionOk);
 
+function escapeHtml(text) {
+    var map = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;'
+    };
+  
+    return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+  }
+
 router.post('/update', function(req, res)
 {
     var user = req.session.user.login;
@@ -452,6 +464,72 @@ router.get('/likes', function(req, res)
                 userImg: req.session.user.img0
             });
         });
+    });
+});
+
+router.post('/report', function(req, res)
+{
+    const login = escapeHtml(req.body.login);
+    userModel.getIdUser(login).then(loginOk => {
+        if (loginOk)
+        {
+            if (req.body.report == "faux")
+            {
+                profileModel.reportFauxExists(req.session.user.id, loginOk.id).then(fauxExists => {
+                    if (fauxExists)
+                    {
+                        res.send(false);
+                    }
+                    else
+                    {
+                        profileModel.addReportFaux(req.session.user.id, loginOk.id).then(fauxadded => {
+                            if (fauxadded)
+                                res.send(true);
+                            else
+                                res.send(false);
+                        });
+                    }
+                }).catch(function(err)
+                {
+                    console.log(err);
+                    res.send(false);
+                });
+            }
+            else if (req.body.report == "block")
+            {
+                profileModel.reportBlockExists(req.session.user.id, loginOk.id).then(blockExists => {
+                    if (blockExists)
+                    {
+                        res.send(false);
+                    }
+                    else
+                    {
+                        profileModel.addReportBlock(req.session.user.id, loginOk.id).then(blockadded => {
+                            likesModel.suprimeLike(req.session.user.id, loginOk.id).then(removeOk => {
+                                if (blockadded && removeOk)
+                                    res.send(true);
+                                else
+                                    res.send(false);
+                            }).catch(function(err)
+                            {
+                                console.log(err);
+                                res.send(false);
+                            });
+                        }).catch(function(err)
+                        {
+                            console.log(err);
+                            res.send(false);
+                        });
+                    }
+                }).catch(function(err)
+                {
+                    console.log(err);
+                    res.send(false);
+                });
+            }
+        }
+        else
+            res.send(false);
     });
 });
 
