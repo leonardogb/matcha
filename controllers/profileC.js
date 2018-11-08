@@ -14,6 +14,8 @@ var chatModel = require('../models/chatM');
 var notifModel = require('../models/notifM');
 var validator = require('../middleware/validator');
 var sessionOk = require('../middleware/session').isOkLogin;
+var message = false;
+var error = false;
 
 
 router.use(sessionOk);
@@ -39,37 +41,39 @@ router.post('/update', function(req, res)
 
     if (update != true)
     {
-        console.log(req.body);
-        userModel.getUserById(user_id).then(result => {
-            delete result.passwd;
-            delete result.cle;
-            //console.log(result);
-            tagModel.getTags(user_id).then( tagsTab => {
-                console.log(tagsTab);
-                notifModel.getNotifs(req.session.user.id).then(notif => {
-                    res.render('pages/profileUpdate', {
-                        title: "Profil de " + result.prenom,
-                        message: "",
-                        error: update,
-                        login: user_login,
-                        tabuser: result,
-                        tabTags: tagsTab,
-                        notif: notif,
-                        userImg: req.session.user.img0
-                    });
-                });
+        req.session.user.error = update;
+        res.redirect('/profile');
+        // console.log(req.body);
+        // userModel.getUserById(user_id).then(result => {
+        //     delete result.passwd;
+        //     delete result.cle;
+        //     //console.log(result);
+        //     tagModel.getTags(user_id).then( tagsTab => {
+        //         console.log(tagsTab);
+        //         notifModel.getNotifs(req.session.user.id).then(notif => {
+        //             res.render('pages/profileUpdate', {
+        //                 title: "Profil de " + result.prenom,
+        //                 message: false,
+        //                 error: update,
+        //                 login: user_login,
+        //                 tabuser: result,
+        //                 tabTags: tagsTab,
+        //                 notif: notif,
+        //                 userImg: req.session.user.img0
+        //             });
+        //         });
                 
-            }).catch(function(err)
-            {
-                console.log(err);
-                //res.redirect('/');
-            });
+        //     }).catch(function(err)
+        //     {
+        //         console.log(err);
+        //         res.redirect('/');
+        //     });
             
-        }).catch(function(err)
-        {
-            console.log(err);
-            //res.redirect('/');
-        });
+        // }).catch(function(err)
+        // {
+        //     console.log(err);
+        //     res.redirect('/');
+        // });
     }
     else
     {
@@ -77,41 +81,48 @@ router.post('/update', function(req, res)
         var tab = [user_id, req.body.genre, req.body.age, req.body.orientation, req.body.ville, req.body.bio];
         
         profileModel.update(tab).then(respuesta => {
-            console.log(req.body);
-        userModel.getUserById(user_id).then(result => {
-            delete result.passwd;
-            delete result.cle;
-            //console.log(result);
-            tagModel.getTags(user_id).then( tagsTab => {
-                console.log(tagsTab);
-                var datos = [];
-                datos.push(likesModel.getNbLikes(user_id));
-                datos.push(visitsModel.getNbVisits(user));
-                Promise.all(datos).then(datos => {
-                    notifModel.getNotifs(req.session.user.id).then(notif => {
-                        res.render('pages/profile', {
-                            title: "Profil de " + result.prenom,
-                            message: respuesta,
-                            error: "",
-                            login: result.login,
-                            tabuser: result,
-                            tabTags: tagsTab,
-                            datos: datos,
-                            notif: notif,
-                            userImg: req.session.user.img0
-                        });
-                    });
-                });
-            }).catch(function(err)
+            if(respuesta)
             {
-                console.log(err);
-                //res.redirect('/');
-            });
-        }).catch(function(err)
-            {
-                console.log(err);
-                //res.redirect('/pages/profileUpdate');
-            });
+                req.session.user.message = "Votre profil a été mis à jour";
+            }
+            else
+                req.session.user.error = "Votre profil n'est pas a jour"
+            res.redirect('/user/profile');
+        // console.log(req.body);
+        // userModel.getUserById(user_id).then(result => {
+        //     delete result.passwd;
+        //     delete result.cle;
+        //     //console.log(result);
+        //     tagModel.getTags(user_id).then( tagsTab => {
+        //         console.log(tagsTab);
+        //         var datos = [];
+        //         datos.push(likesModel.getNbLikes(user_id));
+        //         datos.push(visitsModel.getNbVisits(user));
+        //         Promise.all(datos).then(datos => {
+        //             notifModel.getNotifs(req.session.user.id).then(notif => {
+        //                 res.render('pages/profile', {
+        //                     title: "Profil de " + result.prenom,
+        //                     message: respuesta,
+        //                     error: false,
+        //                     login: result.login,
+        //                     tabuser: result,
+        //                     tabTags: tagsTab,
+        //                     datos: datos,
+        //                     notif: notif,
+        //                     userImg: req.session.user.img0
+        //                 });
+        //             });
+        //         });
+        //     }).catch(function(err)
+        //     {
+        //         console.log(err);
+        //         res.redirect('/');
+        //     });
+        // }).catch(function(err)
+        //     {
+        //         console.log(err);
+        //         res.redirect('/');
+        //     });
         });
     }
 });
@@ -586,7 +597,16 @@ router.get('/', function(req, res)
 
     //var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
     //console.log(req.connection);
-    
+    if(req.session.user.message)
+    {
+        message = req.session.user.message;
+        req.session.user.message = null;
+    }
+    if (req.session.user.error)
+    {
+        error = req.session.user.error;
+        req.session.user.error = null;
+    }
     userModel.getLatLon().then(latLon => {
         //console.log(latLon);
         if (latLon)
@@ -603,14 +623,16 @@ router.get('/', function(req, res)
                             notifModel.getNotifs(req.session.user.id).then(notif => {
                                 res.render('pages/profileUpdate', {
                                     title: "Profil de " + result.prenom,
-                                    message: "",
-                                    error: "",
+                                    message: message,
+                                    error: error,
                                     login: user_login,
                                     tabuser: result,
                                     tabTags: tagsTab,
                                     notif: notif,
                                     userImg: req.session.user.img0
                                 });
+                                message = false;
+                                error = false;
                             });
                             
                         }).catch(function(err)

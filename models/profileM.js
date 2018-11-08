@@ -69,7 +69,11 @@ var profileM = {
             database.query("UPDATE `users` SET `genre`=?, `age`=?, `orientation`=?, `ville`=?, `bio`=?, `complet` = 1 WHERE id=?", [tab[1], tab[2], tab[3], tab[4], tab[5], tab[0]], function (err, results)
             {
                 if (err) reject (err);
-                resolve("Votre profil a été mis à jour.");
+                console.log(results);
+                if (results && results.affectedRows == 1)
+                    resolve(true);
+                else
+                    resolve(false);
             });
         });
         

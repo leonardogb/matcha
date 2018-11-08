@@ -6,6 +6,8 @@ const userModel = require('../models/userM');
 const tagModel = require('../models/tagsM');
 const profileModel = require('../models/profileM');
 const matchimetro = require('../models/matchM');
+var error = false;
+var message = false;
 
 
 function escapeHtml(text) {
@@ -23,6 +25,7 @@ function escapeHtml(text) {
 router.post('/recup', function(req, res)
 {
     const mail = escapeHtml(req.body.mail);
+
     userModel.emailExists(mail).then(mailOk => {
         if (mailOk)
         {
@@ -33,14 +36,17 @@ router.post('/recup', function(req, res)
                         if (ok)
                         {
                             console.log("Message envoyé !");
-                            res.render('pages/login', {title: 'Login Matcha !', message: 'Votre mot de passe a été réinitialisé. Vérifier votre mél.', error: ''});
+                            message = 'Votre mot de passe a été réinitialisé. Vérifier votre mél.';
                         }
                     });
                 }
             });
         }
         else
-            res.render('pages/login', {title: 'Login Matcha !', message: '', error: 'Votre mot de passe ne peut pas être réinitialisé. Merci d\'essayer plus tard.'});
+            error = 'Votre mot de passe ne peut pas être réinitialisé. Merci d\'essayer plus tard.';
+        res.render('pages/login', {title: 'Login Matcha !', message: message, error: error});
+        message = false;
+        error = false;
     });
 });
 
@@ -135,20 +141,23 @@ router.get('/', function(req, res)
             {
                 delete user1.passwd;
                 delete user1.cle;
+                error = "Vous devez completer votre profil.";
                 //console.log(result);
                 tagModel.getTags(user1.id).then( tagsTab => {
                     //console.log(tagsTab);
                     notifModel.getNotifs(req.session.user.id).then(notif => {
                         res.render('pages/profileUpdate', {
                             title: "Profil de " + user1.prenom,
-                            message: "",
-                            error: "Vous devez completer votre profil.",
+                            message: message,
+                            error: error,
                             login: user1.login,
                             tabuser: user1,
                             tabTags: tagsTab,
                             notif: notif,
                             userImg: req.session.user.img0
                         });
+                        message = false;
+                        error = false;
                     });
                     
                 }).catch(function(err)
@@ -161,8 +170,23 @@ router.get('/', function(req, res)
     }
     else
     {
+        if (req.session)
+        {
+            if (req.session.message)
+            {
+                message = req.session.message;
+                req.session.message = null;
+            }
+            if (req.session.error)
+            {
+                error = req.session.error;
+                req.session.error = null;
+            }
+        }
         console.log('session no iniciada');
-        res.render('pages/signup', { title: 'Signup Matcha !', message: '', error: '' });
+        res.render('pages/signup', { title: 'Signup Matcha !', message: message, error: error });
+        message = false;
+        error = false;
     }
         
 });

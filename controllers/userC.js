@@ -9,6 +9,8 @@ var notifModel = require('../models/notifM');
 //var profileModel = require('../models/profileM');
 var validator = require('../middleware/validator');
 var sessionOk = require('../middleware/session').isOkLogin;
+var error = false;
+var message = false;
 
 
 router.get('/activation/:login/:cle', function(req, res)
@@ -19,25 +21,39 @@ router.get('/activation/:login/:cle', function(req, res)
     userModel.userActivation(login, cle).then(result => {
         if (result == true)
         {
+            req.session.message = "Votre compte a été activé, vous pouvez vous connecter";
             res.redirect('/user/login');
         }
         else
         {
-            res.render('pages/signup', {title: 'Signup Matcha !', message: '', error: 'Votre lien d\'activation n\'est pas valide.'});
+            req.session.error = 'Votre lien d\'activation n\'est pas valide.';
+            res.redirect('/');
+            //res.render('pages/signup', {title: 'Signup Matcha !', message: '', error: 'Votre lien d\'activation n\'est pas valide.'});
         }
             
-    }).catch(function(error)
+    }).catch(function(err)
     {
-        console.log("Error: ", error);
-        res.render('pages/signup', {title: 'Signup Matcha !', message: '', error: error});
+        console.log("Error: ", err);
+        req.session.error = err;
+        res.redirect('/');
     });
 
 });
 
 router.get('/login', function(req, res)
 {
+    if (req.session.message)
+    {
+        message = req.session.message;
+        req.session.message = null;
+    }
+    if (req.session.error)
+    {
+        error = req.session.error;
+        req.session.error = null;
+    }
     if (!req.session.user)
-        res.render('pages/login', {title: 'Login Matcha !', message: '', error: ''});
+        res.render('pages/login', {title: 'Login Matcha !', message: message, error: error});
     else
         res.redirect('/');
 });
@@ -164,8 +180,6 @@ router.get('/profile', function(req, res)
 {
     var id_user = req.session.user.id;
     var user = req.session.user.login;
-    var error = false;
-    var message = false;
 
     if (req.session.user.error)
     {
@@ -174,7 +188,7 @@ router.get('/profile', function(req, res)
     }
     if (req.session.user.message)
     {
-        error = req.session.user.message;
+        message = req.session.user.message;
         req.session.user.message = null;
     }
     userModel.getUserById(id_user).then(result => {
@@ -199,6 +213,8 @@ router.get('/profile', function(req, res)
                         notif: notif,
                         userImg: req.session.user.img0
                     });
+                    message = false;
+                    error = false;
                 });
                 
             });
