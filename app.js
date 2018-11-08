@@ -11,7 +11,6 @@ const session = require('express-session');
 const userC = require('./controllers/userC');
 const indexC = require('./controllers/indexC');
 const profileC = require('./controllers/profileC');
-const chatC = require('./controllers/chatC');
 const searchC = require('./controllers/searchC');
 //var router = express.Router(); no utilizado
 
@@ -42,7 +41,6 @@ app.set('view engine', 'ejs');
 app.get('/favicon.ico', (req, res) => res.status(204).send('/img/hombre-mujer-blanco.svg'));
 app.use('/user', userC);
 app.use('/profile', profileC);
-app.use('/chat', chatC);
 app.use('/search', searchC);
 app.use('/', indexC);
 

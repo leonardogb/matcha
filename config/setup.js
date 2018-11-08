@@ -21,7 +21,7 @@ var bcrypt    = require('bcrypt');
       `nom` VARCHAR(30) NOT NULL, \
       `passwd` CHAR(128) NOT NULL, \
       `mail` CHAR(255) NOT NULL, \
-      `cle` CHAR(128) NOT NULL, \
+      `cle` CHAR(128) DEFAULT NULL, \
       `active` TINYINT(1) UNSIGNED DEFAULT 0, \
       `genre` ENUM('Masculin', 'Féminin') NOT NULL,\
       `age` INT(3) UNSIGNED NOT NULL DEFAULT 18,\

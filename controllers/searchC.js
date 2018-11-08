@@ -183,14 +183,31 @@ router.post('/', function(req, res)
                                         usuarios.sort(compareTags);
                                     res.send(usuarios);
                                 }
+                            }).catch(function(err)
+                            {
+                                console.log(err);
+                                res.send(false);
                             });
                         });
-                        //res.send("Bien...");
+                    }).catch(function(err)
+                    {
+                        console.log(err);
+                        res.send(false);
                     });
                 }
+                else
+                    res.send(false);
             }
+            else
+                res.send(false);
+        }).catch(function(err)
+        {
+            console.log(err);
+            res.send(false);
         });
     }
+    else
+        res.send(false);
 });
 
 module.exports = router;

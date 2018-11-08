@@ -89,7 +89,10 @@ var profileM = {
             database.query("UPDATE `users` SET `login`=?, `prenom`=?, `nom`=?, `passwd`=?, `mail`=? WHERE id=?", [tab[1], tab[2], tab[3], pass, tab[5], tab[0]], function (err, results)
             {
                 if (err) reject (err);
-                resolve("Votre profil a été mis à jour.");
+                if (results && results.affectedRows == 1)
+                    resolve(true);
+                else
+                    resolve(false);
             });
         });
         

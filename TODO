@@ -67,6 +67,6 @@ Securité:
   ☐ Vérifier toutes les requêtes SQL
 
 Autres:
-  ☐ Gestion des messages par la session
+  ✔ Gestion des messages par la session @done(18-11-08 17:22)
   ☐ Réviser la recherche la popularité ne marche pas tout à fait bien (affiche profil 0 si on cherche entre 100 et 500)]
   

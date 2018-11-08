@@ -130,71 +130,93 @@ router.post('/update', function(req, res)
 router.post('/updatePerso', function(req, res)
 {
     var user_id = req.session.user.id;
-    //console.log(req.body);
-    if (validator.isValidUsername(req.body.login) == true && validator.isValidNom(req.body.prenom, req.body.nom) == true && validator.isValidPass(req.body.mdp, req.body.mdp) == true && validator.isValidEmail(req.body.mail) == true)
+    var validUsername = validator.isValidUsername(req.body.login);
+    var validNomPrenom = validator.isValidNom(req.body.prenom, req.body.nom);
+    var validPass = validator.isValidPass(req.body.mdp, req.body.mdp);
+    var validMail = validator.isValidEmail(req.body.mail);
+    console.log(req.body);
+
+    if ( validUsername == true && validNomPrenom == true && validPass == true && validMail == true)
     {
         userModel.loginExists(req.body.login).then(loginExists => {
-            if (loginExists == 0)
+
+            if (loginExists == 0 || req.body.login == req.session.user.login)
             {
                 var tab = [user_id, req.body.login, req.body.prenom, req.body.nom, req.body.mdp, req.body.mail];
 
                 profileModel.updatePerso(tab).then(respuesta => {
-                    console.log(respuesta);
-
-                    //Actualizar la sesion
-                    req.session.user.login = req.body.login;
-                    req.session.user.prenom = req.body.prenom;
-                    req.session.user.nom = req.body.nom;
-                    req.session.user.mail = req.body.mail;
-                    console.log(req.session.user);
+                    if (respuesta)
+                    {
+                        //Actualizar la sesion
+                        req.session.user.login = req.body.login;
+                        req.session.user.prenom = req.body.prenom;
+                        req.session.user.nom = req.body.nom;
+                        req.session.user.mail = req.body.mail;
+                        req.session.user.message = "Votre profil a été mis à jour";
+                        console.log(req.session.user);
+                    }
+                    else
+                        req.session.user.error = "Votre profil n'a pas été mis à jour";
+                    res.redirect("/user/profile");
                 }).catch(function(err)
                 {
                     console.log(err);
+                    res.redirect("/user/profile");
                 });
             }
             else
             {
                 req.session.user.error = "Le login n'est pas disponible";
+                res.redirect("/profile");
             }
-            res.redirect("/user/profile");
         }).catch(function(err)
         {
             console.log(err);
+            res.redirect("/user/profile");
         });
         
     }
     else
     {
-        console.log(req.body);
-        userModel.getUserById(user_id).then(result => {
-            delete result.passwd;
-            delete result.cle;
-            //console.log(result);
-            tagModel.getTags(user_id).then( tagsTab => {//cambiar id de usuario
-                console.log(tagsTab);
-                notifModel.getNotifs(req.session.user.id).then(notif => {
-                    res.render('pages/profileUpdate', {
-                        title: "Profil de " + result.prenom, //cambiar por el login
-                        message: "",
-                        error: "Vérifier les champs",
-                        login: result.login,
-                        tabuser: result,
-                        tabTags: tagsTab,
-                        notif: notif,
-                        userImg: req.session.user.img0
-                    });
-                });
+        if (validUsername != true)
+            req.session.user.error = "Le login n'est pas valide";
+        else if (validNomPrenom != true)
+            req.session.user.error = "Le nom ou prénom n'est pas valide";
+        else if (validPass != true)
+            req.session.user.error = "Le mot de passe n'est pas valide";
+        else if (validMail != true)
+            req.session.user.error = "Le mail n'est pas valide";
+        res.redirect('/profile');
+        // console.log(req.body);
+        // userModel.getUserById(user_id).then(result => {
+        //     delete result.passwd;
+        //     delete result.cle;
+        //     //console.log(result);
+        //     tagModel.getTags(user_id).then( tagsTab => {//cambiar id de usuario
+        //         console.log(tagsTab);
+        //         notifModel.getNotifs(req.session.user.id).then(notif => {
+        //             res.render('pages/profileUpdate', {
+        //                 title: "Profil de " + result.prenom, //cambiar por el login
+        //                 message: "",
+        //                 error: "Vérifier les champs",
+        //                 login: result.login,
+        //                 tabuser: result,
+        //                 tabTags: tagsTab,
+        //                 notif: notif,
+        //                 userImg: req.session.user.img0
+        //             });
+        //         });
                 
-            }).catch(function(err)
-            {
-                console.log(err);
-                //res.redirect('/');
-            });
-        }).catch(function(err)
-            {
-                console.log(err);
-                //res.redirect('/pages/profileUpdate');
-            });
+        //     }).catch(function(err)
+        //     {
+        //         console.log(err);
+        //         //res.redirect('/');
+        //     });
+        // }).catch(function(err)
+        //     {
+        //         console.log(err);
+        //         //res.redirect('/pages/profileUpdate');
+        //     });
     }
 });
 
@@ -246,7 +268,7 @@ router.post('/updateTags', function(req, res)
                     //Recuperar los tag del usuario,
                     tagModel.userTagExists(user_id, result[0].id).then(respuesta => {
                         if (!respuesta)
-                        tagModel.addUserTag(user_id, result[0].id);
+                            tagModel.addUserTag(user_id, result[0].id);
                     }).catch(function(error) {
                         console.log("Error: ", error);
                     });
@@ -266,7 +288,9 @@ router.post('/updateTags', function(req, res)
                     });
                 }
             });
-        }// else mensaje de error (session)
+        }
+        else
+            req.session.user.error = "Le format des tags n'est pas valide";
         
     });
     res.redirect('/profile');
@@ -288,7 +312,11 @@ router.get('/deleteTag/:tag', function(req, res)
         });
         
     }
-    //else error el tag no es válido
+    else
+    {
+        req.session.user.error = "Le tag n'est pas valide";
+        res.redirect('/profile');
+    }
 });
 
 router.get('/user/:login', function(req, res)
@@ -354,7 +382,7 @@ router.get('/user/:login', function(req, res)
             }).catch(function(err)
             {
                 console.log(err);
-                //res.redirect('/');
+                res.redirect('/');
             });
         }
         else
@@ -364,7 +392,7 @@ router.get('/user/:login', function(req, res)
     }).catch(function(err)
     {
         console.log(err);
-        //res.redirect('/');
+        res.redirect('/');
     });
 });
 
@@ -372,16 +400,6 @@ router.post('/setLoc', function(req, res)
 {
     var address = req.body.address;
 
-    function escapeHtml(text) {
-        var map = {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#039;'
-        };
-        return text.replace(/[&<>"']/g, function(m) { return map[m]; });
-    }
     address = escapeHtml(address);
     console.log(address);
     userModel.getLocation(address).then(localizacion => {
@@ -415,6 +433,7 @@ router.post('/setLoc', function(req, res)
     }).catch(function(err)
     {
         console.log(err);
+        res.send({address: "L'address n'est pas valide", lat: "undefined", lon: "undefined"});
     });
 });
 
@@ -437,7 +456,6 @@ router.get('/like/:login', function(req, res)
                             else
                                 res.send({action: "removed"});
                         });
-                        
                     }).catch(function(err)
                     {
                         console.log(err);
@@ -462,11 +480,11 @@ router.get('/like/:login', function(req, res)
             }).catch(function(err)
             {
                 console.log(err);
+                res.send({action: false});
             });
         }
         else
-            res.redirect('/');//este else esta bien?
-        //res.redirect('/profile/user/' + username);
+            res.send({action: false});
     });
 });
 

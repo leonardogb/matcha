@@ -243,12 +243,4 @@ router.get('/logout', function(req, res)
     
 });
 
-
-/* GET home page. */
-router.get('/', function(req, res)
-{
-    //si la sesión está iniciada
-    res.render('pages/index', {title: 'Matcha !', login: 'Cambiame'});
-});
-
 module.exports = router;

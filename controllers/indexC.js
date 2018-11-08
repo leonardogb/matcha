@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const uniqid = require('uniqid');
+const faker = require('faker');
 const notifModel = require('../models/notifM');
 const userModel = require('../models/userM');
 const tagModel = require('../models/tagsM');
@@ -9,6 +10,7 @@ const matchimetro = require('../models/matchM');
 var error = false;
 var message = false;
 
+faker.locale = "fr";
 
 function escapeHtml(text) {
     const map = {
@@ -21,6 +23,37 @@ function escapeHtml(text) {
   
     return text.replace(/[&<>"']/g, function(m) { return map[m]; });
   }
+
+  router.get('/api/user', function(req, res) {
+      var random = faker.random.boolean();
+
+      if (random)
+      {
+        res.json({
+            
+            login: faker.internet.userName(),
+            prenom: faker.name.firstName('male'),
+            nom: faker.name.lastName(),
+            passwd: faker.internet.password(),
+            mail: faker.internet.email(),
+            active: 1,
+            genre: "Masculin"
+        });
+      }
+      else
+      {
+        res.json({
+            login: faker.internet.userName(),
+            prenom: faker.name.firstName('female'),
+            nom: faker.name.lastName(),
+            passwd: faker.internet.password(),
+            mail: faker.internet.email(),
+            active: 1,
+            genre: "Féminin"
+        });
+      }
+    
+  });
 
 router.post('/recup', function(req, res)
 {
