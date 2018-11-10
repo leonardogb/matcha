@@ -2,11 +2,13 @@ const express = require('express');
 const router = express.Router();
 const uniqid = require('uniqid');
 const request = require('request');
+const bcrypt = require('bcrypt');
 const notifModel = require('../models/notifM');
 const userModel = require('../models/userM');
 const tagModel = require('../models/tagsM');
 const profileModel = require('../models/profileM');
 const matchimetro = require('../models/matchM');
+const tagsModel = require('../models/tagsM');
 var error = false;
 var message = false;
 
@@ -23,12 +25,53 @@ function escapeHtml(text) {
     return text.replace(/[&<>"']/g, function(m) { return map[m]; });
   }
 
-  router.get('/api/user', function(req, res) {
-    request('https://randomuser.me/api/?nat=fr', { json: true }, (err, respuesta, body) => {
-        if (err) console.log(err);
-        res.send(body);
-    });
-    
+  router.get('/seed', function(req, res) {
+      var i = 0;
+
+    if(req.session && req.session.user && req.session.user.id == 1)
+    {
+        request('https://randomuser.me/api/?nat=fr&inc=login,name,email,gender,dob,picture,location,registered&results=5', { json: true }, (err, respuesta, body) => {
+            if (err) console.log(err);
+            body.results.forEach(user => {
+                var tabuser = [];
+                var orientations = ["Bisexuel", "Homosexuel", "Hétérosexuel"];
+                var sexe = null;
+                var orientation = orientations[Math.floor(Math.random()*orientations.length)];
+
+                if (user.gender == "female")
+                    sexe = "Féminin";
+                else
+                    sexe = "Masculin";
+
+                tabuser.push(user.login.username, user.name.first, user.name.last, bcrypt.hashSync(user.login.password, 10),
+                user.email, 1, sexe, user.dob.age, orientation,
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas dictum gravida felis, mattis vestibulum nunc elementum ut. Quisque justo purus, interdum quis consequat quis, posuere a erat.",
+                user.picture.large, user.location.city, user.location.coordinates.latitude, user.location.coordinates.longitude,
+                user.location.city, Math.floor(Math.random() * 500), 1, user.registered.date);
+                userModel.insertNewUser(tabuser).then(userAdded => {
+                    if (userAdded)
+                    {
+                        console.log(tabuser[0] + " added to database");
+                        userModel.getIdUser(tabuser[0]).then(user1 => {
+                            if (user1)
+                            {
+                                tagsModel.getNbTags().then(nbTags => {
+                                    if (nbTags)
+                                    {
+                                        tagsModel.addUserTag(user1.id, Math.floor(Math.random() * nbTags));
+                                        tagsModel.addUserTag(user1.id, Math.floor(Math.random() * nbTags));
+                                        tagsModel.addUserTag(user1.id, Math.floor(Math.random() * nbTags));
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+
+            });
+        });
+    }
+    res.redirect('/');
   });
 
 router.post('/recup', function(req, res)

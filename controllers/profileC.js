@@ -230,11 +230,13 @@ router.post('/update/images', function(req, res)
         fse.mkdirSync(folder);
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
-        //console.log(files);
+        console.log(files);
+
+        if (files.img0.size > 0)
+            req.session.user.img0 = "/img/user/" + req.session.user.login + "/" + files.img0.name;
 
         profileModel.updateImg(user_id, user_login, folder, files).then(result => {
-            //console.log(result);
-            Promise.all(result).then(function(values)
+            Promise.all(result).then(values =>
             {
                 console.log(values);
                 res.redirect('/profile');
@@ -635,7 +637,7 @@ router.get('/', function(req, res)
                     userModel.getUserById(user_id).then(result => {
                         delete result.passwd;
                         delete result.cle;
-                        //console.log(result);
+                        console.log(result);
                         tagModel.getTags(user_id).then( tagsTab => {
                             console.log(tagsTab);
                             notifModel.getNotifs(req.session.user.id).then(notif => {

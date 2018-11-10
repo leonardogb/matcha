@@ -478,6 +478,20 @@ var userM = {
                 resolve(body);
             });
         });
+    },
+    insertNewUser: function(user)
+    {
+        return new Promise(function(resolve, reject)
+        {
+            database.query("INSERT INTO users (login, prenom, nom, passwd, mail, active, genre, age, orientation, bio, img0, ville, lat, lon, location, popularite, complet, visite) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [user[0], user[1], user[2], user[3], user[4], user[5], user[6], user[7], user[8], user[9], user[10], user[11], user[12], user[13], user[14], user[15], user[16], user[17], user[18]], function(err, resp)
+            {
+                if(err) reject(err);
+                if(resp && resp.affectedRows)
+                    resolve(true);
+                else
+                    resolve(false);
+            });
+        });
     }
 
 };

@@ -28,7 +28,7 @@ var profileM = {
             //console.log(files);
             Object.keys(files).forEach(function(key)  {
                 console.log(files[key].name);
-                if (files[key].size > 0)
+                if (files[key].size > 0 && files[key].type == 'image/png' || files[key].type == 'image/jpeg')
                 {
                     tabla.push(new Promise(function (resolve, reject)
                     {

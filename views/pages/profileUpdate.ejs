@@ -89,9 +89,8 @@
                                             <span class="input-group-text"><i class="fa fa-intersex"></i></span>
                                         </div>
                                         <select class="form-control" name="genre" required> <!-- id="inputState" -->
-                                            <option></option>
-                                            <option>Masculin</option>
-                                            <option>Féminin</option>
+                                            <option <% if(tabuser.genre == 'Masculin') { %> selected="selected" <% } %>>Masculin</option>
+                                            <option <% if(tabuser.genre == 'Féminin') { %> selected="selected" <% } %>>Féminin</option>
                                         </select>
                                     </div>
                                 </div>
@@ -104,7 +103,7 @@
                                         <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-user"></i></span>
                                         </div>
-                                        <input class="form-control" type="number" id="number-input" min="18" max="99" name="age" required>
+                                        <input class="form-control" type="number" id="number-input" min="18" max="99" name="age" required value="<%= tabuser.age%>">
                                     </div>
                                 </div>
                             </div>
@@ -118,10 +117,9 @@
                                                 <span class="input-group-text"><i class="fa fa-venus-mars"></i></span>
                                         </div>
                                         <select class="form-control" name="orientation" required> <!-- id="inputState" -->
-                                            <option></option>
-                                            <option>Bisexuel</option>
-                                            <option>Homosexuel</option>
-                                            <option>Hétérosexuel</option>
+                                            <option <% if(tabuser.orientation == 'Bisexuel') { %> selected="selected" <% } %>>Bisexuel</option>
+                                            <option <% if(tabuser.orientation == 'Homosexuel') { %> selected="selected" <% } %>>Homosexuel</option>
+                                            <option <% if(tabuser.orientation == 'Hétérosexuel') { %> selected="selected" <% } %>>Hétérosexuel</option>
                                         </select>
                                     </div>
                                 </div>
@@ -134,7 +132,7 @@
                                             <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fa fa-globe"></i></span>
                                             </div>
-                                            <input class="form-control" type="text" placeholder="Votre ville" name="ville" required>
+                                            <input class="form-control" type="text" placeholder="Votre ville" name="ville" required value="<%= tabuser.ville %>">
                                         </div>
                                     </div>
                                 </div>
@@ -142,7 +140,7 @@
                             <div class="form-group">
                                 <label class="col-md-6 control-label" for="Bio">Bio (max 200 caractères)</label>
                                 <div class="col-md-6">                     
-                                    <textarea class="form-control" rows="5" id="Overview (max 200 words)" placeholder="Écris quelque chose sur toi..." name="bio" required></textarea>
+                                    <textarea class="form-control" rows="5" id="Overview (max 200 words)" placeholder="Écris quelque chose sur toi..." name="bio" required ><%= tabuser.bio %></textarea>
                                 </div>
                             </div>
                 <!-- Submit -->
@@ -200,26 +198,26 @@
                                 <div class="row">
                                     <div class="col-md-2">
                                         <img class="img0 img-thumbnail" src="<%= tabuser.img0 %>" alt="Image"/>
-                                        <input type='file' id="imgInput0" style="display: none;" name="img0"/>
+                                        <input type='file' id="imgInput0" style="display: none;" name="img0" accept="image/png, image/jpeg"/>
                                         <h6>Image profil</h6>
                                     </div>
                                     <div class="col-md-2">
                                         <img class="img1 img-thumbnail" src="<%= tabuser.img1 %>" alt="Image"/>
-                                        <input type='file' id="imgInput1" style="display: none;" name="img1"/>
+                                        <input type='file' id="imgInput1" style="display: none;" name="img1" accept="image/png, image/jpeg"/>
                                     </div>
                                     <div class="col-md-2">
                                         <img class="img2 img-thumbnail" src="<%= tabuser.img2 %>" alt="Image"/>
-                                        <input type='file' id="imgInput2" style="display: none;" name="img2"/>
+                                        <input type='file' id="imgInput2" style="display: none;" name="img2" accept="image/png, image/jpeg"/>
                                     </div>
 
                                     <div class="col-md-2">
                                         <img class="img3 img-thumbnail" src="<%= tabuser.img3 %>" alt="Image"/>
-                                        <input type='file' id="imgInput3" style="display: none;" name="img3"/>
+                                        <input type='file' id="imgInput3" style="display: none;" name="img3" accept="image/png, image/jpeg"/>
                                     </div>
 
                                     <div class="col-md-2">
                                         <img class="img4 img-thumbnail" src="<%= tabuser.img4 %>" alt="Image"/>
-                                        <input type='file' id="imgInput4" style="display: none;" name="img4"/>
+                                        <input type='file' id="imgInput4" style="display: none;" name="img4" accept="image/png, image/jpeg"/>
                                     </div>
                                 </div>
                             </div>

@@ -108,6 +108,20 @@ var tagsM = {
         {
             if (err) throw(err);
         });
+    },
+    getNbTags: function()
+    {
+        return new Promise(function(resolve, reject)
+        {
+            database.query("SELECT COUNT(*) AS nbTags FROM tags", function(err, tags)
+            {
+                if(err) reject(err);
+                if(tags && tags[0])
+                    resolve(tags[0].nbTags);
+                else
+                    resolve(false);
+            });
+        });
     }
 };
 
