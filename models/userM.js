@@ -303,7 +303,7 @@ var userM = {
             });
         });
     },
-    getUserBySex: function(id_user, sex, orientation)
+    getUserBySex: function(id_user, sex, orientation, user1_sex)
     {
         return new Promise(function(resolve, reject)
         {
@@ -311,13 +311,21 @@ var userM = {
             var params;
             if (sex == "Autre")
             {
-                sql = 'SELECT * FROM users WHERE complet = 1 AND orientation = ? AND id != ?';
-                params = [orientation, id_user];
+                if (user1_sex == 'Masculin')
+                {
+                    sql = "SELECT * FROM users WHERE complet = 1 AND id != ? AND ((genre = 'Masculin' AND orientation != 'Hétérosexuel') OR (genre = 'Féminin' AND orientation != 'Homosexuel'))";
+                    params = [id_user];
+                }
+                else if(user1_sex == 'Féminin')
+                {
+                    sql = "SELECT * FROM users WHERE complet = 1 AND id != ? AND ((genre = 'Masculin' AND orientation != 'Homosexuel') OR (genre = 'Féminin' AND orientation != 'Hétérosexuel'))";
+                    params = [id_user];
+                }
             }
             else
             {
-                sql = 'SELECT * FROM users WHERE complet = 1 AND orientation = ? AND genre=? AND id != ?';
-                params = [orientation, sex, id_user];
+                sql = "SELECT * FROM users WHERE complet = 1 AND genre=? AND id != ? AND (orientation = ? OR orientation = 'Bisexuel')";
+                params = [sex, id_user, orientation];
             }
             database.query(sql, params, function(err, users)
             {
@@ -329,40 +337,69 @@ var userM = {
             });
         });
     },
-    getUsersLimits: function(id_user, sex, orientation, age, popul, tri)
+    getUsersLimits: function(id_user, sex, orientation, age, popul, tri, user1_sex)
     {
         return new Promise(function(resolve, reject)
         {
             var sql;
             var params;
 
-            console.log(age);
-            console.log(popul);
             if (sex == "Autre")
             {
-                sql = 'SELECT * FROM users WHERE complet = 1 AND orientation = ? AND age >= ? AND age <= ? AND popularite >= ? AND popularite <= ? AND id != ?';
-                if (tri == "age")
-                    sql += ' ORDER BY age';
-                else if (tri == "location")
-                    sql += ' ORDER BY location';
-                else if (tri == "popularite")
-                    sql += ' ORDER BY popularite';
-                params = [orientation, age.ageMin, age.ageMax, popul.populMin, popul.populMax, id_user, tri];
+                if (user1_sex == 'Masculin')
+                {
+                    sql = "SELECT * FROM users WHERE complet = 1 AND id != ? AND age >= ? AND age <= ? AND popularite >= ? AND popularite <= ? AND ((genre = 'Masculin' AND orientation != 'Hétérosexuel') OR (genre = 'Féminin' AND orientation != 'Homosexuel'))";
+                    params = [id_user];
+                }
+                else if(user1_sex == 'Féminin')
+                {
+                    sql = "SELECT * FROM users WHERE complet = 1 AND id != ? AND age >= ? AND age <= ? AND popularite >= ? AND popularite <= ? AND ((genre = 'Masculin' AND orientation != 'Homosexuel') OR (genre = 'Féminin' AND orientation != 'Hétérosexuel'))";
+                    params = [id_user];
+                }
+                // sql = 'SELECT * FROM users WHERE complet = 1 AND id != ? AND age >= ? AND age <= ? AND popularite >= ? AND popularite <= ?';
+                // params = [id_user, age.ageMin, age.ageMax, popul.populMin, popul.populMax, tri];
             }
             else
             {
-                sql = 'SELECT * FROM users WHERE complet = 1 AND orientation = ? AND age >= ? AND age <= ? AND popularite >= ? AND popularite <= ? AND genre = ? AND id != ?';
-                if (tri == "age")
-                    sql += ' ORDER BY age';
-                else if (tri == "location")
-                    sql += ' ORDER BY location';
-                else if (tri == "popularite")
-                    sql += ' ORDER BY popularite';
+                sql = "SELECT * FROM users WHERE complet = 1 AND (orientation = ? OR orientation = 'Bisexuel') AND age >= ? AND age <= ? AND popularite >= ? AND popularite <= ? AND genre = ? AND id != ?";
+
                 params = [orientation, age.ageMin, age.ageMax, popul.populMin, popul.populMax, sex, id_user, tri];
             }
+            if (tri == "age")
+                sql += ' ORDER BY age';
+            else if (tri == "location")
+                sql += ' ORDER BY location';
+            else if (tri == "popularite")
+                sql += ' ORDER BY popularite';
             database.query(sql, params, function(err, users)
             {
-                console.log("Tri: " + tri);
+                if (err) reject(err);
+                if (users)
+                    resolve(users);
+                else
+                    resolve(false);
+            });
+        });
+    },
+    getUsersLimits2: function(id_user, age, popul, tri)
+    {
+        return new Promise(function(resolve, reject)
+        {
+            var sql;
+            var params;
+
+            sql = "SELECT * FROM users WHERE complet = 1 AND age >= ? AND age <= ? AND popularite >= ? AND popularite <= ? AND id != ?";
+
+            params = [age.ageMin, age.ageMax, popul.populMin, popul.populMax, id_user, tri];
+
+            if (tri == "age")
+                sql += ' ORDER BY age';
+            else if (tri == "location")
+                sql += ' ORDER BY location';
+            else if (tri == "popularite")
+                sql += ' ORDER BY popularite';
+            database.query(sql, params, function(err, users)
+            {
                 if (err) reject(err);
                 if (users)
                     resolve(users);

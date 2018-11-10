@@ -7,14 +7,12 @@ $(document).ready(function(){
             if (data)
             {
                 $('#messages').append(`<div class="alert alert-success">
-                <a class="close" data-dismiss="alert" href="#">×</a>Vous avez bien signalé un faux profil
-            </div>`);
+                <a class="close" data-dismiss="alert" href="#">×</a>Vous avez bien signalé un faux profil</div>`);
             }
             else
             {
                 $('#messages').append(`<div class="alert alert-danger">
-                <a class="close" data-dismiss="alert" href="#">×</a>Ce profil a été déjà signalé
-            </div>`);
+                <a class="close" data-dismiss="alert" href="#">×</a>Ce profil a été déjà signalé</div>`);
             }
         });
     });
@@ -24,17 +22,16 @@ $(document).ready(function(){
 
         $.post( "/profile/report", {report: "block", login: login}, function( data )
         {
+            console.log(data);
             if (data)
             {
                 $('#messages').append(`<div class="alert alert-success">
-                <a class="close" data-dismiss="alert" href="#">×</a>Vous avez bloqué ce profil
-            </div>`);
+                <a class="close" data-dismiss="alert" href="#">×</a>Vous avez bloqué ce profil</div>`);
             }
             else
             {
                 $('#messages').append(`<div class="alert alert-danger">
-                <a class="close" data-dismiss="alert" href="#">×</a>Ce profil a été déjà bloqué
-            </div>`);
+                <a class="close" data-dismiss="alert" href="#">×</a>Ce profil a été déjà bloqué</div>`);
             }
         });
     });

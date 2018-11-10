@@ -17,24 +17,43 @@
             </div>
             <div class="row">
                 <form method="POST" action="/search" id="searchForm">
-                    <div class="form-group">
-                        <span>Âge entre </span>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text">Recherche</label>
+                        </div>
+                        <select class="custom-select" name="recherche">
+                            <option value="normal" selected>Normal</option>
+                            <option value="avance">Avancé</option>
+                        </select> 
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Âge entre</span>
+                        </div>
                         <input type="number" name="ageMin" id="ageMin" value="18" min="18" max="99">
-                        <span> et </span>
+                        <span class="input-group-text" id="">et</span>
                         <input type="number" name="ageMax" id="ageMax" value="99" min="18" max="99">
                     </div>
-                    <div class="form-group">
-                        <span>Popularité entre </span>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Popularité entre</span>
+                        </div>
                         <input type="number" name="populMin" value="0" min="0">
-                        <span> et </span>
+                        <span class="input-group-text" id="">et</span>
                         <input type="number" name="populMax" value="500">
                     </div>
-                    <div class="form-group">
-                        <span>Localisation : </span>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text">Localisation</label>
+                        </div>
                         <input type="text" name="location">
                     </div>
-                    <div class="form-group">
-                        <span>Interêts :</span>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text">Interêts</label>
+                        </div>
                         <input name="tags" type="text" value="" placeholder="Écrivez un hashtag" data-role="tagsinput">
                     </div>
                     <div class="input-group mb-3">
@@ -49,7 +68,7 @@
                             <option value="tags">Tags</option>
                         </select> 
                     </div>
-                                            
+
                     <input type="submit" data-inline="true" class="btn btn-success" value="Envoyer">
                 </form>
             </div>

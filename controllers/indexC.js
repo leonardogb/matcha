@@ -131,7 +131,7 @@ router.get('/', function(req, res)
                     else
                         sex = "Autre";
                 }
-                userModel.getUserBySex(user1.id, sex, user1.orientation).then(userTab => {
+                userModel.getUserBySex(user1.id, sex, user1.orientation, user1.genre).then(userTab => {
                     // console.log("Perfiles:");
                     // console.log(userTab);
                     var usuarios = [];

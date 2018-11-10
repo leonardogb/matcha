@@ -232,7 +232,7 @@ router.post('/update/images', function(req, res)
     form.parse(req, function (err, fields, files) {
         console.log(files);
 
-        if (files.img0.size > 0)
+        if (files.img0.size > 0 && files.img0.type == 'image/png' || files.img0.type == 'image/jpeg')
             req.session.user.img0 = "/img/user/" + req.session.user.login + "/" + files.img0.name;
 
         profileModel.updateImg(user_id, user_login, folder, files).then(result => {
@@ -550,7 +550,7 @@ router.post('/report', function(req, res)
                     {
                         profileModel.addReportBlock(req.session.user.id, loginOk.id).then(blockadded => {
                             likesModel.suprimeLike(req.session.user.id, loginOk.id).then(removeOk => {
-                                if (blockadded && removeOk)
+                                if (blockadded)
                                     res.send(true);
                                 else
                                     res.send(false);

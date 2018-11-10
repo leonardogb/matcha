@@ -129,71 +129,155 @@ router.post('/', function(req, res)
                     tri = "default";
                 if (age && popul)
                 {
-                    userModel.getUsersLimits(user1.id, sex, user1.orientation, age, popul, tri).then(userTab => {
-                        //console.log(userTab);
-                        var usuarios = [];
-                        var i = 0;
-
-                        userTab.forEach(element => {
-                            delete element.active;
-                            delete element.passwd;
-                            delete element.cle;
-                            delete element.mail;
-                            delete element.img1;
-                            delete element.img2;
-                            delete element.img3;
-                            delete element.img4;
-                            delete element.ville;
-                            delete element.complet;
-                            delete element.visite;
-                            const puntos = [];
-                            puntos.push(matchimetro.getPtsDistance(user1.lat, user1.lon, element.lat, element.lon));
-                            puntos.push(matchimetro.getPtsTags(user1.id, element.id));
-                            puntos.push(matchimetro.getPtsPopul(element.popularite));
-                            puntos.push(tagsModel.getTags(element.id));
-                            Promise.all(puntos).then(punts => {
-                                // console.log("Puntos: ");
-                                // console.log(punts);
-                                var total = 0;
-                                total = punts[0] + punts[1] + punts[2];
-                                total = parseInt(total, 10);
-
-                                if (location.length != 0 || location != "")
-                                {
-                                    if (location == element.location)
-                                        usuarios.push([total, element]);
-                                }
-                                if (tags)
-                                {
-                                    tags.forEach(ele => {
-                                        punts[3].forEach(el => {
-                                            if (ele == el)
-                                                usuarios.push([total, element, punts[1]]);
-                                        });
-                                    });
-                                }
-                                if (location.length == 0 && location == "" && !tags)
-                                    usuarios.push([total, element]);
-                                
-                                if (++i == userTab.length)
-                                {
-                                    if (tri == "default")
-                                        usuarios.sort(compareMatch);
-                                    else if (tri == "tags")
-                                        usuarios.sort(compareTags);
-                                    res.send(usuarios);
-                                }
-                            }).catch(function(err)
-                            {
-                                console.log(err);
-                                res.send(false);
-                            });
-                        });
-                    }).catch(function(err)
+                    if (req.body.recherche == "normal")
                     {
-                        console.log(err);
+                        userModel.getUsersLimits(user1.id, sex, user1.orientation, age, popul, tri, user1.genre).then(userTab => {
+                            //console.log(userTab);
+                            var usuarios = [];
+                            var i = 0;
+                            var metidos = [];
+
+                            userTab.forEach(element => {
+                                delete element.active;
+                                delete element.passwd;
+                                delete element.cle;
+                                delete element.mail;
+                                delete element.img1;
+                                delete element.img2;
+                                delete element.img3;
+                                delete element.img4;
+                                delete element.ville;
+                                delete element.complet;
+                                delete element.visite;
+                                const puntos = [];
+                                puntos.push(matchimetro.getPtsDistance(user1.lat, user1.lon, element.lat, element.lon));
+                                puntos.push(matchimetro.getPtsTags(user1.id, element.id));
+                                puntos.push(matchimetro.getPtsPopul(element.popularite));
+                                puntos.push(tagsModel.getTags(element.id));
+                                Promise.all(puntos).then(punts => {
+                                    // console.log("Puntos: ");
+                                    // console.log(punts);
+                                    var total = 0;
+                                    total = punts[0] + punts[1] + punts[2];
+                                    total = parseInt(total, 10);
+
+                                    if (location.length != 0 || location != "")
+                                    {
+                                        if (location == element.location)
+                                            usuarios.push([total, element]);
+                                    }
+                                    if (tags)
+                                    {
+                                        tags.forEach(ele => {
+                                            punts[3].forEach(el => {
+                                                if (ele == el && !metidos[element.login])
+                                                {
+                                                    console.log(metidos);
+                                                    usuarios.push([total, element, punts[1]]);
+                                                    metidos[element.login] = 1;
+                                                }
+                                            });
+                                        });
+                                    }
+                                    if (location.length == 0 && location == "" && !tags)
+                                        usuarios.push([total, element]);
+                                    
+                                    if (++i == userTab.length)
+                                    {
+                                        if (tri == "default")
+                                            usuarios.sort(compareMatch);
+                                        else if (tri == "tags")
+                                            usuarios.sort(compareTags);
+                                        res.send(usuarios);
+                                    }
+                                }).catch(function(err)
+                                {
+                                    console.log(err);
+                                    res.send(false);
+                                });
+                            });
+                        }).catch(function(err)
+                        {
+                            console.log(err);
+                            res.send(false);
+                        });
+                    }
+                    else if (req.body.recherche == "avance")
+                    {
+                        userModel.getUsersLimits2(user1.id, age, popul, tri).then(userTab => {
+                            //console.log(userTab);
+                            var usuarios = [];
+                            var i = 0;
+                            var metidos = [];
+
+                            userTab.forEach(element => {
+                                delete element.active;
+                                delete element.passwd;
+                                delete element.cle;
+                                delete element.mail;
+                                delete element.img1;
+                                delete element.img2;
+                                delete element.img3;
+                                delete element.img4;
+                                delete element.ville;
+                                delete element.complet;
+                                delete element.visite;
+                                const puntos = [];
+                                puntos.push(matchimetro.getPtsDistance(user1.lat, user1.lon, element.lat, element.lon));
+                                puntos.push(matchimetro.getPtsTags(user1.id, element.id));
+                                puntos.push(matchimetro.getPtsPopul(element.popularite));
+                                puntos.push(tagsModel.getTags(element.id));
+                                Promise.all(puntos).then(punts => {
+                                    // console.log("Puntos: ");
+                                    // console.log(punts);
+                                    var total = 0;
+                                    total = punts[0] + punts[1] + punts[2];
+                                    total = parseInt(total, 10);
+
+                                    if (location.length != 0 || location != "")
+                                    {
+                                        if (location == element.location)
+                                            usuarios.push([total, element]);
+                                    }
+                                    if (tags)
+                                    {
+                                        tags.forEach(ele => {
+                                            punts[3].forEach(el => {
+                                                if (ele == el && !metidos[element.login])
+                                                {
+                                                    console.log(metidos);
+                                                    usuarios.push([total, element, punts[1]]);
+                                                    metidos[element.login] = 1;
+                                                }
+                                            });
+                                        });
+                                    }
+                                    if (location.length == 0 && location == "" && !tags)
+                                        usuarios.push([total, element]);
+                                    
+                                    if (++i == userTab.length)
+                                    {
+                                        if (tri == "default")
+                                            usuarios.sort(compareMatch);
+                                        else if (tri == "tags")
+                                            usuarios.sort(compareTags);
+                                        res.send(usuarios);
+                                    }
+                                }).catch(function(err)
+                                {
+                                    console.log(err);
+                                    res.send(false);
+                                });
+                            });
+                        }).catch(function(err)
+                        {
+                            console.log(err);
+                            res.send(false);
+                        });
+                    }
+                    else
                         res.send(false);
-                    });
+                    
                 }
                 else
                     res.send(false);
