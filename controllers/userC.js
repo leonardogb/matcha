@@ -56,6 +56,8 @@ router.get('/login', function(req, res)
         res.render('pages/login', {title: 'Login Matcha !', message: message, error: error});
     else
         res.redirect('/');
+    message = false;
+    error = false;
 });
 
 router.post('/login', function(req, res)

@@ -183,7 +183,7 @@ router.post('/updatePerso', function(req, res)
         else if (validNomPrenom != true)
             req.session.user.error = "Le nom ou prénom n'est pas valide";
         else if (validPass != true)
-            req.session.user.error = "Le mot de passe n'est pas valide";
+            req.session.user.error = "Votre mot de passe doit avoir des chiffres, des lettres, un caractère special [@$!%*#?&] et au moins 8 caractères";
         else if (validMail != true)
             req.session.user.error = "Le mail n'est pas valide";
         res.redirect('/profile');

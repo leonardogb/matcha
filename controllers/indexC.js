@@ -133,60 +133,69 @@ router.get('/', function(req, res)
                 }
                 userModel.getUserBySex(user1.id, sex, user1.orientation, user1.genre).then(userTab => {
                     // console.log("Perfiles:");
-                    // console.log(userTab);
-                    var usuarios = [];
-                    var i = 0;
-                    userTab.forEach(element => {
-                        delete element.passwd;
-                        delete element.cle;
-                        delete element.mail;
-                        const puntos = [];
-                        puntos.push(matchimetro.getPtsDistance(user1.lat, user1.lon, element.lat, element.lon));
-                        puntos.push(matchimetro.getPtsTags(user1.id, element.id));
-                        puntos.push(matchimetro.getPtsPopul(element.popularite));
-                        Promise.all(puntos).then(punts => {
-                            // console.log("Puntos: ");
-                            // console.log(punts);
-                            profileModel.reportBlockExists(user1.id, element.id).then(bloqueado => {
-                                if (!bloqueado)
-                                {
-                                    var total = 0;
-                                    punts.forEach(elem => {
-                                        total = total + elem;
-                                    });
-                                    total = parseInt(total, 10);
-                                    usuarios.push([total, element]);
-                                }
-                                if (++i == userTab.length)
-                                {
-                                    // console.log("Usuarios:");
-                                    // console.log(usuarios);
-                                    function compare(a, b) {
-                                        if (a[0] > b[0])
-                                        return -1;
-                                        if (a[0] < b[0])
-                                        return 1;
-                                        // a doit être égal à b
-                                        return 0;
-                                    }
-                                    usuarios.sort(compare);
-                                    notifModel.getNotifs(req.session.user.id).then(notif => {
-                                        //console.log(notif);
-                                        res.render('pages/index', {
-                                            title: 'Matcha !',
-                                            login: req.session.user.login,
-                                            userImg: req.session.user.img0,
-                                            notif: notif,
-                                            profil: usuarios
+                    console.log(userTab.length);
+                    if (userTab && userTab.length > 0)
+                    {
+                        var usuarios = [];
+                        var i = 0;
+                        userTab.forEach(element => {
+                            delete element.passwd;
+                            delete element.cle;
+                            delete element.mail;
+                            const puntos = [];
+                            puntos.push(matchimetro.getPtsDistance(user1.lat, user1.lon, element.lat, element.lon));
+                            puntos.push(matchimetro.getPtsTags(user1.id, element.id));
+                            puntos.push(matchimetro.getPtsPopul(element.popularite));
+                            Promise.all(puntos).then(punts => {
+                                // console.log("Puntos: ");
+                                // console.log(punts);
+                                profileModel.reportBlockExists(user1.id, element.id).then(bloqueado => {
+                                    if (!bloqueado)
+                                    {
+                                        var total = 0;
+                                        punts.forEach(elem => {
+                                            total = total + elem;
                                         });
-                                    });
-                                }
+                                        total = parseInt(total, 10);
+                                        usuarios.push([total, element]);
+                                    }
+                                    if (++i == userTab.length)
+                                    {
+                                        // console.log("Usuarios:");
+                                        // console.log(usuarios);
+                                        function compare(a, b) {
+                                            if (a[0] > b[0])
+                                            return -1;
+                                            if (a[0] < b[0])
+                                            return 1;
+                                            // a doit être égal à b
+                                            return 0;
+                                        }
+                                        usuarios.sort(compare);
+                                        notifModel.getNotifs(req.session.user.id).then(notif => {
+                                            //console.log(notif);
+                                            res.render('pages/index', {
+                                                title: 'Matcha !',
+                                                login: req.session.user.login,
+                                                userImg: req.session.user.img0,
+                                                notif: notif,
+                                                profil: usuarios
+                                            });
+                                        });
+                                    }
+                                });
+                                
                             });
-                            
                         });
-                    });
-                    // console.log("Usuarios:");
-                    // console.log(usuarios);
+                        // console.log("Usuarios:");
+                        // console.log(usuarios);
+                    }
+                    else
+                    {
+                        req.session.user.error = "Il n'y a pas de profils à montrer";
+                        res.redirect('/user/profile');
+                    }
+                        
                 });
             }
             else

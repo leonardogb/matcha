@@ -28,7 +28,7 @@ module.exports = {
         if( nombre.length == 0 || nombre == "" || apellido.length == 0 || apellido == "" )
           error.push("Votre prénom et votre nom ne peuvent être vides");
         else { 
-          if( !/^[a-zA-Z]+([ -][a-zA-Z]+)?$/g.test(nombre) || !/^[a-zA-Z]+([ -][a-zA-Z]+)?$/g.test(apellido))
+          if( !/^[a-zA-Zàáâäèéêëęîïíìôöòóûüùúñ]+([ -][a-zA-Za-zA-Zàáâäèéêëęîïíìôöòóûüùúñ]+)?$/g.test(nombre) || !/^[a-zA-Za-zA-Zàáâäèéêëęîïíìôöòóûüùúñ]+([ -][a-zA-Za-zA-Zàáâäèéêëęîïíìôöòóûüùúñ]+)?$/g.test(apellido))
             error.push("Votre prénom et nom peuvent avoir des lettres, un espace et un tiret");
         }
         return ( (error.length > 0 ? error : true) );
@@ -38,13 +38,14 @@ module.exports = {
 
         if( pass1.length == 0 || pass1 == "" || pass2.length == 0 || pass2 == "" )
           error.push("Votre mot de passe ne peut pas être vide");
-        else {
+        else
+        {
             if (pass1 != pass2)
                 error.push("Le mot de confirmation n\'est pas valide");
             else
             {
-                if( !/^(?=.*\d)(?=.*[a-zA-Z])[a-zA-Z0-9]{8,}$/g.test(pass1) )
-                    error.push("Votre mot de passe doit avoir des chiffres et des lettres et au moins 8 caractères");
+                if( !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/g.test(pass1) )
+                    error.push("Votre mot de passe doit avoir des chiffres, des lettres, un caractère special [@$!%*#?&] et au moins 8 caractères");
             }
           
         }
