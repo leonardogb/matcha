@@ -17,11 +17,11 @@ var bcrypt    = require('bcrypt');
 
   var sql = "CREATE TABLE IF NOT EXISTS users (\
     `id` INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, \
-    `login` VARCHAR(30) NOT NULL, \
-    `prenom` VARCHAR(50) NOT NULL, \
-    `nom` VARCHAR(30) NOT NULL, \
-    `passwd` CHAR(128) NOT NULL, \
-    `mail` CHAR(255) NOT NULL, \
+    `login` VARCHAR(30), \
+    `prenom` VARCHAR(50), \
+    `nom` VARCHAR(30), \
+    `passwd` CHAR(128), \
+    `mail` CHAR(255), \
     `cle` CHAR(128) DEFAULT NULL, \
     `active` TINYINT(1) UNSIGNED DEFAULT 0, \
     `genre` ENUM('Masculin', 'Féminin') DEFAULT 'Masculin',\
@@ -40,7 +40,7 @@ var bcrypt    = require('bcrypt');
     `popularite` INT(4) DEFAULT 0,\
     `puntos` INT(4) DEFAULT 0,\
     `complet` BOOLEAN DEFAULT FALSE,\
-    `visite` DATE)";
+    `visite` DATE DEFAULT '2018-11-11')";
   database.query(sql, function (err, result) {
     if (err) throw err;
     console.log("Table users created");
