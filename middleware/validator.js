@@ -41,7 +41,7 @@ module.exports = {
         else
         {
             if (pass1 != pass2)
-                error.push("Le mot de confirmation n\'est pas valide");
+                error.push("Le mot de passe de confirmation n\'est pas valide");
             else
             {
                 if( !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/g.test(pass1) )

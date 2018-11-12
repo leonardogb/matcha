@@ -5,7 +5,6 @@ $(document).ready(function() {
         var form_data = $(this).serialize(); //Encode form elements for submission
         
         $.post( post_url, form_data, function( response ) {
-            console.log(response);
             if (response)
             {
                 $('#perfiles').empty();
@@ -29,6 +28,10 @@ $(document).ready(function() {
                     </div>
                 </a>`);
                 });
+            }
+            else
+            {
+                $('#perfiles').empty();
             }
         });
     });

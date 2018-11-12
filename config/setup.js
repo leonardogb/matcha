@@ -40,7 +40,7 @@ var bcrypt    = require('bcrypt');
     `popularite` INT(4) DEFAULT 0,\
     `puntos` INT(4) DEFAULT 0,\
     `complet` BOOLEAN DEFAULT FALSE,\
-    `visite` DATE DEFAULT '2018-11-11')";
+    `visite` VARCHAR(10))";
   database.query(sql, function (err, result) {
     if (err) throw err;
     console.log("Table users created");
@@ -81,6 +81,14 @@ var bcrypt    = require('bcrypt');
     if (err) throw err;
     console.log("Table tags created");
   });
+
+  var tagsdefault = `INSERT INTO tags (tag) VALUES ('bio'), 
+      ('geek'), ('javascript'), ('ciao'), ('musique'), ('sport'), 
+      ('vegan'), ('piercing'), ('PHP'), ('opensource')`;
+      database.query(tagsdefault, function (err, result) {
+        if (err) throw err;
+        console.log("Default tags added to tags");
+      });
 
   var sql3 = `CREATE TABLE IF NOT EXISTS usertags (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,

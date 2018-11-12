@@ -25,12 +25,12 @@ function escapeHtml(text) {
     return text.replace(/[&<>"']/g, function(m) { return map[m]; });
   }
 
-  router.get('/seed', function(req, res) {
-      var i = 0;
+router.get('/seed', function(req, res) {
+    var i = 0;
 
     if(req.session && req.session.user && req.session.user.id == 1)
     {
-        request('https://randomuser.me/api/?nat=fr&inc=login,name,email,gender,dob,picture,location,registered&results=5', { json: true }, (err, respuesta, body) => {
+        request('https://randomuser.me/api/?nat=fr&inc=login,name,email,gender,dob,picture,location,registered&results=1000', { json: true }, (err, respuesta, body) => {
             if (err) console.log(err);
             body.results.forEach(user => {
                 var tabuser = [];
@@ -72,7 +72,7 @@ function escapeHtml(text) {
         });
     }
     res.redirect('/');
-  });
+});
 
 router.post('/recup', function(req, res)
 {
@@ -202,30 +202,9 @@ router.get('/', function(req, res)
             {
                 delete user1.passwd;
                 delete user1.cle;
-                error = "Vous devez completer votre profil.";
+                req.session.user.error = "Vous devez completer votre profil.";
                 //console.log(result);
-                tagModel.getTags(user1.id).then( tagsTab => {
-                    //console.log(tagsTab);
-                    notifModel.getNotifs(req.session.user.id).then(notif => {
-                        res.render('pages/profileUpdate', {
-                            title: "Profil de " + user1.prenom,
-                            message: message,
-                            error: error,
-                            login: user1.login,
-                            tabuser: user1,
-                            tabTags: tagsTab,
-                            notif: notif,
-                            userImg: req.session.user.img0
-                        });
-                        message = false;
-                        error = false;
-                    });
-                    
-                }).catch(function(err)
-                {
-                    console.log(err);
-                    //res.redirect('/');
-                });
+                res.redirect('/user/profile');
             }
         });
     }

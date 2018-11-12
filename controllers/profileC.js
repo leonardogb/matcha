@@ -617,13 +617,10 @@ router.post('/removeNot', function(req, res)
 router.get('/map', function(req, res)
 {
     userModel.getUserById(req.session.user.id).then(user => {
-        console.log(user);
         if (user)
         {
-            console.log("Uno");
             if(user.lat && user.lon)
             {
-                console.log("Dos");
                 res.send({key: 'pk.917b163c0e500ff60c7679805ad6b270', lat: user.lat, lon: user.lon});
             }
             else
@@ -639,8 +636,6 @@ router.get('/', function(req, res)
     var user_id = req.session.user.id;
     var user_login = req.session.user.login;
 
-    //var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
-    //console.log(req.connection);
     if(req.session.user.message)
     {
         message = req.session.user.message;
