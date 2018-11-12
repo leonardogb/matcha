@@ -335,6 +335,10 @@ router.get('/user/:login', function(req, res)
         {
             delete result.passwd;
             delete result.cle;
+            var event = new Date(result.visite);
+            var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+            result.visite = event.toLocaleDateString('fr-FR', options);
             //console.log(result);
             tagModel.getTags(result.id).then( tagsTab => {
                 //console.log(tagsTab);
@@ -605,6 +609,26 @@ router.post('/removeNot', function(req, res)
     notifModel.removeNotif(userid).then(removeOk => {
         if (removeOk)
             res.send(true);
+        else
+            res.send(false);
+    });
+});
+
+router.get('/map', function(req, res)
+{
+    userModel.getUserById(req.session.user.id).then(user => {
+        console.log(user);
+        if (user)
+        {
+            console.log("Uno");
+            if(user.lat && user.lon)
+            {
+                console.log("Dos");
+                res.send({key: 'pk.917b163c0e500ff60c7679805ad6b270', lat: user.lat, lon: user.lon});
+            }
+            else
+                res.send(false);
+        }
         else
             res.send(false);
     });

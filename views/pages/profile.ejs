@@ -4,7 +4,19 @@
         <% include ../partials/head %>
     </head>
     <header>
-            <% include ../partials/header %>
+        <% include ../partials/header %>
+        <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.js'></script>
+        <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet'/>
+        <script src='https://tiles.unwiredmaps.com/v2/js/unwired-gl.js?v=0.1.6'></script>
+        <link href='https://tiles.unwiredmaps.com/v2/js/unwired-gl.css?v=0.1.6' rel='stylesheet' />
+
+        <style>
+            #mapa {
+                position: relative;
+                width: 500px;
+                height: 350px;
+            }
+        </style>
     </header>
     <body>
         <div class="container">
@@ -84,6 +96,11 @@
                 <% }); %></div><% } %>
             </div>
 
+            <div>
+                <button id="botonMapa" type="button" class="btn btn-info">Carte</button>
+            </div>
+            <div id="mapa"></div>
+
             <% if (error != '') { %>
             <div class="alert alert-danger">
                 <a class="close" data-dismiss="alert" href="#">×</a><%= error %>
@@ -99,5 +116,6 @@
             <div class="row contenedorChat"></div>
         </div>
         <script src="/js/socketClient.js"></script>
+        <script src="/js/mapa.js"></script>
     </body>
 </html>
