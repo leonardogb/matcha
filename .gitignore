@@ -1,3 +1,3 @@
 .DS_Store
 .vscode/
-user/
+node_modules/
