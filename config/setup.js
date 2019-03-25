@@ -64,8 +64,8 @@ var bcrypt    = require('bcrypt');
       var passAdmin = bcrypt.hashSync('lgarcia-', 10);
 
       var insertAdmin = "INSERT INTO users (\
-        `login`, passwd, mail, active)\
-        VALUES ('admin', '" + passAdmin + "', 'lgarcia-@student.le-101.fr', 1)";
+        `login`, prenom, nom, passwd, mail, active, img0)\
+        VALUES ('adminS', 'Admin', 'Supreme', '" + passAdmin + "', 'lgarcia-@student.le-101.fr', 1, '/img/Macha-negro-harrington.svg')";
       database.query(insertAdmin, function (err, result)
       {
         if (err) throw err;

@@ -38,7 +38,7 @@ app.set('view engine', 'ejs');
 
 
 
-app.get('/favicon.ico', (req, res) => res.status(204).send('/img/hombre-mujer-blanco.svg'));
+app.get('/favicon.ico', (req, res) => res.status(204).send('/img/M-macha-negro2.ico'));
 app.use('/user', userC);
 app.use('/profile', profileC);
 app.use('/search', searchC);
