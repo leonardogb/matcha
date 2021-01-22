@@ -1,19 +1,18 @@
-require('./config/setup');
+require("./config/setup");
 
 //var app = require('./app'); poner
-var debug = require('debug')('matcha:server');
+var debug = require("debug")("matcha:server");
 //var http = require('http'); poner
 
 //var server = http.createServer(app); poner
 
-
-var app = require('./app');
-var server = require('http').Server(app);
-var io = require('./io.js')(server);
+var app = require("./app");
+var server = require("http").Server(app);
+var io = require("./io.js")(server);
 
 server.listen(8080);
-server.on('error', onError);
-server.on('listening', onListening);
+server.on("error", onError);
+server.on("listening", onListening);
 
 //app.use((req, res, next)=>{ res.locals['io'] = io; next(); });
 
@@ -22,29 +21,26 @@ server.on('listening', onListening);
  */
 
 function onError(error) {
-    if (error.syscall !== 'listen') {
-      throw error;
-    }
-  
-    var bind = typeof port === 'string'
-      ? 'Pipe ' + port
-      : 'Port ' + port;
-  
-    // handle specific listen errors with friendly messages
-    switch (error.code) {
-      case 'EACCES':
-        console.error(bind + ' requires elevated privileges');
-        process.exit(1);
-        break;
-      case 'EADDRINUSE':
-        console.error(bind + ' is already in use');
-        process.exit(1);
-        break;
-      default:
-        throw error;
-    }
+  if (error.syscall !== "listen") {
+    throw error;
   }
-  
+
+  var bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case "EACCES":
+      console.error(bind + " requires elevated privileges");
+      process.exit(1);
+      break;
+    case "EADDRINUSE":
+      console.error(bind + " is already in use");
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
 
 /**
  * Socket.io
@@ -54,18 +50,15 @@ function onError(error) {
 // var io = socketApi.io;
 // io.attach(server);
 
+/**
+ * Event listener for HTTP server "listening" event.
+ */
 
-  /**
-   * Event listener for HTTP server "listening" event.
-   */
-  
-  function onListening() {
-    var addr = server.address();
-    var bind = typeof addr === 'string'
-      ? 'pipe ' + addr
-      : 'port ' + addr.port;
-    debug('Listening on ' + bind);
-  }
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+  debug("Listening on " + bind);
+}
 
 // app.get('/', function(req, res)
 // {
@@ -86,7 +79,6 @@ function onError(error) {
 
 // io.on('connection', function(socket)
 // {
-//     console.log("una conexión");
 // });
 
 // server.listen(8080);
