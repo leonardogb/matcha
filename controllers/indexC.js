@@ -109,13 +109,18 @@ router.post("/recup", function (req, res) {
     if (mailOk) {
       userModel.reinitMDP(mail).then((MdpTemp) => {
         if (MdpTemp) {
-          userModel.sendMailMdp(mail, MdpTemp).then((ok) => {
-            if (ok) {
-              console.log("Message envoyé !");
-              message =
-                "Votre mot de passe a été réinitialisé. Vérifier votre mél.";
-            }
-          });
+          userModel
+            .sendMailMdp(mail, MdpTemp)
+            .then((ok) => {
+              if (ok) {
+                console.log("Message envoyé !");
+                message =
+                  "Votre mot de passe a été réinitialisé. Vérifier votre mél.";
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         }
       });
     } else

@@ -5,6 +5,7 @@ var uniqid = require("uniqid");
 var nodemailer = require("nodemailer");
 var base64url = require("base64url");
 const { default: axios } = require("axios");
+require("dotenv").config();
 
 database.query("USE db_matcha");
 var userM = {
@@ -68,13 +69,11 @@ var userM = {
             secure: true,
             auth: {
               type: "OAuth2",
-              user: "hercules.le101@gmail.com",
-              clientId:
-                "297940244352-6kp2r7cei6307aeh2vfgc7pvkmt1k12c.apps.googleusercontent.com",
-              clientSecret: "x3zxH4cpRLmQCg24qFbtsEU3",
-              refreshToken: "1/rFA3EGVpfNx4E7S0FB58aEkIyuLLc1sGVsoRjSj8KNc",
-              accessToken:
-                "ya29.GlsQBhUek2ReCSoGNzuu_B7n-BD6pdpgPxP8AA5G9Gr4fw1kIKPoDpQphoeoLz1Fqq8Oo76V-h-ItRZA0vpU-yT9M79yAOuIgb2WyFfLH8dmj6kMzEWJCcZs3LGs",
+              user: process.env.USER,
+              clientId: process.env.CLIENT_ID,
+              clientSecret: process.env.CLIENT_SECRET,
+              refreshToken: process.env.REFRESH_TOKEN,
+              accessToken: process.env.ACCESS_TOKEN,
               expires: 3600,
             },
           });
@@ -180,16 +179,15 @@ var userM = {
         secure: true,
         auth: {
           type: "OAuth2",
-          user: "hercules.le101@gmail.com",
-          clientId:
-            "297940244352-6kp2r7cei6307aeh2vfgc7pvkmt1k12c.apps.googleusercontent.com",
-          clientSecret: "x3zxH4cpRLmQCg24qFbtsEU3",
-          refreshToken: "1/rFA3EGVpfNx4E7S0FB58aEkIyuLLc1sGVsoRjSj8KNc",
-          accessToken:
-            "ya29.GlsQBhUek2ReCSoGNzuu_B7n-BD6pdpgPxP8AA5G9Gr4fw1kIKPoDpQphoeoLz1Fqq8Oo76V-h-ItRZA0vpU-yT9M79yAOuIgb2WyFfLH8dmj6kMzEWJCcZs3LGs",
+          user: process.env.USER,
+          clientId: process.env.CLIENT_ID,
+          clientSecret: process.env.CLIENT_SECRET,
+          refreshToken: process.env.REFRESH_TOKEN,
+          accessToken: process.env.ACCESS_TOKEN,
           expires: 3600,
         },
       });
+      console.log(transporter);
 
       var mailOptions = {
         from: "info@matcha.com",
